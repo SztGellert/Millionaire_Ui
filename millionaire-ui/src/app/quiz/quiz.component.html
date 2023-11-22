@@ -1,3 +1,54 @@
-<p>
-  quiz works!
-</p>
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Who wants to be a millionaire?
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Blank</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card></ion-card>
+  <ion-card>
+    <ion-item>
+      <ion-label>
+        <h1>
+          Quiz
+        </h1>
+      </ion-label>
+    </ion-item>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-card  style="--ion-text-color: #3B755F;">
+            <ion-card-header>
+              <ion-card-title style="{{'background: border-radius: 5px;'}}" >
+                <ion-row class="ion-align-items-center">
+                  <ion-col size="3">
+                  </ion-col>
+                  <ion-col size="9" class="title-col">
+                    {{quizList[level].value }}
+                  </ion-col>
+                </ion-row>
+              </ion-card-title>
+              <ion-card-subtitle ></ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content *ngFor="let item of quizList[level].answers">
+              <ion-item>
+                <ion-label>{{ item }}
+                </ion-label>
+                <ion-checkbox alignment="end"  style=" --checkbox-background-checked:#3B755F;">
+                </ion-checkbox>
+              </ion-item>
+            </ion-card-content>
+            <ion-card-content>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+</ion-content>

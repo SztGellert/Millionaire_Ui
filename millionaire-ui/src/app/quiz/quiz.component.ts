@@ -11,6 +11,8 @@ import {Subscription} from "rxjs";
 
 export class QuizComponent implements OnInit, OnDestroy {
 
+  level: number = 0;
+  question: Question = {} as Question;
   quizList: Question[] = [];
   private quizListSubs: Subscription = new Subscription();
 
@@ -26,6 +28,10 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.quizListSubs.unsubscribe();
+  }
+
+  getQuestion(i: number): Question {
+    return this.quizList[i]
   }
 
 

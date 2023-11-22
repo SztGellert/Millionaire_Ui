@@ -23,7 +23,7 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-card  style="--ion-text-color: #3B755F;">
+          <ion-card  style="--ion-text-color: #3880ff;">
             <ion-card-header>
               <ion-card-title style="{{'background: border-radius: 5px;'}}" >
                 <ion-row class="ion-align-items-center">
@@ -36,16 +36,26 @@
               </ion-card-title>
               <ion-card-subtitle ></ion-card-subtitle>
             </ion-card-header>
-            <ion-card-content *ngFor="let item of quizList[level].answers">
-              <ion-item>
-                <ion-label>{{ item }}
-                </ion-label>
-                <ion-checkbox alignment="end"  style=" --checkbox-background-checked:#3B755F;">
-                </ion-checkbox>
-              </ion-item>
-            </ion-card-content>
+            <ion-radio-group value="questions">
             <ion-card-content>
-            </ion-card-content>
+              <ion-item *ngFor="let item of quizList[level].answers">
+                  <ion-radio justify="space-between" value="{{item}}" (click)="selectedAnswer = item">{{item}}</ion-radio><br />
+              </ion-item>
+              <ion-row>
+                <ion-col></ion-col>
+                <ion-col></ion-col>
+                <ion-col></ion-col>
+                <ion-col></ion-col>
+                <ion-col></ion-col>
+                <ion-col></ion-col>
+                <ion-col></ion-col>
+                <ion-col></ion-col>
+                <ion-col></ion-col>
+                <ion-col></ion-col>
+                <ion-col></ion-col>
+                <ion-col><ion-button style="width: 100%; display:inline-block;" (click)="checkAnswer(selectedAnswer)">Next</ion-button>
+            </ion-col></ion-row></ion-card-content>
+            </ion-radio-group>
           </ion-card>
         </ion-col>
       </ion-row>

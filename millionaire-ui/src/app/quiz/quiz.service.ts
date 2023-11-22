@@ -5,7 +5,7 @@ import {Subject} from "rxjs";
 export interface Question {
   value: number;
   answers: string[];
-  correct_answer: number;
+  correct_answer: string;
   type: string;
   difficulty: boolean;
 }

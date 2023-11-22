@@ -12,6 +12,7 @@ import {Subscription} from "rxjs";
 export class QuizComponent implements OnInit, OnDestroy {
 
   level: number = 0;
+  selectedAnswer: string = "";
   question: Question = {} as Question;
   quizList: Question[] = [];
   private quizListSubs: Subscription = new Subscription();
@@ -30,8 +31,10 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.quizListSubs.unsubscribe();
   }
 
-  getQuestion(i: number): Question {
-    return this.quizList[i]
+  checkAnswer(answer: string) {
+    if (this.quizList[this.level].correct_answer == answer) {
+      this.level += 1
+    }
   }
 
 

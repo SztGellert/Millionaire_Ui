@@ -19,7 +19,7 @@ export class QuizService {
   quizzesChanged: Subject<Question[]> = new Subject<Question[]>;
 
   fetchQuiz() {
-    this.http.get<Question[]>('https://yi4tfqk2xmyzsgt72ojur5bk6q0mjtnw.lambda-url.eu-north-1.on.aws?topic="arts"')
+    this.http.get<Question[]>('https://yi4tfqk2xmyzsgt72ojur5bk6q0mjtnw.lambda-url.eu-north-1.on.aws?topic=arts')
       .subscribe(resData => this.quizzesChanged.next(resData));
   }
 }

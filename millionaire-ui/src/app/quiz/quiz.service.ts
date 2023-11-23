@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Subject} from "rxjs";
 
 export interface Question {
-  value: number;
+  value: string;
   answers: string[];
   correct_answer: string;
   type: string;

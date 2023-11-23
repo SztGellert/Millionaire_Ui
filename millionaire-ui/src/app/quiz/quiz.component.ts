@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Question, QuizService} from "./quiz.service";
-import {Subscription, window} from "rxjs";
-import {Router} from "@angular/router";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-quiz',
@@ -17,6 +16,9 @@ export class QuizComponent implements OnInit, OnDestroy {
   question: Question = {} as Question;
   quizList: Question[] = [];
   quizListSubs: Subscription = new Subscription();
+  difficultyList: string[] = ["easy", "medium", "hard"];
+
+  questionDifficulty: string = "";
 
   constructor(private quizSvc: QuizService) {
   }
@@ -24,11 +26,10 @@ export class QuizComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.quizListSubs = this.quizSvc.quizzesChanged.subscribe(quizzes  =>{
       this.quizList = quizzes;
-      console.log(quizzes)
       this.quizList[0].answers = this.quizList[0].answers.sort(() => Math.random() - 0.5);
 
     })
-    this.quizSvc.fetchQuiz();
+    this.quizSvc.fetchQuiz("arts", "");
   }
 
   ngOnDestroy() {
@@ -47,12 +48,34 @@ export class QuizComponent implements OnInit, OnDestroy {
       }
       this.quizList[this.level].value = "Fail";
       this.quizList[this.level].answers = [];
-
     }
   }
 
   reloadPage(){
     location.reload();
-
   }
+
+  // @ts-ignore
+  compareWith(o1, o2) {
+    if (!o1 || !o2) {
+      return o1 === o2;
+    }
+
+    if (Array.isArray(o2)) {
+      return o2.some((o) => o.id === o1.id);
+    }
+
+    return o1.id === o2.id;
+  }
+
+  // @ts-ignore
+  handleChange(ev) {
+    if (ev.target.id === "difficultySelect"){
+      this.quizSvc.fetchQuiz("arts", ev.target.value);
+      this.questionDifficulty = ev.target.value;
+      ev.target.value = []
+    }
+  }
+
+
 }

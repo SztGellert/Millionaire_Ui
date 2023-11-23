@@ -25,6 +25,19 @@
         <ion-col>
           <ion-card  style="--ion-text-color: #3880ff;">
             <ion-card-header>
+              <ion-list>
+                <ion-item *ngIf="level===0 && questionDifficulty === ''">
+                  <ion-select
+                    id="difficultySelect"
+                    aria-label="Difficulty"
+                    [compareWith]="compareWith"
+                    placeholder="Select difficulty"
+                    (ionChange)="handleChange($event)"
+                    [multiple]="false">
+                    <ion-select-option *ngFor="let difficulty of difficultyList" [value]="difficulty">{{ difficulty }}</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-list>
               <ion-card-title style="{{'background: border-radius: 5px;'}}" >
                 <ion-row class="ion-align-items-center">
                   <ion-col size="3">

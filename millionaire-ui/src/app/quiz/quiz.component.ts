@@ -1,6 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Question, QuizService} from "./quiz.service";
 import {Subscription} from "rxjs";
+import { Platform } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-quiz',
@@ -17,10 +19,17 @@ export class QuizComponent implements OnInit, OnDestroy {
   quizList: Question[] = [];
   quizListSubs: Subscription = new Subscription();
   difficultyList: string[] = ["easy", "medium", "hard"];
+  topicList: string[] = ["arts", "history", "music"];
 
   questionDifficulty: string = "";
+  questionTopic: string = "";
 
-  constructor(private quizSvc: QuizService) {
+  constructor(private quizSvc: QuizService, private platform: Platform) {}
+
+  public isDesktop() {
+    let platforms = this.platform.platforms();
+    return platforms[0] == "desktop";
+
   }
 
   ngOnInit() {
@@ -69,13 +78,24 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   // @ts-ignore
-  handleChange(ev) {
+  handleDifficultySelectChange(ev) {
     if (ev.target.id === "difficultySelect"){
-      this.quizSvc.fetchQuiz("arts", ev.target.value);
+      this.quizSvc.fetchQuiz(this.questionTopic, ev.target.value);
       this.questionDifficulty = ev.target.value;
       ev.target.value = []
     }
   }
+
+  // @ts-ignore
+  handleTopicSelectChange(ev) {
+    if (ev.target.id === "topicSelect"){
+      this.quizSvc.fetchQuiz(ev.target.value, this.questionDifficulty);
+      this.questionTopic = ev.target.value;
+      ev.target.value = []
+    }
+  }
+
+
 
 
 }

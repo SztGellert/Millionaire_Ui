@@ -6,7 +6,7 @@ export interface Question {
   value: string;
   answers: string[];
   correct_answer: string;
-  type: string;
+  topic: string;
   difficulty: boolean;
 }
 @Injectable({

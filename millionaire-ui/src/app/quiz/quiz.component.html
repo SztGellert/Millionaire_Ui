@@ -7,9 +7,6 @@
 </ion-header>
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
   </ion-header>
   <ion-card></ion-card>
   <ion-card>
@@ -25,6 +22,30 @@
         <ion-col>
           <ion-card  style="--ion-text-color: #3880ff;">
             <ion-card-header>
+              <ion-toolbar *ngIf="level===0">
+                  <ion-row *ngIf="!this.isDesktop()">
+                    <ion-col>Topic: {{ quizList[level].topic }}</ion-col></ion-row>
+                  <ion-row *ngIf="!this.isDesktop()" >
+                    <ion-col>Difficulty: {{ quizList[level].difficulty }}</ion-col>
+                  </ion-row>
+                  <ion-title size="large" *ngIf="this.isDesktop()">
+
+                  Topic: {{ quizList[level].topic }} Difficulty: {{ quizList[level].difficulty }}
+                </ion-title>
+              </ion-toolbar>
+              <ion-list>
+                <ion-item *ngIf="level===0 && questionTopic === ''">
+                  <ion-select
+                    id="topicSelect"
+                    aria-label="Topic"
+                    [compareWith]="compareWith"
+                    placeholder="Select topic"
+                    (ionChange)="handleTopicSelectChange($event)"
+                    [multiple]="false">
+                    <ion-select-option *ngFor="let topic of topicList" [value]="topic">{{ topic }}</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-list>
               <ion-list>
                 <ion-item *ngIf="level===0 && questionDifficulty === ''">
                   <ion-select
@@ -32,26 +53,27 @@
                     aria-label="Difficulty"
                     [compareWith]="compareWith"
                     placeholder="Select difficulty"
-                    (ionChange)="handleChange($event)"
+                    (ionChange)="handleDifficultySelectChange($event)"
                     [multiple]="false">
                     <ion-select-option *ngFor="let difficulty of difficultyList" [value]="difficulty">{{ difficulty }}</ion-select-option>
                   </ion-select>
                 </ion-item>
               </ion-list>
-              <ion-card-title style="{{'background: border-radius: 5px;'}}" >
-                <ion-row class="ion-align-items-center">
-                  <ion-col size="3">
-                  </ion-col>
-                  <ion-col size="9" class="title-col">
-                    {{quizList[level].value }}
-                  </ion-col>
-                </ion-row>
-              </ion-card-title>
-              <ion-card-subtitle ></ion-card-subtitle>
+
             </ion-card-header>
+            <ion-card-title style="{{'background: border-radius: 5px;'}}" >
+              <ion-row class="ion-align-items-center">
+                <ion-col size="3" *ngIf="this.isDesktop()">
+                </ion-col>
+                <ion-col  class="title-col">
+                  {{quizList[level].value }}
+                </ion-col>
+              </ion-row>
+            </ion-card-title>
+            <ion-card-subtitle ></ion-card-subtitle>
             <ion-radio-group value="questions">
             <ion-card-content>
-              <ion-item *ngFor="let item of quizList[level].answers">
+              <ion-item class="item-text-wrap" *ngFor="let item of quizList[level].answers">
                   <ion-radio justify="space-between" value="{{item}}" (click)="selectedAnswer = item">{{item}}</ion-radio><br />
               </ion-item>
               <ion-row>

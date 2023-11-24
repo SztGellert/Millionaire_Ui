@@ -29,7 +29,6 @@
                     <ion-col>Difficulty: {{ questionDifficulty }}</ion-col>
                   </ion-row>
                   <ion-title size="large" *ngIf="this.isDesktop()">
-
                   Topic: {{ questionTopic }} Difficulty: {{ questionDifficulty }}
                 </ion-title>
               </ion-toolbar>
@@ -59,22 +58,22 @@
                   </ion-select>
                 </ion-item>
               </ion-list>
-
             </ion-card-header>
             <ion-card-title *ngIf=" questionTopic !== '' && questionDifficulty !== '' " style="{{'background: border-radius: 5px;'}}" >
-              <ion-row class="ion-align-items-center">
-                <ion-col size="3" *ngIf="this.isDesktop()">
-                </ion-col>
-                <ion-col  class="title-col">
-                  {{quizList[level].value }}
-                </ion-col>
+              <ion-row>
+                <ion-card color="primary">
+                  <ion-card-header>
+                    <ion-card-title>{{quizList[level].value }}</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content></ion-card-content>
+                </ion-card>
               </ion-row>
             </ion-card-title>
             <ion-card-subtitle ></ion-card-subtitle>
             <ion-radio-group value="questions" *ngIf=" questionTopic !== '' && questionDifficulty !== '' ">
             <ion-card-content>
               <ion-item class="item-text-wrap" *ngFor="let item of quizList[level].answers">
-                  <ion-radio justify="space-between" value="{{item}}" (click)="selectedAnswer = item">{{item}}</ion-radio><br />
+                <ion-radio justify="space-between" value="{{item}}" (click)="selectedAnswer = item"><span class="ion-text-wrap">{{"ASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDAASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDSDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASD"}}</span></ion-radio><br />
               </ion-item>
               <ion-row>
                 <ion-col></ion-col>

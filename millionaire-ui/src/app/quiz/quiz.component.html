@@ -21,55 +21,31 @@
       <ion-row>
         <ion-col>
           <ion-card  style="--ion-text-color: #3880ff;">
+            <ion-list *ngIf="level===0">
+              <ion-item>
+                <ion-select justify="end" aria-label="topic" placeholder="Select topic"  id="topicSelect" (ionChange)="handleTopicSelectChange($event)">
+                  <ion-select-option *ngFor="let topic of topicList" [value]="topic">{{ topic }}</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <ion-item>
+                <ion-select justify="end" aria-label="difficulty" placeholder="Select difficulty"  id="difficultySelect" (ionChange)="handleDifficultySelectChange($event)">
+                  <ion-select-option *ngFor="let difficulty of difficultyList" [value]="difficulty">{{ difficulty }}</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-list>
             <ion-card-header>
-              <ion-toolbar *ngIf="level===0">
-                  <ion-row *ngIf="!this.isDesktop()">
-                    <ion-col>Topic: {{ questionTopic }}</ion-col></ion-row>
-                  <ion-row *ngIf="!this.isDesktop()" >
-                    <ion-col>Difficulty: {{ questionDifficulty }}</ion-col>
-                  </ion-row>
-                  <ion-title size="large" *ngIf="this.isDesktop()">
-                  Topic: {{ questionTopic }} Difficulty: {{ questionDifficulty }}
-                </ion-title>
-              </ion-toolbar>
-              <ion-list>
-                <ion-item *ngIf="level===0">
-                  <ion-select
-                    id="topicSelect"
-                    aria-label="Topic"
-                    [compareWith]="compareWith"
-                    placeholder="Select topic"
-                    (ionChange)="handleTopicSelectChange($event)"
-                    [multiple]="false">
-                    <ion-select-option *ngFor="let topic of topicList" [value]="topic">{{ topic }}</ion-select-option>
-                  </ion-select>
-                </ion-item>
-              </ion-list>
-              <ion-list>
-                <ion-item *ngIf="level===0">
-                  <ion-select
-                    id="difficultySelect"
-                    aria-label="Difficulty"
-                    [compareWith]="compareWith"
-                    placeholder="Select difficulty"
-                    (ionChange)="handleDifficultySelectChange($event)"
-                    [multiple]="false">
-                    <ion-select-option *ngFor="let difficulty of difficultyList" [value]="difficulty">{{ difficulty }}</ion-select-option>
-                  </ion-select>
-                </ion-item>
-              </ion-list>
+            <ion-button expand="block" *ngIf="level===0 && questionDifficulty !== '' && questionTopic!=='' && !quizList[level]" (click)="startQuiz()">START</ion-button>
             </ion-card-header>
-            <ion-card-title *ngIf=" questionTopic !== '' && questionDifficulty !== '' " style="{{'background: border-radius: 5px;'}}" >
-              <ion-row>
+            <ion-card-title *ngIf=" quizList[level]" style="{{'background: border-radius: 5px;'}}" >
                 <ion-card color="primary">
                   <ion-card-header>
-                    <ion-card-title>{{quizList[level].value }}</ion-card-title>
+                    <ion-card-title style="text-align: center">{{quizList[level].value }}</ion-card-title>
                   </ion-card-header>
                   <ion-card-content></ion-card-content>
                 </ion-card>
-              </ion-row>
             </ion-card-title>
-            <ion-card-subtitle ></ion-card-subtitle>
+            <ion-card-subtitle >
+            </ion-card-subtitle>
             <ion-radio-group value="questions" *ngIf=" questionTopic !== '' && questionDifficulty !== '' ">
             <ion-card-content>
               <ion-item class="item-text-wrap" *ngFor="let item of quizList[level].answers">

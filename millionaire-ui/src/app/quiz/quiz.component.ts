@@ -38,10 +38,6 @@ export class QuizComponent implements OnInit, OnDestroy {
       this.quizList[0].answers = this.quizList[0].answers.sort(() => Math.random() - 0.5);
 
     })
-    if (this.questionTopic != "" && this.questionDifficulty != "") {
-      this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty);
-    }
-
   }
 
   ngOnDestroy() {
@@ -84,18 +80,20 @@ export class QuizComponent implements OnInit, OnDestroy {
   // @ts-ignore
   handleDifficultySelectChange(ev) {
     if (ev.target.id === "difficultySelect"){
-      this.quizSvc.fetchQuiz(this.questionTopic, ev.target.value);
       this.questionDifficulty = ev.target.value;
-      ev.target.value = []
     }
   }
 
   // @ts-ignore
   handleTopicSelectChange(ev) {
     if (ev.target.id === "topicSelect"){
-      this.quizSvc.fetchQuiz(ev.target.value, this.questionDifficulty);
       this.questionTopic = ev.target.value;
-      ev.target.value = []
+    }
+  }
+
+  startQuiz() {
+    if (this.questionTopic != "" && this.questionDifficulty != "") {
+      this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty);
     }
   }
 

@@ -28,7 +28,7 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   public isDesktop() {
     let platforms = this.platform.platforms();
-    return platforms[0] == "desktop";
+    return platforms[0] == "desktop" || platforms[0] == "mobileweb";
 
   }
 
@@ -64,11 +64,8 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   reloadPage(){
-    if(this.level == 0){
-      this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty);
-    } else {
-      this.level = 0
-    }
+    this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty);
+    this.level = 0
   }
 
   // @ts-ignore

@@ -24,17 +24,17 @@
             <ion-card-header>
               <ion-toolbar *ngIf="level===0">
                   <ion-row *ngIf="!this.isDesktop()">
-                    <ion-col>Topic: {{ quizList[level].topic }}</ion-col></ion-row>
+                    <ion-col>Topic: {{ questionTopic }}</ion-col></ion-row>
                   <ion-row *ngIf="!this.isDesktop()" >
-                    <ion-col>Difficulty: {{ quizList[level].difficulty }}</ion-col>
+                    <ion-col>Difficulty: {{ questionDifficulty }}</ion-col>
                   </ion-row>
                   <ion-title size="large" *ngIf="this.isDesktop()">
 
-                  Topic: {{ quizList[level].topic }} Difficulty: {{ quizList[level].difficulty }}
+                  Topic: {{ questionTopic }} Difficulty: {{ questionDifficulty }}
                 </ion-title>
               </ion-toolbar>
               <ion-list>
-                <ion-item *ngIf="level===0 && questionTopic === ''">
+                <ion-item *ngIf="level===0">
                   <ion-select
                     id="topicSelect"
                     aria-label="Topic"
@@ -47,7 +47,7 @@
                 </ion-item>
               </ion-list>
               <ion-list>
-                <ion-item *ngIf="level===0 && questionDifficulty === ''">
+                <ion-item *ngIf="level===0">
                   <ion-select
                     id="difficultySelect"
                     aria-label="Difficulty"
@@ -61,7 +61,7 @@
               </ion-list>
 
             </ion-card-header>
-            <ion-card-title style="{{'background: border-radius: 5px;'}}" >
+            <ion-card-title *ngIf=" questionTopic !== '' && questionDifficulty !== '' " style="{{'background: border-radius: 5px;'}}" >
               <ion-row class="ion-align-items-center">
                 <ion-col size="3" *ngIf="this.isDesktop()">
                 </ion-col>
@@ -71,7 +71,7 @@
               </ion-row>
             </ion-card-title>
             <ion-card-subtitle ></ion-card-subtitle>
-            <ion-radio-group value="questions">
+            <ion-radio-group value="questions" *ngIf=" questionTopic !== '' && questionDifficulty !== '' ">
             <ion-card-content>
               <ion-item class="item-text-wrap" *ngFor="let item of quizList[level].answers">
                   <ion-radio justify="space-between" value="{{item}}" (click)="selectedAnswer = item">{{item}}</ion-radio><br />

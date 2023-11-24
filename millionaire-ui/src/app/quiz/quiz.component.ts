@@ -38,7 +38,10 @@ export class QuizComponent implements OnInit, OnDestroy {
       this.quizList[0].answers = this.quizList[0].answers.sort(() => Math.random() - 0.5);
 
     })
-    this.quizSvc.fetchQuiz("arts", "");
+    if (this.questionTopic != "" && this.questionDifficulty != "") {
+      this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty);
+    }
+
   }
 
   ngOnDestroy() {
@@ -61,7 +64,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   reloadPage(){
-    location.reload();
+    this.level = 0
   }
 
   // @ts-ignore

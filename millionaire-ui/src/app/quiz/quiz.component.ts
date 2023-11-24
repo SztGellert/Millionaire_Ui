@@ -64,7 +64,11 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   reloadPage(){
-    this.level = 0
+    if(this.level == 0){
+      this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty);
+    } else {
+      this.level = 0
+    }
   }
 
   // @ts-ignore

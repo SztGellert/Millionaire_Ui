@@ -19,11 +19,22 @@ export class QuizComponent implements OnInit, OnDestroy {
   quizList: Question[] = [];
   quizListSubs: Subscription = new Subscription();
   difficultyList: string[] = ["easy", "medium", "hard"];
+
   topicList: string[] = [
     "arts",
     "biology",
+    "chemistry",
+    "economy",
+    "gastronomy",
+    "general",
+    "geography",
     "history",
-    "music"
+    "literature",
+    "mathematics",
+    "music",
+    "original",
+    "physics",
+    "sports"
   ];
 
   questionDifficulty: string = "";

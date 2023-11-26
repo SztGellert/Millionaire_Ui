@@ -40,6 +40,8 @@ export class QuizComponent implements OnInit, OnDestroy {
   questionDifficulty: string = "";
   questionTopic: string = "";
 
+  help_modules: { halving : boolean; audience: boolean ; phone: boolean } = {halving:true, audience:true, phone:true};
+
   constructor(private quizSvc: QuizService, private platform: Platform) {}
 
   public isDesktop() {
@@ -52,7 +54,6 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.quizListSubs = this.quizSvc.quizzesChanged.subscribe(quizzes  =>{
       this.quizList = quizzes;
       this.quizList[0].answers = this.quizList[0].answers.sort(() => Math.random() - 0.5);
-
     })
   }
 
@@ -75,9 +76,32 @@ export class QuizComponent implements OnInit, OnDestroy {
     }
   }
 
+  halving() {
+    if (this.help_modules.halving) {
+
+      this.help_modules.halving = false;
+
+      let reset = 0
+
+      for (let i = 0; i < this.quizList[this.level].answers.length; i++) {
+        if (reset == 2) {
+          return
+        }
+
+        if (this.quizList[this.level].answers[i] !== this.quizList[this.level].correct_answer) {
+          this.quizList[this.level].answers.splice(i, 1)
+          reset += 1
+        }
+      }
+    }
+  }
+
   reloadPage(){
     this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty);
     this.level = 0
+    this.help_modules.halving = true;
+    this.help_modules.audience = true;
+    this.help_modules.phone = true;
   }
 
   // @ts-ignore
@@ -110,6 +134,15 @@ export class QuizComponent implements OnInit, OnDestroy {
   startQuiz() {
     if (this.questionTopic != "" && this.questionDifficulty != "") {
       this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty);
+    }
+  }
+
+  getTooltip(help_type: string) {
+    // @ts-ignore
+    if (this.help_modules[help_type]) {
+      return "Use " + help_type
+    } else {
+      return "already used!"
     }
   }
 

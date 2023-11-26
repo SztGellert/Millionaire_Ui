@@ -54,9 +54,24 @@
             </ion-card-content>
               <ion-card-content>
               <ion-row>
-                <ion-col></ion-col>
-                <ion-col></ion-col>
-                <ion-col></ion-col>
+                <ion-col><ion-button matTooltip="{{ getTooltip('audience') }}"
+                                     matTooltipPosition="above"
+                                     [ngStyle]="{'--background': help_modules['audience'] ? '#3880ff' : 'red' }"
+                                     *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!!'"
+                                     style="width: 100%; display:inline-block;">Audience
+                </ion-button></ion-col>
+                <ion-col><ion-button matTooltip="{{ getTooltip('halving') }}"
+                                     matTooltipPosition="above"
+                                     [ngStyle]="{'--background': help_modules['halving'] ? '#3880ff' : 'red' }"
+                                     *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!!'"
+                                     style="width: 100%; display:inline-block;" (click)="halving()">Halving
+                </ion-button></ion-col>
+                <ion-col><ion-button matTooltip="{{ getTooltip('phone') }}"
+                                     matTooltipPosition="above"
+                                     [ngStyle]="{'--background': help_modules['phone'] ? '#3880ff' : 'red' }"
+                                     *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!!'"
+                                     style="width: 100%; display:inline-block;">Phone
+                </ion-button></ion-col>
                 <ion-col></ion-col>
                 <ion-col></ion-col>
                 <ion-col></ion-col>

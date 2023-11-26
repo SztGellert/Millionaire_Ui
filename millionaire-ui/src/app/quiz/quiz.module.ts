@@ -4,7 +4,7 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import {QuizComponent} from "./quiz.component";
 import {QuizComponentRoutingModule} from "./quiz-routing.module";
-
+import {MatTooltipModule,} from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -13,7 +13,7 @@ import {QuizComponentRoutingModule} from "./quiz-routing.module";
     FormsModule,
     IonicModule,
     QuizComponentRoutingModule,
-  ],
+    MatTooltipModule],
   declarations: [QuizComponent]
 })
 export class QuizModule {}

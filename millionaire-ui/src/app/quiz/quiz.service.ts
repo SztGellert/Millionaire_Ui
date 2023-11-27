@@ -19,6 +19,10 @@ export class QuizService {
   quizzesChanged: Subject<Question[]> = new Subject<Question[]>;
 
   fetchQuiz(topic: string, difficulty: string) {
+
+    if (topic == "all") { topic = "" }
+    if (difficulty == "all") { difficulty = ""}
+
     this.http.get<Question[]>('https://yi4tfqk2xmyzsgt72ojur5bk6q0mjtnw.lambda-url.eu-north-1.on.aws?topic=' + topic + '&difficulty=' + difficulty)
       .subscribe(resData => this.quizzesChanged.next(resData));
   }

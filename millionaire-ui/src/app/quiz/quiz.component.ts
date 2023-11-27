@@ -18,9 +18,10 @@ export class QuizComponent implements OnInit, OnDestroy {
   question: Question = {} as Question;
   quizList: Question[] = [];
   quizListSubs: Subscription = new Subscription();
-  difficultyList: string[] = ["easy", "medium", "hard"];
+  difficultyList: string[] = ["all", "easy", "medium", "hard"];
 
   topicList: string[] = [
+    "all",
     "arts",
     "biology",
     "chemistry",
@@ -37,15 +38,16 @@ export class QuizComponent implements OnInit, OnDestroy {
     "sports"
   ];
 
-  questionDifficulty: string = "";
-  questionTopic: string = "";
+  questionDifficulty: string = "all";
+  questionTopic: string = "all";
+
+  startBtnClicked: boolean = false;
 
   constructor(private quizSvc: QuizService, private platform: Platform) {}
 
   public isDesktop() {
     let platforms = this.platform.platforms();
     return platforms[0] == "desktop" || platforms[0] == "mobileweb";
-
   }
 
   ngOnInit() {
@@ -75,9 +77,10 @@ export class QuizComponent implements OnInit, OnDestroy {
     }
   }
 
-  reloadPage(){
-    this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty);
+  reloadPage() {
     this.level = 0
+    this.quizList = [];
+    this.startBtnClicked = false;
   }
 
   // @ts-ignore
@@ -108,12 +111,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   startQuiz() {
-    if (this.questionTopic != "" && this.questionDifficulty != "") {
-      this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty);
-    }
+    this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty);
+    this.startBtnClicked = true;
   }
-
-
-
-
 }

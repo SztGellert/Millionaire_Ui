@@ -42,6 +42,8 @@ export class QuizComponent implements OnInit, OnDestroy {
   questionTopic: string = "all";
 
   startBtnClicked: boolean = false;
+  active: boolean = false;
+  networkError = "";
 
   constructor(private quizSvc: QuizService, private platform: Platform) {}
 
@@ -53,8 +55,15 @@ export class QuizComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.quizListSubs = this.quizSvc.quizzesChanged.subscribe(quizzes  =>{
       this.quizList = quizzes;
-      this.quizList[0].answers = this.quizList[0].answers.sort(() => Math.random() - 0.5);
-
+      if (this.quizList?.length == 15) {
+        for (let i = 0; i < this.quizList.length; i++) {
+          this.quizList[i].answers = this.quizList[i].answers.sort(() => Math.random() - 0.5);
+        }
+        this.startBtnClicked = true;
+        this.active = true;
+      } else {
+        this.networkError = "Service unavailable."
+      }
     })
   }
 
@@ -66,21 +75,29 @@ export class QuizComponent implements OnInit, OnDestroy {
     if (this.quizList[this.level].correct_answer == answer && this.level<14) {
       this.level += 1
       this.quizList[this.level].answers = this.quizList[this.level].answers.sort(() => Math.random() - 0.5);
-    } else {
-      if (this.quizList[this.level].correct_answer == answer && this.level==14) {
-        this.quizList[this.level].value = "CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!!";
-        this.quizList[this.level].answers = [];
-        return
-      }
-      this.quizList[this.level].value = "Fail";
-      this.quizList[this.level].answers = [];
+      return
     }
+    if (this.quizList[this.level].correct_answer == answer && this.level==14) {
+      this.quizList[this.level].value = "CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!!";
+      this.quizList[this.level].answers = [];
+      return
+    }
+    this.active = false;
+  }
+
+  // @ts-ignore
+  selectAnswer(ev) {
+    this.selectedAnswer = ev.target.value;
+    // @ts-ignore
+    this.selectIndex = this.quizList[this.level].answers.indexOf(this.selectedAnswer);
+
   }
 
   reloadPage() {
     this.level = 0
     this.quizList = [];
     this.startBtnClicked = false;
+    this.networkError = "";
   }
 
   // @ts-ignore
@@ -112,6 +129,5 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   startQuiz() {
     this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty);
-    this.startBtnClicked = true;
   }
 }

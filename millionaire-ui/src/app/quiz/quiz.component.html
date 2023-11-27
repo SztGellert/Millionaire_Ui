@@ -20,6 +20,13 @@
     <ion-grid>
       <ion-row>
         <ion-col>
+          <ng-container *ngIf="networkError">
+          <ion-header>
+            <ion-toolbar><ion-row>
+              <ion-title color="warning"><ion-col><ion-icon name="cloud-offline-outline" size="large"></ion-icon></ion-col><ion-col>Network connection error has occured.</ion-col></ion-title></ion-row>
+            </ion-toolbar>
+          </ion-header>
+          </ng-container>
           <ion-card  style="--ion-text-color: #3880ff;">
             <ion-list *ngIf="level===0 && !startBtnClicked">
               <ion-item>
@@ -33,13 +40,13 @@
                 </ion-select>
               </ion-item>
             </ion-list>
-            <ion-card-header *ngIf="level===0 && !startBtnClicked">
+            <ion-card-header *ngIf="level===0 && !startBtnClicked && networkError ==='' ">
             <ion-button expand="block" (click)="startQuiz()">START</ion-button>
             </ion-card-header>
             <ion-card-title *ngIf=" quizList[level] && startBtnClicked" style="{{'background: border-radius: 5px;'}}" >
                 <ion-card color="primary">
                   <ion-card-header>
-                    <ion-card-title style="text-align: center">{{quizList[level].value }}</ion-card-title>
+                    <ion-card-title style="text-align: center">{{quizList[level]?.value }}</ion-card-title>
                   </ion-card-header>
                   <ion-card-content></ion-card-content>
                 </ion-card>
@@ -48,8 +55,9 @@
             </ion-card-subtitle>
             <ion-radio-group value="questions" *ngIf=" questionTopic !== '' && questionDifficulty !== '' && startBtnClicked ">
             <ion-card-content>
-              <ion-item class="item-text-wrap" *ngFor="let item of quizList[level].answers">
-                <ion-radio justify="space-between" value="{{item}}" (click)="selectedAnswer = item"><span class="ion-text-wrap">{{item}}</span></ion-radio><br />
+              <ion-item [ngStyle]="{ '--background': !active && selectedAnswer === item  ? '#eb445a' : ''}"
+                class="item-text-wrap" *ngFor="let item of quizList[level]?.answers" style="{{!active && item === quizList[level]?.correct_answer ? '--background: #006600' : '' }}">
+                <ion-radio justify="space-between" value="{{item}}" (click)="selectAnswer($event)"><span class="ion-text-wrap">{{item}}</span></ion-radio><br />
               </ion-item>
             </ion-card-content>
               <ion-card-content>
@@ -65,11 +73,11 @@
                 <ion-col></ion-col>
                 <ion-col></ion-col>
                 <ion-col></ion-col>
-                <ion-col><ion-button *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!!'" style="width: 100%; display:inline-block;" (click)="checkAnswer(selectedAnswer)">Next</ion-button>
+                <ion-col><ion-button *ngIf=" quizList[level]?.value !== 'Fail' && quizList[level]?.value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!!' && active" style="width: 100%; display:inline-block;" (click)="checkAnswer(selectedAnswer)">Next</ion-button>
             </ion-col></ion-row></ion-card-content>
             </ion-radio-group>
             <ion-card-content>
-              <ion-button *ngIf=" quizList[level]?.value === 'Fail'  || quizList[level]?.value === 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!!';" style="width: 100%; display:inline-block;" (click)="reloadPage()">Try Again</ion-button>
+              <ion-button *ngIf=" !active && quizList[level] || quizList[level]?.value === 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!!' || networkError !=='';" style="width: 100%; display:inline-block;" (click)="reloadPage()">Try Again</ion-button>
             </ion-card-content>
           </ion-card>
         </ion-col>

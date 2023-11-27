@@ -21,7 +21,7 @@
       <ion-row>
         <ion-col>
           <ion-card  style="--ion-text-color: #3880ff;">
-            <ion-list *ngIf="level===0 && !quizList[level]">
+            <ion-list *ngIf="level===0 && !startBtnClicked">
               <ion-item>
                 <ion-select justify="end" aria-label="topic" placeholder="Select topic"  id="topicSelect" (ionChange)="handleTopicSelectChange($event)">
                   <ion-select-option *ngFor="let topic of topicList" [value]="topic">{{ topic }}</ion-select-option>
@@ -33,10 +33,10 @@
                 </ion-select>
               </ion-item>
             </ion-list>
-            <ion-card-header *ngIf="level===0 && questionDifficulty !== '' && questionTopic!=='' && !quizList[level]">
+            <ion-card-header *ngIf="level===0 && !startBtnClicked">
             <ion-button expand="block" (click)="startQuiz()">START</ion-button>
             </ion-card-header>
-            <ion-card-title *ngIf=" quizList[level]" style="{{'background: border-radius: 5px;'}}" >
+            <ion-card-title *ngIf=" quizList[level] && startBtnClicked" style="{{'background: border-radius: 5px;'}}" >
                 <ion-card color="primary">
                   <ion-card-header>
                     <ion-card-title style="text-align: center">{{quizList[level].value }}</ion-card-title>
@@ -46,7 +46,7 @@
             </ion-card-title>
             <ion-card-subtitle >
             </ion-card-subtitle>
-            <ion-radio-group value="questions" *ngIf=" questionTopic !== '' && questionDifficulty !== '' ">
+            <ion-radio-group value="questions" *ngIf=" questionTopic !== '' && questionDifficulty !== '' && startBtnClicked ">
             <ion-card-content>
               <ion-item class="item-text-wrap" *ngFor="let item of quizList[level].answers">
                 <ion-radio justify="space-between" value="{{item}}" (click)="selectedAnswer = item"><span class="ion-text-wrap">{{item}}</span></ion-radio><br />
@@ -69,7 +69,7 @@
             </ion-col></ion-row></ion-card-content>
             </ion-radio-group>
             <ion-card-content>
-              <ion-button *ngIf=" quizList[level]?.value === 'Fail' || quizList[level]?.value === 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!!';" style="width: 100%; display:inline-block;" (click)="reloadPage()">Try Again</ion-button>
+              <ion-button *ngIf=" quizList[level]?.value === 'Fail'  || quizList[level]?.value === 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!!';" style="width: 100%; display:inline-block;" (click)="reloadPage()">Try Again</ion-button>
             </ion-card-content>
           </ion-card>
         </ion-col>

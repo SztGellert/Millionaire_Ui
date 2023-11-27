@@ -174,7 +174,6 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   reloadPage(){
-    this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty);
     this.level = 0
     this.help_modules.halving = true;
     this.help_modules.audience = true;

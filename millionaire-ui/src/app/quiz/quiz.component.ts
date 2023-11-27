@@ -80,6 +80,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     if (this.quizList[this.level].correct_answer == answer && this.level<14) {
       this.level += 1
       this.usePhone = false;
+      this.audienceStats = [];
       return
     }
     if (this.quizList[this.level].correct_answer == answer && this.level==14) {
@@ -182,6 +183,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.quizList = [];
     this.startBtnClicked = false;
     this.networkError = "";
+    this.audienceStats = [];
   }
 
   // @ts-ignore

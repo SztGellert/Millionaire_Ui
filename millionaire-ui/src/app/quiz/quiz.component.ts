@@ -106,35 +106,35 @@ export class QuizComponent implements OnInit, OnDestroy {
       let sum = correct_chance
       let chance = 0;
       this.audienceStats = [];
-      let index = 0
       // @ts-ignore
       this.statDict[this.quizList[this.level].correct_answer] = correct_chance;
-      for (let object in this.quizList[this.level].answers) {
+      for (let i = 0; i < this.quizList[this.level].answers.length-1; i++) {
+
         // @ts-ignore
-        if (this.quizList[this.level].answers[index] != this.quizList[this.level].correct_answer) {
-          if (index < 2 ) {
+        if (this.quizList[this.level].answers[i] != this.quizList[this.level].correct_answer) {
+          if (i < 2 ) {
             chance = Math.floor(Math.random() * ((100-correct_chance-chance)-1) + 1) + 1;
             // @ts-ignore
-            this.statDict[this.quizList[this.level].answers[index]] = chance;
+            this.statDict[this.quizList[this.level].answers[i]] = chance;
             this.audienceStats = this.audienceStats.concat([chance])
             sum += chance
           } else {
             if (100-sum > 0 ) {
               this.audienceStats = this.audienceStats.concat([100-sum])
               // @ts-ignore
-              this.statDict[this.quizList[this.level].answers[index]] = 100-sum;
+              this.statDict[this.quizList[this.level].answers[i]] = 100-sum;
 
             } else {
               this.audienceStats = this.audienceStats.concat([0])
               // @ts-ignore
-              this.statDict[this.quizList[this.level].answers[index]] = 0;
+              this.statDict[this.quizList[this.level].answers[i]] = 0;
             }
           }
         }
-        index+= 1
       }
     }
   }
+
 
   getStat(item: string): number {
       // @ts-ignore

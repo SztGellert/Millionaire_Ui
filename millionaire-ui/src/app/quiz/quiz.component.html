@@ -1,7 +1,7 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>
-      Who wants to be a millionaire?
+      {{isDesktop() ? 'Who wants to be a millionaire?' : 'Millionaire'}}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -12,8 +12,6 @@
 >
 </ion-alert>
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-  </ion-header>
     <ion-grid>
       <ion-row>
         <ion-col>
@@ -97,8 +95,8 @@
                 <ion-col><ion-button *ngIf=" quizList[level]?.value !== 'Fail' && quizList[level]?.value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!' && active" style="width: 100%; display:inline-block;" (click)="checkAnswer(selectedAnswer)">Next</ion-button>
             </ion-col></ion-row></ion-card-content>
             </ion-radio-group>
-            <ion-card-content>
-              <ion-button class="n-submit" *ngIf=" !active && quizList[level] || quizList[level]?.value === 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!' || networkError !=='';" style="width: 100%; display:inline-block;" (click)="reloadPage()">Try Again</ion-button>
+            <ion-card-content *ngIf=" !active && quizList[level] || quizList[level]?.value === 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!' || networkError !=='';">
+              <ion-button class="n-submit"  style="width: 100%; display:inline-block;" (click)="reloadPage()">Try Again</ion-button>
             </ion-card-content>
           </ion-card>
         </ion-col>

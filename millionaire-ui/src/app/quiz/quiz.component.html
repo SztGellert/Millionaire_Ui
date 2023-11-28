@@ -5,6 +5,12 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-alert
+  css-class="cssalert"
+  [isOpen]="isAlertOpen"
+  header="{{prizesList[level]}}"
+>
+</ion-alert>
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
   </ion-header>
@@ -51,9 +57,9 @@
             <ion-button expand="block" (click)="startQuiz()" id="startBtn">START</ion-button>
             </ion-card-header>
             <ion-card-title *ngIf=" quizList[level] && startBtnClicked" style="{{'background: border-radius: 5px;'}}" >
-                <ion-card color="primary">
+                <ion-card [ngStyle]="{'background': quizList[level].value === 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!' ? 'orange' : ''}" color="primary">
                   <ion-card-header>
-                    <ion-card-title style="text-align: center">{{quizList[level]?.value }}</ion-card-title>
+                    <ion-card-title style="text-align: center" >{{quizList[level]?.value }}</ion-card-title>
                   </ion-card-header>
                   <ion-card-content></ion-card-content>
                 </ion-card>
@@ -74,19 +80,19 @@
                 <ion-col><ion-button matTooltip="{{ getTooltip('audience') }}"
                                      matTooltipPosition="above"
                                      [ngStyle]="{'--background': help_modules['audience'] ? '#3880ff' : 'red' }"
-                                     *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!!'"
+                                     *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!'"
                                      style="width: 100%; display:inline-block;" (click)="audience()">Audience
                 </ion-button></ion-col>
                 <ion-col><ion-button matTooltip="{{ getTooltip('halving') }}"
                                      matTooltipPosition="above"
                                      [ngStyle]="{'--background': help_modules['halving'] ? '#3880ff' : 'red' }"
-                                     *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!!'"
+                                     *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!'"
                                      style="width: 100%; display:inline-block;" (click)="halving()">Halving
                 </ion-button></ion-col>
                 <ion-col><ion-button matTooltip="{{ getTooltip('phone') }}"
                                      matTooltipPosition="above"
                                      [ngStyle]="{'--background': help_modules['phone'] ? '#3880ff' : 'red' }"
-                                     *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!!'"
+                                     *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!'"
                                      style="width: 100%; display:inline-block;" (click)="phone()">Phone
                 </ion-button></ion-col>
                 <ion-col></ion-col>
@@ -97,11 +103,11 @@
                 <ion-col></ion-col>
                 <ion-col></ion-col>
                 <ion-col></ion-col>
-                <ion-col><ion-button *ngIf=" quizList[level]?.value !== 'Fail' && quizList[level]?.value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!!' && active" style="width: 100%; display:inline-block;" (click)="checkAnswer(selectedAnswer)">Next</ion-button>
+                <ion-col><ion-button *ngIf=" quizList[level]?.value !== 'Fail' && quizList[level]?.value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!' && active" style="width: 100%; display:inline-block;" (click)="checkAnswer(selectedAnswer)">Next</ion-button>
             </ion-col></ion-row></ion-card-content>
             </ion-radio-group>
             <ion-card-content>
-              <ion-button class="n-submit" *ngIf=" !active && quizList[level] || quizList[level]?.value === 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!!' || networkError !=='';" style="width: 100%; display:inline-block;" (click)="reloadPage()">Try Again</ion-button>
+              <ion-button class="n-submit" *ngIf=" !active && quizList[level] || quizList[level]?.value === 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!' || networkError !=='';" style="width: 100%; display:inline-block;" (click)="reloadPage()">Try Again</ion-button>
             </ion-card-content>
           </ion-card>
         </ion-col>

@@ -27,3 +27,12 @@
 
 /* Ng Material Core CSS */
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+
+.alert-wrapper h2 {
+  text-align: center;
+}
+
+.cssalert  {
+  --background: orange;
+}

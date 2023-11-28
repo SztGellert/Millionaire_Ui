@@ -15,7 +15,6 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   level: number = 0;
   selectedAnswer: string = "";
-  question: Question = {} as Question;
   quizList: Question[] = [];
   quizListSubs: Subscription = new Subscription();
   difficultyList: string[] = ["all", "easy", "medium", "hard"];
@@ -37,6 +36,26 @@ export class QuizComponent implements OnInit, OnDestroy {
     "physics",
     "sports"
   ];
+
+  prizesList: string[] = [
+    "£100",
+    "£200",
+    "£300",
+    "£500",
+    "£1.000",
+    "£2.000",
+    "£4.000",
+    "£8.000",
+    "£16.000",
+    "£32.000",
+    "£64.000",
+    "£125.000",
+    "£250.000",
+    "£500.000",
+    "£1.000.000"
+  ];
+
+  isAlertOpen = false;
 
   questionDifficulty: string = "all";
   questionTopic: string = "all";
@@ -78,13 +97,17 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   checkAnswer(answer: string) {
     if (this.quizList[this.level].correct_answer == answer && this.level<14) {
-      this.level += 1
+      setTimeout(() => {
+        this.isAlertOpen = false;
+      }, 1500)
+      setTimeout(() => {this.level += 1}, 1800)
+      this.isAlertOpen = true;
       this.usePhone = false;
       this.audienceStats = [];
       return
     }
     if (this.quizList[this.level].correct_answer == answer && this.level==14) {
-      this.quizList[this.level].value = "CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!!";
+      this.quizList[this.level].value = 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!';
       this.quizList[this.level].answers = [];
       return
     }

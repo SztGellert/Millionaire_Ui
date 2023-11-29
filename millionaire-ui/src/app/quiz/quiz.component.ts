@@ -124,39 +124,29 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   audience() {
     if (this.help_modules.audience) {
-      this.help_modules.audience = false;
-      let min = Math.ceil(41);
-      let max = Math.floor(89);
-      let correct_chance = Math.floor(Math.random() * (max - min + 1)) + min
-      let sum = correct_chance
-      let chance = 0;
-      let audienceStats:number[] = [];
-      // @ts-ignore
-      this.statDict[this.quizList[this.level].correct_answer] = correct_chance;
-      for (let i = 0; i < this.quizList[this.level].answers.length; i++) {
-
+        this.help_modules.audience = false;
+        let max = 100;
+        let correct_chance = Math.floor(Math.random() * max)
+        let sum = correct_chance
+        let chance = 0;
         // @ts-ignore
-        if (this.quizList[this.level].answers[i] != this.quizList[this.level].correct_answer) {
-          if (i < 3 ) {
-            chance = Math.floor(Math.random() * (100-correct_chance-chance) + 1);
-            // @ts-ignore
-            this.statDict[this.quizList[this.level].answers[i]] = chance;
-            audienceStats = audienceStats.concat([chance])
-            sum += chance
-          } else {
-            if (100-sum > 0 ) {
-              audienceStats = audienceStats.concat([100-sum])
+        this.statDict[this.quizList[this.level].correct_answer] = correct_chance;
+        for (let i = 0; i < this.quizList[this.level].answers.length; i++) {
+          // @ts-ignore
+          if (this.quizList[this.level].answers[i] != this.quizList[this.level].correct_answer) {
+            if (i < 3) {
+              chance = Math.floor(Math.random() * (100 - correct_chance - chance + 1))
               // @ts-ignore
-              this.statDict[this.quizList[this.level].answers[i]] = 100-sum;
-
+              this.statDict[this.quizList[this.level].answers[i]] = chance;
+              sum += chance
             } else {
-              audienceStats = audienceStats.concat([0])
               // @ts-ignore
-              this.statDict[this.quizList[this.level].answers[i]] = 0;
-              }
+              this.statDict[this.quizList[this.level].answers[i]] = 100 - sum;
+            }
           }
+        } if (sum > 100) {
+          throw Error("Audience feature unexpected error.");
         }
-      }
     }
   }
 

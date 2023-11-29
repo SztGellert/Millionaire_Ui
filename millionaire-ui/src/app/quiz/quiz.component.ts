@@ -104,6 +104,7 @@ export class QuizComponent implements OnInit, OnDestroy {
       setTimeout(() => {this.level += 1}, 1800)
       this.isAlertOpen = true;
       this.usePhone = false;
+      this.statDict = {};
       return
     }
     if (this.quizList[this.level].correct_answer == answer && this.level==14) {
@@ -137,7 +138,7 @@ export class QuizComponent implements OnInit, OnDestroy {
         // @ts-ignore
         if (this.quizList[this.level].answers[i] != this.quizList[this.level].correct_answer) {
           if (i < 3 ) {
-            chance = Math.floor(Math.random() * ((100-correct_chance-chance)-0) + 1) + 0;
+            chance = Math.floor(Math.random() * (100-correct_chance-chance) + 1);
             // @ts-ignore
             this.statDict[this.quizList[this.level].answers[i]] = chance;
             audienceStats = audienceStats.concat([chance])
@@ -159,14 +160,10 @@ export class QuizComponent implements OnInit, OnDestroy {
     }
   }
 
-
   getStat(item: string): number {
       // @ts-ignore
     return this.statDict[item]
   }
-
-
-
 
   halving() {
     if (this.help_modules.halving) {

@@ -13,6 +13,8 @@ import { Platform } from '@ionic/angular';
 
 export class QuizComponent implements OnInit, OnDestroy {
 
+  protected readonly Object = Object;
+
   level: number = 0;
   selectedAnswer: string = "";
   quizList: Question[] = [];
@@ -65,7 +67,6 @@ export class QuizComponent implements OnInit, OnDestroy {
   networkError = "";
 
   help_modules: { halving : boolean; audience: boolean ; phone: boolean } = {halving:true, audience:true, phone:true};
-  audienceStats:  number[] = [];
   usePhone: boolean = false;
 
   statDict: {} = {};
@@ -103,7 +104,6 @@ export class QuizComponent implements OnInit, OnDestroy {
       setTimeout(() => {this.level += 1}, 1800)
       this.isAlertOpen = true;
       this.usePhone = false;
-      this.audienceStats = [];
       return
     }
     if (this.quizList[this.level].correct_answer == answer && this.level==14) {
@@ -129,30 +129,30 @@ export class QuizComponent implements OnInit, OnDestroy {
       let correct_chance = Math.floor(Math.random() * (max - min + 1)) + min
       let sum = correct_chance
       let chance = 0;
-      this.audienceStats = [];
+      let audienceStats:number[] = [];
       // @ts-ignore
       this.statDict[this.quizList[this.level].correct_answer] = correct_chance;
-      for (let i = 0; i < this.quizList[this.level].answers.length-1; i++) {
+      for (let i = 0; i < this.quizList[this.level].answers.length; i++) {
 
         // @ts-ignore
         if (this.quizList[this.level].answers[i] != this.quizList[this.level].correct_answer) {
-          if (i < 2 ) {
-            chance = Math.floor(Math.random() * ((100-correct_chance-chance)-1) + 1) + 1;
+          if (i < 3 ) {
+            chance = Math.floor(Math.random() * ((100-correct_chance-chance)-0) + 1) + 0;
             // @ts-ignore
             this.statDict[this.quizList[this.level].answers[i]] = chance;
-            this.audienceStats = this.audienceStats.concat([chance])
+            audienceStats = audienceStats.concat([chance])
             sum += chance
           } else {
             if (100-sum > 0 ) {
-              this.audienceStats = this.audienceStats.concat([100-sum])
+              audienceStats = audienceStats.concat([100-sum])
               // @ts-ignore
               this.statDict[this.quizList[this.level].answers[i]] = 100-sum;
 
             } else {
-              this.audienceStats = this.audienceStats.concat([0])
+              audienceStats = audienceStats.concat([0])
               // @ts-ignore
               this.statDict[this.quizList[this.level].answers[i]] = 0;
-            }
+              }
           }
         }
       }
@@ -205,7 +205,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.quizList = [];
     this.startBtnClicked = false;
     this.networkError = "";
-    this.audienceStats = [];
+    this.statDict = {};
   }
 
   // @ts-ignore
@@ -248,8 +248,5 @@ export class QuizComponent implements OnInit, OnDestroy {
       return "already used!"
     }
   }
-
-
-
 
 }

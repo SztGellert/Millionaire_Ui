@@ -60,7 +60,7 @@
               <ion-item [ngStyle]="{ '--background': !active && selectedAnswer === item  ? '#eb445a' : ''}"
                 class="item-text-wrap" *ngFor="let item of quizList[level]?.answers" style="{{!active && item === quizList[level]?.correct_answer ? '--background: #006600' : '' }}">
                 <ion-col *ngIf="usePhone && item === quizList[level]?.correct_answer "><ion-icon name="call-outline"></ion-icon></ion-col>
-                <ion-badge *ngIf="audienceStats?.length" slot="start">{{ getStat(item) === undefined ? "0%" : getStat(item) + "%" }}</ion-badge> <ion-radio justify="space-between" value="{{item}}" (click)="selectAnswer($event)"><span class="ion-text-wrap">{{item}}</span>
+                <ion-badge *ngIf="Object.keys(statDict).length" slot="start">{{ getStat(item)  + "%" }}</ion-badge> <ion-radio justify="space-between" value="{{item}}" (click)="selectAnswer($event)"><span class="ion-text-wrap">{{item}}</span>
                   </ion-radio><br />
               </ion-item>
             </ion-card-content>

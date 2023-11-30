@@ -67,7 +67,8 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   help_modules: { halving : boolean; audience: boolean ; phone: boolean } = {halving:true, audience:true, phone:true};
   usePhone: boolean = false;
-
+  showTopicActionSheet: boolean = false;
+  showDifficultyActionSheet: boolean = false;
   statDict: {} = {};
 
   public topicActionSheetButtons: { text: string, role: string, data: { action: string, value:  string}}[] = [];
@@ -287,13 +288,13 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   // @ts-ignore
   logResult(ev) {
-    if (ev.detail.data.value) {
-      if (ev.detail.data.action == "topic") {
-        this.questionTopic = ev.detail.data.value;
-      }
-      if (ev.detail.data.action == "difficulty") {
-        this.questionDifficulty = ev.detail.data.value;
-      }
+    if (ev.detail.data.action == "topic" && ev.detail.data.value) {
+      this.questionTopic = ev.detail.data.value;
+      this.showTopicActionSheet = false;
+    }
+    if (ev.detail.data.action == "difficulty" && ev.detail.data.value) {
+      this.questionDifficulty = ev.detail.data.value;
+      this.showDifficultyActionSheet = false;
     }
   }
 

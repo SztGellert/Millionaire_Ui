@@ -21,7 +21,7 @@
             </ion-toolbar>
           </ion-header>
           </ng-container>
-          <ion-col *ngIf="level===0 && !startBtnClicked && isDesktop()" size="{{isDesktop() ? '2' : ''}}"></ion-col>
+          <ion-col *ngIf="isDesktop()" size="{{isDesktop() ? '2' : ''}}"></ion-col>
           <ion-col *ngIf="level===0 && !startBtnClicked " size="{{isDesktop() ? '8' : ''}}" >
           <ion-card>
               <ion-row *ngIf="level===0 && !startBtnClicked">
@@ -32,13 +32,13 @@
                   style="width: auto">
                   </ion-img><ion-col></ion-col>
                     <ion-action-sheet
-                      trigger="open-topic-action-sheet"
+                      isOpen='{{showTopicActionSheet}}'
                       header="Topic selection"
                       [buttons]="topicActionSheetButtons"
                       (didDismiss)="logResult($event)"
                     ></ion-action-sheet>
                   <ion-action-sheet
-                    trigger="open-difficulty-action-sheet"
+                    isOpen='{{showDifficultyActionSheet}}'
                     header="Difficulty selection"
                     [buttons]="difficultyActionSheetButtons"
                     (didDismiss)="logResult($event)"
@@ -46,8 +46,8 @@
                   <ion-card>
                     <ion-card-header>
                       <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  (click)="startQuiz()" id="startBtn">START</ion-button>
-                      <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  id="open-topic-action-sheet" >Topic: {{this.questionTopic}}</ion-button>
-                      <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  id="open-difficulty-action-sheet" >Difficulty: {{this.questionDifficulty}}</ion-button>
+                      <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  (click)="showTopicActionSheet = true" >Topic: {{this.questionTopic}}</ion-button>
+                      <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  (click)="showDifficultyActionSheet = true" >Difficulty: {{this.questionDifficulty}}</ion-button>
                     </ion-card-header>
                   </ion-card>
                 </ion-col>
@@ -112,7 +112,7 @@
             </ion-card-content>
           </ion-card>
         </ion-col>
-        <ion-col *ngIf="level===0 && !startBtnClicked  && isDesktop()" size="2" ></ion-col>
+        <ion-col *ngIf="isDesktop()" size="2" ></ion-col>
       </ion-row>
     </ion-grid>
 </ion-content>

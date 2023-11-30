@@ -3,7 +3,6 @@ import {Question, QuizService} from "./quiz.service";
 import {Subscription} from "rxjs";
 import { Platform } from '@ionic/angular';
 
-
 @Component({
   selector: 'app-quiz',
   templateUrl: './quiz.component.html',
@@ -70,6 +69,10 @@ export class QuizComponent implements OnInit, OnDestroy {
   usePhone: boolean = false;
 
   statDict: {} = {};
+
+  public topicActionSheetButtons: { text: string, role: string, data: { action: string, value:  string}}[] = [];
+  public difficultyActionSheetButtons: { text: string, role: string, data: { action: string, value:  string}}[] = [];
+
   constructor(private quizSvc: QuizService, private platform: Platform) {}
 
   public isDesktop() {
@@ -90,6 +93,52 @@ export class QuizComponent implements OnInit, OnDestroy {
         this.networkError = "Service unavailable."
       }
     })
+    this.loadTopicActions();
+    this.loadDifficultyActions();
+  }
+
+  loadDifficultyActions() {
+    for (let item of this.difficultyList) {
+      this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
+        text: item,
+        role: "destructive",
+        data: {
+          action: "difficulty",
+          value: item,
+        },
+      },)
+    }
+    this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
+      text: 'Cancel',
+      role: 'cancel',
+      data: {
+        action: 'cancel',
+        value: ''
+      },
+    });
+
+  }
+
+  loadTopicActions() {
+    for (let item of this.topicList) {
+      this.topicActionSheetButtons = this.topicActionSheetButtons.concat({
+        text: item,
+        role: "destructive",
+        data: {
+          action: "topic",
+          value: item,
+        },
+      },)
+    }
+    this.topicActionSheetButtons = this.topicActionSheetButtons.concat({
+      text: 'Cancel',
+      role: 'cancel',
+      data: {
+        action: 'cancel',
+        value: ''
+      },
+    });
+
   }
 
   ngOnDestroy() {
@@ -233,6 +282,16 @@ export class QuizComponent implements OnInit, OnDestroy {
       return "Use " + help_type
     } else {
       return "already used!"
+    }
+  }
+
+  // @ts-ignore
+  logResult(ev) {
+    if (ev.detail.data.action == "topic") {
+      this.questionTopic = ev.detail.data.value;
+    }
+    if (ev.detail.data.action == "difficulty") {
+      this.questionDifficulty = ev.detail.data.value;
     }
   }
 

@@ -14,7 +14,6 @@
 <ion-content [fullscreen]="true">
     <ion-grid>
       <ion-row>
-        <ion-col>
           <ng-container *ngIf="networkError">
           <ion-header>
             <ion-toolbar><ion-row>
@@ -22,30 +21,43 @@
             </ion-toolbar>
           </ion-header>
           </ng-container>
-          <ion-row *ngIf="level===0 && !startBtnClicked">
-          <ion-col size="4"></ion-col>
-          <ion-col size="4">
-          <ion-img
-            src="././assets/millionaire.png"
-            style="{{isDesktop() ? 'height: 500px; width: 500px;' : 'height: 100px; width: 100px;'}}"
-          ></ion-img></ion-col><ion-col size="4"></ion-col></ion-row>
-          <ion-card  style="--ion-text-color: #3880ff;">
-            <ion-list *ngIf="level===0 && !startBtnClicked">
-              <ion-item>
-                <ion-select justify="start" label="Topic:" aria-label="topic" placeholder="{{questionTopic}}"  id="topicSelect" (ionChange)="handleTopicSelectChange($event)">
-                  <ion-select-option *ngFor="let topic of topicList" [value]="topic">{{ topic }}</ion-select-option>
-                </ion-select>
-              </ion-item>
-              <ion-item>
-                <ion-select justify="start" label="Difficulty:" aria-label="difficulty" placeholder="{{questionDifficulty}}"  id="difficultySelect" (ionChange)="handleDifficultySelectChange($event)">
-                  <ion-select-option *ngFor="let difficulty of difficultyList" [value]="difficulty">{{ difficulty }}</ion-select-option>
-                </ion-select>
-              </ion-item>
-            </ion-list>
-            <ion-card-header *ngIf="level===0 && !startBtnClicked && networkError ==='' ">
-            <ion-button expand="block" (click)="startQuiz()" id="startBtn">START</ion-button>
-            </ion-card-header>
-            <ion-card-title *ngIf=" quizList[level] && startBtnClicked" style="{{'background: border-radius: 5px;'}}" >
+          <ion-col *ngIf="level===0 && !startBtnClicked && isDesktop()" size="{{isDesktop() ? '2' : ''}}"></ion-col>
+          <ion-col *ngIf="level===0 && !startBtnClicked " size="{{isDesktop() ? '8' : ''}}" >
+          <ion-card>
+              <ion-row *ngIf="level===0 && !startBtnClicked">
+                <ion-col *ngIf="isDesktop()" size="4"></ion-col>
+                <ion-col size="{{isDesktop() ? '4' : ''}}" >
+                  <ion-img
+                    src="././assets/millionaire.png"
+                  style="width: auto">
+                  </ion-img><ion-col></ion-col>
+                    <ion-action-sheet
+                      trigger="open-topic-action-sheet"
+                      header="Topic selection"
+                      [buttons]="topicActionSheetButtons"
+                      (didDismiss)="logResult($event)"
+                    ></ion-action-sheet>
+                  <ion-action-sheet
+                    trigger="open-difficulty-action-sheet"
+                    header="Difficulty selection"
+                    [buttons]="difficultyActionSheetButtons"
+                    (didDismiss)="logResult($event)"
+                  ></ion-action-sheet>
+                  <ion-card>
+                    <ion-card-header>
+                      <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  (click)="startQuiz()" id="startBtn">START</ion-button>
+                      <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  id="open-topic-action-sheet" >Topic: {{this.questionTopic}}</ion-button>
+                      <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  id="open-difficulty-action-sheet" >Difficulty: {{this.questionDifficulty}}</ion-button>
+                    </ion-card-header>
+                  </ion-card>
+                </ion-col>
+                <ion-col *ngIf="isDesktop()" size="4"></ion-col>
+              </ion-row>
+        </ion-card>
+          </ion-col>
+            <ion-col *ngIf="quizList[level] && startBtnClicked">
+            <ion-card  style="--ion-text-color: #3880ff;">
+            <ion-card-title  style="{{'background: border-radius: 5px;'}}" >
                 <ion-card [ngStyle]="{'background': quizList[level].value === 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!' ? 'orange' : ''}" color="primary">
                   <ion-card-header>
                     <ion-card-title style="text-align: center" >{{quizList[level]?.value }}</ion-card-title>
@@ -100,6 +112,7 @@
             </ion-card-content>
           </ion-card>
         </ion-col>
+        <ion-col *ngIf="level===0 && !startBtnClicked  && isDesktop()" size="2" ></ion-col>
       </ion-row>
     </ion-grid>
 </ion-content>

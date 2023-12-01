@@ -36,7 +36,7 @@
             <ion-col size="{{isDesktop() ? '4' : ''}}">
               <ion-img
                 src="././assets/millionaire.png"
-                style="width: auto">
+                style="width: auto;">
               </ion-img>
               <ion-col *ngIf="isDesktop()"></ion-col>
               <ion-button (click)="startQuiz()" *ngIf="level===0 && !startBtnClicked && networkError ==='' "
@@ -127,7 +127,8 @@
           <ion-card-title style="{{'background: border-radius: 5px;'}}">
             <ion-card
               [ngStyle]="{'background': quizList[level].value === 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!' ? 'orange' : ''}"
-              color="primary">
+              color="secondary"
+              id="questionCard">
               <ion-card-header>
                 <ion-card-title style="text-align: center">{{quizList[level]?.value }}</ion-card-title>
               </ion-card-header>
@@ -139,6 +140,69 @@
           <ion-radio-group *ngIf=" questionTopic !== '' && questionDifficulty !== '' && startBtnClicked "
                            value="questions">
             <ion-card-content>
+              <ion-row *ngIf="isDesktop()">
+                <ion-col size="6">
+                  <ion-item *ngIf="quizList[level].answers[0]"
+                            [ngClass]="{'selected_answer': quizList[level].answers[0]===selectedAnswer}"
+                  >
+                    <ion-badge *ngIf="Object.keys(statDict).length"
+                               slot="start">{{  getStat(quizList[level].answers[0]).toString().length < 2 ? getStat(quizList[level].answers[0]) + " % " : getStat(quizList[level].answers[0]) + "%" }}</ion-badge>
+                    <ion-icon *ngIf="usePhone && quizList[level].answers[0] === quizList[level]?.correct_answer "
+                              name="call"></ion-icon>
+                    <ion-radio (click)="selectAnswer($event)" class="spec" justify="space-between"
+                               value="{{quizList[level].answers[0]}}"><span
+                      class="ion-text-wrap">{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(quizList[level].answers[0])] + quizList[level].answers[0]}}</span>
+
+                    </ion-radio>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">
+                  <ion-item *ngIf="quizList[level].answers[1]"
+                            [ngClass]="{'selected_answer': quizList[level].answers[1]===selectedAnswer}">
+                    <ion-badge *ngIf="Object.keys(statDict).length"
+                               slot="start">{{  getStat(quizList[level].answers[1]).toString().length < 2 ? getStat(quizList[level].answers[1]) + " % " : getStat(quizList[level].answers[1]) + "%" }}</ion-badge>
+                    <ion-icon *ngIf="usePhone && quizList[level].answers[1] === quizList[level]?.correct_answer "
+                              name="call"></ion-icon>
+                    <ion-radio (click)="selectAnswer($event)" class="spec"
+                               justify="space-between" value="{{quizList[level].answers[1]}}"><span
+                      class="ion-text-wrap">{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(quizList[level].answers[1])] + quizList[level].answers[1]}}</span>
+
+                    </ion-radio>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row *ngIf="isDesktop()">
+                <ion-col size="6">
+                  <ion-item *ngIf="quizList[level].answers[2]"
+                            [ngClass]="{'selected_answer': quizList[level].answers[2]===selectedAnswer}">
+                    <ion-badge *ngIf="Object.keys(statDict).length"
+                               slot="start">{{  getStat(quizList[level].answers[2]).toString().length < 2 ? getStat(quizList[level].answers[2]) + " % " : getStat(quizList[level].answers[2]) + "%" }}</ion-badge>
+                    <ion-icon *ngIf="usePhone && quizList[level].answers[2] === quizList[level]?.correct_answer "
+                              name="call"></ion-icon>
+                    <ion-radio (click)="selectAnswer($event)" class="spec" justify="space-between"
+                               value="{{quizList[level].answers[2]}}"><span
+                      class="ion-text-wrap">{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(quizList[level].answers[2])] + quizList[level].answers[2]}}</span>
+
+                    </ion-radio>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">
+                  <ion-item *ngIf="quizList[level].answers[3]"
+                            [ngClass]="{'selected_answer': quizList[level].answers[3]===selectedAnswer}">
+                    <ion-badge *ngIf="Object.keys(statDict).length"
+                               slot="start">{{  getStat(quizList[level].answers[3]).toString().length < 2 ? getStat(quizList[level].answers[3]) + " % " : getStat(quizList[level].answers[3]) + "%" }}</ion-badge>
+                    <ion-icon *ngIf="usePhone && quizList[level].answers[3] === quizList[level]?.correct_answer "
+                              name="call"></ion-icon>
+                    <ion-radio (click)="selectAnswer($event)" class="spec" justify="space-between"
+                               value="{{quizList[level].answers[3]}}"><span
+                      class="ion-text-wrap">{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(quizList[level].answers[3])] + quizList[level].answers[3]}}</span>
+
+                    </ion-radio>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+            <ion-card-content *ngIf="!isDesktop()">
               <ion-item *ngFor="let item of quizList[level]?.answers"
                         [ngStyle]="{ '--background': !active && selectedAnswer === item  ? '#eb445a' : ''}"
                         class="item-text-wrap"
@@ -157,23 +221,22 @@
             <ion-card-content>
               <ion-row>
                 <ion-col size="{{isDesktop() ? '' : '8'  }}">
-
                   <ion-button (click)="halving()"
                               *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!'"
-                              [ngStyle]="{'--background': help_modules['halving'] ? '#3880ff' : 'red' }"
-                              class="ion-align-self-end"
+                              [ngStyle]="{'--background': help_modules['halving'] ? '' : 'red' }"
+                              class="ion-align-self-end grad2"
+                              color="none"
                               disabled="{{!active || !help_modules['halving']}}"
                               matTooltip="{{ getTooltip('halving') }}"
                               matTooltipPosition="above" size="small"
                               style="{{isDesktop() ? 'width: 25%;' : 'width: 30%;'}}"
                   >50:50
                   </ion-button>
-
-
                   <ion-button (click)="phone()"
                               *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!'"
-                              [ngStyle]="{'--background': help_modules['phone'] ? '#3880ff' : 'red' }"
-                              class="ion-align-self-end"
+                              [ngStyle]="{'--background': help_modules['phone'] ? '' : 'red' }"
+                              class="ion-align-self-end grad2"
+                              color="none"
                               disabled="{{!active || !help_modules['phone']}}"
                               matTooltip="{{ getTooltip('phone') }}"
                               matTooltipPosition="above"
@@ -184,8 +247,8 @@
                   </ion-button>
                   <ion-button (click)="audience()"
                               *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!'"
-                              [ngStyle]="{'--background': help_modules['audience'] ? '#3880ff' : 'red'}"
-                              class="ion-align-self-end"
+                              class="ion-align-self-end grad2"
+                              color="none"
                               disabled="{{!active || !help_modules['audience']}}"
                               matTooltip="{{ getTooltip('audience') }}"
                               matTooltipPosition="above"
@@ -201,6 +264,7 @@
                 <ion-col size="{{isDesktop() ? '' : '4'  }}">
                   <ion-button (click)="checkAnswer(selectedAnswer)"
                               *ngIf=" quizList[level]?.value !== 'Fail' && quizList[level]?.value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!' && active"
+                              class="grad2" color="none"
                               size="small"
                               style="width: 100%; display: inline-block;">Next
                   </ion-button>

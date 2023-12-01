@@ -275,7 +275,6 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty);
   }
 
-
   getTooltip(help_type: string): string {
     let label = "";
 
@@ -320,5 +319,4 @@ export class QuizComponent implements OnInit, OnDestroy {
       this.quizSvc.sendFeedbackEmail(email)
     }
   }
-
 }

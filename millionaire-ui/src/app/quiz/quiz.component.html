@@ -88,11 +88,15 @@
                     </ion-toolbar>
                   </ion-header>
                   <ion-content class="ion-padding">
-                    <ion-card-header>
-                      Any issues or thoughts about the quiz? Feel free to tell us!
-                      Any personal data is optional.
-                      Thank you for helping the development with your feedback!
-                    </ion-card-header>
+                    <ion-card class="feedBackCard">
+                      <ion-card-title style="{{'background: border-radius: 5px;'}}">
+                        <ion-card-header>
+                          Any issues or thoughts about the quiz? Feel free to tell us!
+                          Any personal data is optional.
+                          Thank you for helping the development with your feedback!
+                        </ion-card-header>
+                      </ion-card-title>
+                    </ion-card>
                     <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)">
                       <ion-list>
                         <ion-item>
@@ -113,7 +117,8 @@
                         </ion-item>
                       </ion-list>
                       <ion-item lines="none">
-                        <ion-button style="width: 100%; display: inline-block;" type="submit">
+                        <ion-button class="grad2" color="none" style="width: 100%; display: inline-block;"
+                                    type="submit">
                           SUBMIT
                         </ion-button>
                       </ion-item>

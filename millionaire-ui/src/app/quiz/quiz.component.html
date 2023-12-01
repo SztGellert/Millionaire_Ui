@@ -46,8 +46,8 @@
                   <ion-card>
                     <ion-card-header>
                       <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  (click)="startQuiz()" id="startBtn">START</ion-button>
-                      <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  (click)="showTopicActionSheet = true" >Topic: {{this.questionTopic}}</ion-button>
-                      <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  (click)="showDifficultyActionSheet = true" >Difficulty: {{this.questionDifficulty}}</ion-button>
+                      <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  (click)="!showTopicActionSheet ? showTopicActionSheet = true : ''" >Select Topic</ion-button>
+                      <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  (click)="!showDifficultyActionSheet ? showDifficultyActionSheet = true : ''" >Select Difficulty</ion-button>
                     </ion-card-header>
                   </ion-card>
                 </ion-col>

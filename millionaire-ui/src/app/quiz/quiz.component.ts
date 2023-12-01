@@ -288,14 +288,16 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   // @ts-ignore
   logResult(ev) {
-    if (ev.detail.data.action == "topic" && ev.detail.data.value) {
-      this.questionTopic = ev.detail.data.value;
-      this.showTopicActionSheet = false;
+    if (ev.detail.data?.value) {
+      if (ev.detail.data.action == "topic" && ev.detail.data.value) {
+        this.questionTopic = ev.detail.data.value;
+      }
+      if (ev.detail.data.action == "difficulty" && ev.detail.data.value) {
+        this.questionDifficulty = ev.detail.data.value;
+      }
     }
-    if (ev.detail.data.action == "difficulty" && ev.detail.data.value) {
-      this.questionDifficulty = ev.detail.data.value;
-      this.showDifficultyActionSheet = false;
-    }
+    this.showTopicActionSheet = false;
+    this.showDifficultyActionSheet = false;
   }
 
 }

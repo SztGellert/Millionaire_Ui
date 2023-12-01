@@ -161,6 +161,11 @@ export class QuizComponent implements OnInit, OnDestroy {
       return
     }
     this.active = false;
+    this.isAlertOpen = true;
+    setTimeout(() => {
+      this.isAlertOpen = false;
+    }, 1500)
+
   }
 
   // @ts-ignore

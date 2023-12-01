@@ -8,6 +8,7 @@
 
 
 .btn-grad {
+  --background: none;
   background-image: linear-gradient(to right, #fc00ff 0%, #00dbde 51%, #fc00ff 100%);
   text-align: center;
   text-transform: uppercase;
@@ -76,8 +77,45 @@
 }
 
 
-.grad2:hover {
+.selected_answer:hover {
   background-position: right center; /* change the direction of the change here */
   color: #fff;
   text-decoration: none;
 }
+
+.wrong_answer {
+  --background: linear-gradient(to right, #F00000 0%, #DC281E 51%, #F00000 100%);
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 5px;
+}
+
+
+.wrong_answer:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+
+
+.correct_answer {
+  --background: linear-gradient(to right, #56ab2f 0%, #a8e063 51%, #56ab2f 100%);
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 5px;
+}
+
+.correct_answer {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+

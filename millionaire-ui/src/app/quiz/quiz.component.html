@@ -40,21 +40,25 @@
               </ion-img>
               <ion-col *ngIf="isDesktop()"></ion-col>
               <ion-button (click)="startQuiz()" *ngIf="level===0 && !startBtnClicked && networkError ==='' "
+                          class="btn-grad"
                           id="startBtn"
-                          style="width: 100%; display: inline-block;">START
+                          style="--background: none; width: 100%; display: inline-block;">START
               </ion-button>
               <ion-button (click)="!showTopicActionSheet ? showTopicActionSheet = true : ''"
                           *ngIf="level===0 && !startBtnClicked && networkError ==='' "
-                          style="width: 100%; display: inline-block;">SELECT TOPIC
+                          class="btn-grad"
+                          style="--background: none; width: 100%; display: inline-block;">SELECT TOPIC
               </ion-button>
               <ion-button (click)="!showDifficultyActionSheet ? showDifficultyActionSheet = true : ''"
                           *ngIf="level===0 && !startBtnClicked && networkError ==='' "
-                          style="width: 100%; display: inline-block;">SELECT
+                          class="btn-grad"
+                          style="--background: none; width: 100%; display: inline-block;">SELECT
                 DIFFICULTY
               </ion-button>
               <ion-button (click)="!feedbackModal ? feedbackModal = true : '';"
                           *ngIf="level===0 && !startBtnClicked && networkError ==='' "
-                          style="width: 100%; display: inline-block;">FEEDBACK
+                          class="btn-grad"
+                          style="--background: none; width: 100%; display: inline-block;">FEEDBACK
               </ion-button>
               <ion-action-sheet
                 (didDismiss)="logResult($event)"

@@ -38,7 +38,24 @@
                 src="././assets/millionaire.png"
                 style="width: auto">
               </ion-img>
-              <ion-col></ion-col>
+              <ion-col *ngIf="isDesktop()"></ion-col>
+              <ion-button (click)="startQuiz()" *ngIf="level===0 && !startBtnClicked && networkError ==='' "
+                          id="startBtn"
+                          style="width: 100%; display: inline-block;">START
+              </ion-button>
+              <ion-button (click)="!showTopicActionSheet ? showTopicActionSheet = true : ''"
+                          *ngIf="level===0 && !startBtnClicked && networkError ==='' "
+                          style="width: 100%; display: inline-block;">SELECT TOPIC
+              </ion-button>
+              <ion-button (click)="!showDifficultyActionSheet ? showDifficultyActionSheet = true : ''"
+                          *ngIf="level===0 && !startBtnClicked && networkError ==='' "
+                          style="width: 100%; display: inline-block;">SELECT
+                DIFFICULTY
+              </ion-button>
+              <ion-button (click)="!feedbackModal ? feedbackModal = true : '';"
+                          *ngIf="level===0 && !startBtnClicked && networkError ==='' "
+                          style="width: 100%; display: inline-block;">FEEDBACK
+              </ion-button>
               <ion-action-sheet
                 (didDismiss)="logResult($event)"
                 [buttons]="topicActionSheetButtons"
@@ -51,67 +68,51 @@
                 header="{{'Difficulty: ' + questionDifficulty }}"
                 isOpen='{{showDifficultyActionSheet}}'
               ></ion-action-sheet>
-              <ion-card>
-                <ion-card-header>
-                  <ion-button (click)="startQuiz()" *ngIf="level===0 && !startBtnClicked && networkError ==='' "
-                              id="startBtn">START
-                  </ion-button>
-                  <ion-button (click)="!showTopicActionSheet ? showTopicActionSheet = true : ''"
-                              *ngIf="level===0 && !startBtnClicked && networkError ==='' ">SELECT TOPIC
-                  </ion-button>
-                  <ion-button (click)="!showDifficultyActionSheet ? showDifficultyActionSheet = true : ''"
-                              *ngIf="level===0 && !startBtnClicked && networkError ==='' ">SELECT
-                    DIFFICULTY
-                  </ion-button>
-                  <ion-button (click)="!feedbackModal ? feedbackModal = true : '';"
-                              *ngIf="level===0 && !startBtnClicked && networkError ==='' ">FEEDBACK
-                  </ion-button>
-                  <ion-modal [isOpen]="feedbackModal">
-                    <ng-template>
-                      <ion-header>
-                        <ion-toolbar>
-                          <ion-title>FeedBack Tab</ion-title>
-                          <ion-buttons slot="end">
-                            <ion-button (click)="setOpen(false)">Close</ion-button>
-                          </ion-buttons>
-                        </ion-toolbar>
-                      </ion-header>
-                      <ion-content class="ion-padding">
-                        <ion-card-header>
-                          Any issues or thoughts about the quiz? Feel free to tell us!
-                          Any personal data is optional.
-                          Thank you for helping the development with your feedback!
-                        </ion-card-header>
-                        <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)">
-                          <ion-list>
-                            <ion-item>
-                              <ion-input #name="ngModel" label="Name" name="name" ngModel
-                                         placeholder="Enter text">
-                              </ion-input>
-                            </ion-item>
-                            <ion-item>
-                              <ion-input #email="ngModel" email label="Email" name="email" ngModel
-                                         placeholder="Enter text">
-                              </ion-input>
-                            </ion-item>
-                            <ion-item>
-                              <ion-textarea #messages="ngModel" label="Message" name="messages" ngModel
-                                            placeholder="Type something here"
-                                            required="true">
-                              </ion-textarea>
-                            </ion-item>
-                          </ion-list>
-                          <ion-item lines="none">
-                            <ion-button style="width: 100%; display: inline-block;" type="submit">
-                              SUBMIT
-                            </ion-button>
-                          </ion-item>
-                        </form>
-                      </ion-content>
-                    </ng-template>
-                  </ion-modal>
-                </ion-card-header>
-              </ion-card>
+              <ion-modal (didDismiss)="setOpen(false)" [isOpen]="feedbackModal"
+              >
+                <ng-template>
+                  <ion-header>
+                    <ion-toolbar>
+                      <ion-title>FeedBack Tab</ion-title>
+                      <ion-buttons slot="end">
+                        <ion-button (click)="setOpen(false)">Close</ion-button>
+                      </ion-buttons>
+                    </ion-toolbar>
+                  </ion-header>
+                  <ion-content class="ion-padding">
+                    <ion-card-header>
+                      Any issues or thoughts about the quiz? Feel free to tell us!
+                      Any personal data is optional.
+                      Thank you for helping the development with your feedback!
+                    </ion-card-header>
+                    <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)">
+                      <ion-list>
+                        <ion-item>
+                          <ion-input #name="ngModel" label="Name" name="name" ngModel
+                                     placeholder="Enter text">
+                          </ion-input>
+                        </ion-item>
+                        <ion-item>
+                          <ion-input #email="ngModel" email label="Email" name="email" ngModel
+                                     placeholder="Enter text">
+                          </ion-input>
+                        </ion-item>
+                        <ion-item>
+                          <ion-textarea #messages="ngModel" label="Message" name="messages" ngModel
+                                        placeholder="Type something here"
+                                        required="true">
+                          </ion-textarea>
+                        </ion-item>
+                      </ion-list>
+                      <ion-item lines="none">
+                        <ion-button style="width: 100%; display: inline-block;" type="submit">
+                          SUBMIT
+                        </ion-button>
+                      </ion-item>
+                    </form>
+                  </ion-content>
+                </ng-template>
+              </ion-modal>
             </ion-col>
             <ion-col *ngIf="isDesktop()" size="4"></ion-col>
           </ion-row>

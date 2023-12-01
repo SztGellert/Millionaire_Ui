@@ -33,13 +33,13 @@
                   </ion-img><ion-col></ion-col>
                     <ion-action-sheet
                       isOpen='{{showTopicActionSheet}}'
-                      header="{{'Topic:' + questionTopic }}"
+                      header="{{'Topic: ' + questionTopic }}"
                       [buttons]="topicActionSheetButtons"
                       (didDismiss)="logResult($event)"
                     ></ion-action-sheet>
                   <ion-action-sheet
                     isOpen='{{showDifficultyActionSheet}}'
-                    header="{{'Difficulty:' + questionDifficulty }}"
+                    header="{{'Difficulty: ' + questionDifficulty }}"
                     [buttons]="difficultyActionSheetButtons"
                     (didDismiss)="logResult($event)"
                   ></ion-action-sheet>

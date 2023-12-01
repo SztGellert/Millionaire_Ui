@@ -6,96 +6,128 @@
   </ion-toolbar>
 </ion-header>
 <ion-alert
-  css-class="cssalert"
   [isOpen]="isAlertOpen"
+  css-class="cssalert"
   header="{{prizesList[level]}}"
 >
 </ion-alert>
 <ion-content [fullscreen]="true">
-    <ion-grid>
-      <ion-row>
-          <ng-container *ngIf="networkError">
-          <ion-header>
-            <ion-toolbar><ion-row>
-              <ion-title color="warning"><ion-col><ion-icon name="cloud-offline-outline" size="large"></ion-icon></ion-col><ion-col>Network connection error has occured.</ion-col></ion-title></ion-row>
-            </ion-toolbar>
-          </ion-header>
-          </ng-container>
-          <ion-col *ngIf="isDesktop()" size="{{isDesktop() ? '2' : ''}}"></ion-col>
-          <ion-col *ngIf="level===0 && !startBtnClicked " size="{{isDesktop() ? '8' : ''}}" >
-          <ion-card>
-              <ion-row *ngIf="level===0 && !startBtnClicked">
-                <ion-col *ngIf="isDesktop()" size="4"></ion-col>
-                <ion-col size="{{isDesktop() ? '4' : ''}}" >
-                  <ion-img
-                    src="././assets/millionaire.png"
-                  style="width: auto">
-                  </ion-img><ion-col></ion-col>
-                    <ion-action-sheet
-                      isOpen='{{showTopicActionSheet}}'
-                      header="{{'Topic: ' + questionTopic }}"
-                      [buttons]="topicActionSheetButtons"
-                      (didDismiss)="logResult($event)"
-                    ></ion-action-sheet>
-                  <ion-action-sheet
-                    isOpen='{{showDifficultyActionSheet}}'
-                    header="{{'Difficulty: ' + questionDifficulty }}"
-                    [buttons]="difficultyActionSheetButtons"
-                    (didDismiss)="logResult($event)"
-                  ></ion-action-sheet>
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  (click)="startQuiz()" id="startBtn">START</ion-button>
-                      <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  (click)="!showTopicActionSheet ? showTopicActionSheet = true : ''" >SELECT TOPIC</ion-button>
-                      <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  (click)="!showDifficultyActionSheet ? showDifficultyActionSheet = true : ''" >SELECT DIFFICULTY</ion-button>
-                    </ion-card-header>
-                  </ion-card>
+  <ion-grid>
+    <ion-row>
+      <ng-container *ngIf="networkError">
+        <ion-header>
+          <ion-toolbar>
+            <ion-row>
+              <ion-title color="warning">
+                <ion-col>
+                  <ion-icon name="cloud-offline-outline" size="large"></ion-icon>
                 </ion-col>
-                <ion-col *ngIf="isDesktop()" size="4"></ion-col>
-              </ion-row>
+                <ion-col>Network connection error has occured.</ion-col>
+              </ion-title>
+            </ion-row>
+          </ion-toolbar>
+        </ion-header>
+      </ng-container>
+      <ion-col *ngIf="isDesktop()" size="{{isDesktop() ? '2' : ''}}"></ion-col>
+      <ion-col *ngIf="level===0 && !startBtnClicked " size="{{isDesktop() ? '8' : ''}}">
+        <ion-card>
+          <ion-row *ngIf="level===0 && !startBtnClicked">
+            <ion-col *ngIf="isDesktop()" size="4"></ion-col>
+            <ion-col size="{{isDesktop() ? '4' : ''}}">
+              <ion-img
+                src="././assets/millionaire.png"
+                style="width: auto">
+              </ion-img>
+              <ion-col></ion-col>
+              <ion-action-sheet
+                (didDismiss)="logResult($event)"
+                [buttons]="topicActionSheetButtons"
+                header="{{'Topic: ' + questionTopic }}"
+                isOpen='{{showTopicActionSheet}}'
+              ></ion-action-sheet>
+              <ion-action-sheet
+                (didDismiss)="logResult($event)"
+                [buttons]="difficultyActionSheetButtons"
+                header="{{'Difficulty: ' + questionDifficulty }}"
+                isOpen='{{showDifficultyActionSheet}}'
+              ></ion-action-sheet>
+              <ion-card>
+                <ion-card-header>
+                  <ion-button (click)="startQuiz()" *ngIf="level===0 && !startBtnClicked && networkError ==='' "
+                              id="startBtn">START
+                  </ion-button>
+                  <ion-button (click)="!showTopicActionSheet ? showTopicActionSheet = true : ''"
+                              *ngIf="level===0 && !startBtnClicked && networkError ==='' ">SELECT TOPIC
+                  </ion-button>
+                  <ion-button (click)="!showDifficultyActionSheet ? showDifficultyActionSheet = true : ''"
+                              *ngIf="level===0 && !startBtnClicked && networkError ==='' ">SELECT
+                    DIFFICULTY
+                  </ion-button>
+                </ion-card-header>
+              </ion-card>
+            </ion-col>
+            <ion-col *ngIf="isDesktop()" size="4"></ion-col>
+          </ion-row>
         </ion-card>
-          </ion-col>
-            <ion-col *ngIf="quizList[level] && startBtnClicked">
-            <ion-card  style="--ion-text-color: #3880ff;">
-            <ion-card-title  style="{{'background: border-radius: 5px;'}}" >
-                <ion-card [ngStyle]="{'background': quizList[level].value === 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!' ? 'orange' : ''}" color="primary">
-                  <ion-card-header>
-                    <ion-card-title style="text-align: center" >{{quizList[level]?.value }}</ion-card-title>
-                  </ion-card-header>
-                  <ion-card-content></ion-card-content>
-                </ion-card>
-            </ion-card-title>
-            <ion-card-subtitle >
-            </ion-card-subtitle>
-            <ion-radio-group value="questions" *ngIf=" questionTopic !== '' && questionDifficulty !== '' && startBtnClicked ">
+      </ion-col>
+      <ion-col *ngIf="quizList[level] && startBtnClicked">
+        <ion-card style="--ion-text-color: #3880ff;">
+          <ion-card-title style="{{'background: border-radius: 5px;'}}">
+            <ion-card
+              [ngStyle]="{'background': quizList[level].value === 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!' ? 'orange' : ''}"
+              color="primary">
+              <ion-card-header>
+                <ion-card-title style="text-align: center">{{quizList[level]?.value }}</ion-card-title>
+              </ion-card-header>
+              <ion-card-content></ion-card-content>
+            </ion-card>
+          </ion-card-title>
+          <ion-card-subtitle>
+          </ion-card-subtitle>
+          <ion-radio-group *ngIf=" questionTopic !== '' && questionDifficulty !== '' && startBtnClicked "
+                           value="questions">
             <ion-card-content>
-              <ion-item [ngStyle]="{ '--background': !active && selectedAnswer === item  ? '#eb445a' : ''}"
-                class="item-text-wrap" *ngFor="let item of quizList[level]?.answers" style="{{!active && item === quizList[level]?.correct_answer ? '--background: #006600' : '' }}">
-                <ion-col *ngIf="usePhone && item === quizList[level]?.correct_answer "><ion-icon name="call-outline"></ion-icon></ion-col>
-                <ion-badge *ngIf="Object.keys(statDict).length" slot="start">{{  getStat(item).toString().length < 2 ? getStat(item) +  " % " : getStat(item) + "%" }}</ion-badge> <ion-radio justify="space-between" value="{{item}}" (click)="selectAnswer($event)"><span class="ion-text-wrap">{{item}}</span>
-                  </ion-radio><br />
+              <ion-item *ngFor="let item of quizList[level]?.answers"
+                        [ngStyle]="{ '--background': !active && selectedAnswer === item  ? '#eb445a' : ''}"
+                        class="item-text-wrap"
+                        style="{{!active && item === quizList[level]?.correct_answer ? '--background: #006600' : '' }}">
+                <ion-col *ngIf="usePhone && item === quizList[level]?.correct_answer ">
+                  <ion-icon name="call-outline"></ion-icon>
+                </ion-col>
+                <ion-badge *ngIf="Object.keys(statDict).length"
+                           slot="start">{{  getStat(item).toString().length < 2 ? getStat(item) + " % " : getStat(item) + "%" }}</ion-badge>
+                <ion-radio (click)="selectAnswer($event)" justify="space-between" value="{{item}}"><span
+                  class="ion-text-wrap">{{item}}</span>
+                </ion-radio>
+                <br/>
               </ion-item>
             </ion-card-content>
-              <ion-card-content>
+            <ion-card-content>
               <ion-row>
-                <ion-col><ion-button matTooltip="{{ getTooltip('audience') }}"
-                                     matTooltipPosition="above"
-                                     [ngStyle]="{'--background': help_modules['audience'] ? '#3880ff' : 'red' }"
-                                     *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!'"
-                                     style="width: 100%; display:inline-block;" (click)="audience()">Audience
-                </ion-button></ion-col>
-                <ion-col><ion-button matTooltip="{{ getTooltip('halving') }}"
-                                     matTooltipPosition="above"
-                                     [ngStyle]="{'--background': help_modules['halving'] ? '#3880ff' : 'red' }"
-                                     *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!'"
-                                     style="width: 100%; display:inline-block;" (click)="halving()">Halving
-                </ion-button></ion-col>
-                <ion-col><ion-button matTooltip="{{ getTooltip('phone') }}"
-                                     matTooltipPosition="above"
-                                     [ngStyle]="{'--background': help_modules['phone'] ? '#3880ff' : 'red' }"
-                                     *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!'"
-                                     style="width: 100%; display:inline-block;" (click)="phone()">Phone
-                </ion-button></ion-col>
+                <ion-col>
+                  <ion-button (click)="audience()"
+                              *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!'"
+                              [ngStyle]="{'--background': help_modules['audience'] ? '#3880ff' : 'red' }"
+                              matTooltip="{{ getTooltip('audience') }}"
+                              matTooltipPosition="above" style="width: 100%; display:inline-block;">Audience
+                  </ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button (click)="halving()"
+                              *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!'"
+                              [ngStyle]="{'--background': help_modules['halving'] ? '#3880ff' : 'red' }"
+                              matTooltip="{{ getTooltip('halving') }}"
+                              matTooltipPosition="above" style="width: 100%; display:inline-block;">Halving
+                  </ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button (click)="phone()"
+                              *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!'"
+                              [ngStyle]="{'--background': help_modules['phone'] ? '#3880ff' : 'red' }"
+                              matTooltip="{{ getTooltip('phone') }}"
+                              matTooltipPosition="above" style="width: 100%; display:inline-block;">Phone
+                  </ion-button>
+                </ion-col>
                 <ion-col></ion-col>
                 <ion-col></ion-col>
                 <ion-col></ion-col>
@@ -104,15 +136,24 @@
                 <ion-col></ion-col>
                 <ion-col></ion-col>
                 <ion-col></ion-col>
-                <ion-col><ion-button *ngIf=" quizList[level]?.value !== 'Fail' && quizList[level]?.value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!' && active" style="width: 100%; display:inline-block;" (click)="checkAnswer(selectedAnswer)">Next</ion-button>
-            </ion-col></ion-row></ion-card-content>
-            </ion-radio-group>
-            <ion-card-content *ngIf=" !active && quizList[level] || quizList[level]?.value === 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!' || networkError !=='';">
-              <ion-button class="n-submit"  style="width: 100%; display:inline-block;" (click)="reloadPage()">Try Again</ion-button>
+                <ion-col>
+                  <ion-button
+                    (click)="checkAnswer(selectedAnswer)"
+                    *ngIf=" quizList[level]?.value !== 'Fail' && quizList[level]?.value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!' && active"
+                    style="width: 100%; display:inline-block;">Next
+                  </ion-button>
+                </ion-col>
+              </ion-row>
             </ion-card-content>
-          </ion-card>
-        </ion-col>
-        <ion-col *ngIf="isDesktop()" size="2" ></ion-col>
-      </ion-row>
-    </ion-grid>
+          </ion-radio-group>
+          <ion-card-content
+            *ngIf=" !active && quizList[level] || quizList[level]?.value === 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!' || networkError !=='';">
+            <ion-button (click)="reloadPage()" class="n-submit" style="width: 100%; display:inline-block;">Try Again
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col *ngIf="isDesktop()" size="2"></ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

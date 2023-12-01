@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Question, QuizService} from "./quiz.service";
 import {Subscription} from "rxjs";
-import { Platform } from '@ionic/angular';
+import {Platform} from '@ionic/angular';
 
 @Component({
   selector: 'app-quiz',
@@ -12,14 +12,11 @@ import { Platform } from '@ionic/angular';
 
 export class QuizComponent implements OnInit, OnDestroy {
 
-  protected readonly Object = Object;
-
   level: number = 0;
   selectedAnswer: string = "";
   quizList: Question[] = [];
   quizListSubs: Subscription = new Subscription();
   difficultyList: string[] = ["all", "easy", "medium", "hard"];
-
   topicList: string[] = [
     "all",
     "arts",
@@ -37,7 +34,6 @@ export class QuizComponent implements OnInit, OnDestroy {
     "physics",
     "sports"
   ];
-
   prizesList: string[] = [
     "£100",
     "£200",
@@ -55,26 +51,23 @@ export class QuizComponent implements OnInit, OnDestroy {
     "£500.000",
     "£1.000.000"
   ];
-
   isAlertOpen = false;
-
   questionDifficulty: string = "all";
   questionTopic: string = "all";
-
   startBtnClicked: boolean = false;
   active: boolean = false;
   networkError = "";
-
-  help_modules: { halving : boolean; audience: boolean ; phone: boolean } = {halving:true, audience:true, phone:true};
+  help_modules: { halving: boolean; audience: boolean; phone: boolean } = {halving: true, audience: true, phone: true};
   usePhone: boolean = false;
   showTopicActionSheet: boolean = false;
   showDifficultyActionSheet: boolean = false;
   statDict: {} = {};
+  public topicActionSheetButtons: { text: string, role: string, data: { action: string, value: string } }[] = [];
+  public difficultyActionSheetButtons: { text: string, role: string, data: { action: string, value: string } }[] = [];
+  protected readonly Object = Object;
 
-  public topicActionSheetButtons: { text: string, role: string, data: { action: string, value:  string}}[] = [];
-  public difficultyActionSheetButtons: { text: string, role: string, data: { action: string, value:  string}}[] = [];
-
-  constructor(private quizSvc: QuizService, private platform: Platform) {}
+  constructor(private quizSvc: QuizService, private platform: Platform) {
+  }
 
   public isDesktop() {
     let platforms = this.platform.platforms();
@@ -82,7 +75,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.quizListSubs = this.quizSvc.quizzesChanged.subscribe(quizzes  =>{
+    this.quizListSubs = this.quizSvc.quizzesChanged.subscribe(quizzes => {
       this.quizList = quizzes;
       if (this.quizList?.length == 15) {
         for (let i = 0; i < this.quizList.length; i++) {
@@ -147,18 +140,20 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   checkAnswer(answer: string) {
-    if (this.quizList[this.level].correct_answer == answer && this.level<14) {
+    if (this.quizList[this.level].correct_answer == answer && this.level < 14) {
       setTimeout(() => {
         this.isAlertOpen = false;
       }, 1500)
-      setTimeout(() => {this.level += 1}, 1800)
+      setTimeout(() => {
+        this.level += 1
+      }, 1800)
       this.isAlertOpen = true;
       this.usePhone = false;
       this.statDict = {};
       return
     }
-    if (this.quizList[this.level].correct_answer == answer && this.level==14) {
-      this.quizList[this.level].value = 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!';
+    if (this.quizList[this.level].correct_answer == answer && this.level == 14) {
+      this.quizList[this.level].value = 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON ' + this.prizesList[14] + '!!!';
       this.quizList[this.level].answers = [];
       return
     }
@@ -174,34 +169,35 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   audience() {
     if (this.help_modules.audience) {
-        this.help_modules.audience = false;
-        let max = 100;
-        let correct_chance = Math.floor(Math.random() * max)
-        let sum = correct_chance
-        let chance = 0;
+      this.help_modules.audience = false;
+      let max = 100;
+      let correct_chance = Math.floor(Math.random() * max)
+      let sum = correct_chance
+      let chance = 0;
+      // @ts-ignore
+      this.statDict[this.quizList[this.level].correct_answer] = correct_chance;
+      for (let i = 0; i < this.quizList[this.level].answers.length; i++) {
         // @ts-ignore
-        this.statDict[this.quizList[this.level].correct_answer] = correct_chance;
-        for (let i = 0; i < this.quizList[this.level].answers.length; i++) {
-          // @ts-ignore
-          if (this.quizList[this.level].answers[i] != this.quizList[this.level].correct_answer) {
-            if (i < 3) {
-              chance = Math.floor(Math.random() * (100 - correct_chance - chance + 1))
-              // @ts-ignore
-              this.statDict[this.quizList[this.level].answers[i]] = chance;
-              sum += chance
-            } else {
-              // @ts-ignore
-              this.statDict[this.quizList[this.level].answers[i]] = 100 - sum;
-            }
+        if (this.quizList[this.level].answers[i] != this.quizList[this.level].correct_answer) {
+          if (i < 3) {
+            chance = Math.floor(Math.random() * (100 - correct_chance - chance + 1))
+            // @ts-ignore
+            this.statDict[this.quizList[this.level].answers[i]] = chance;
+            sum += chance
+          } else {
+            // @ts-ignore
+            this.statDict[this.quizList[this.level].answers[i]] = 100 - sum;
           }
-        } if (sum > 100) {
-          throw Error("Audience feature unexpected error.");
         }
+      }
+      if (sum > 100) {
+        throw Error("Audience feature unexpected error.");
+      }
     }
   }
 
   getStat(item: string): number {
-      // @ts-ignore
+    // @ts-ignore
     return this.statDict[item]
   }
 
@@ -233,7 +229,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     }
   }
 
-  reloadPage(){
+  reloadPage() {
     this.level = 0
     this.help_modules.halving = true;
     this.help_modules.audience = true;
@@ -260,14 +256,14 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   // @ts-ignore
   handleDifficultySelectChange(ev) {
-    if (ev.target.id === "difficultySelect"){
+    if (ev.target.id === "difficultySelect") {
       this.questionDifficulty = ev.target.value;
     }
   }
 
   // @ts-ignore
   handleTopicSelectChange(ev) {
-    if (ev.target.id === "topicSelect"){
+    if (ev.target.id === "topicSelect") {
       this.questionTopic = ev.target.value;
     }
   }

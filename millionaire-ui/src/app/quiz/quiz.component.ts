@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Question, QuizService} from "./quiz.service";
 import {Subscription} from "rxjs";
 import {Platform} from '@ionic/angular';
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-quiz',
@@ -64,6 +65,8 @@ export class QuizComponent implements OnInit, OnDestroy {
   statDict: {} = {};
   public topicActionSheetButtons: { text: string, role: string, data: { action: string, value: string } }[] = [];
   public difficultyActionSheetButtons: { text: string, role: string, data: { action: string, value: string } }[] = [];
+  feedbackModal: boolean = false;
+
   protected readonly Object = Object;
 
   constructor(private quizSvc: QuizService, private platform: Platform) {
@@ -305,6 +308,17 @@ export class QuizComponent implements OnInit, OnDestroy {
     }
     this.showTopicActionSheet = false;
     this.showDifficultyActionSheet = false;
+  }
+
+  setOpen(isOpen: boolean) {
+    this.feedbackModal = isOpen;
+  }
+
+  onSubmit(contactForm: NgForm) {
+    if (contactForm.valid) {
+      const email = contactForm.value;
+      this.quizSvc.sendFeedbackEmail(email)
+    }
   }
 
 }

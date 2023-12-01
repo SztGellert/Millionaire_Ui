@@ -182,8 +182,9 @@ export class QuizComponent implements OnInit, OnDestroy {
     if (this.help_modules.audience) {
       this.help_modules.audience = false;
       let max = 100;
-      let correct_chance = Math.floor(Math.random() * max)
-      let sum = correct_chance
+      let min = 40;
+      let correct_chance = Math.floor(Math.random() * (max - min + 1) + min)
+      let sum = correct_chance;
       let chance = 0;
       // @ts-ignore
       this.statDict[this.quizList[this.level].correct_answer] = correct_chance;
@@ -194,14 +195,15 @@ export class QuizComponent implements OnInit, OnDestroy {
             chance = Math.floor(Math.random() * (100 - correct_chance - chance + 1))
             // @ts-ignore
             this.statDict[this.quizList[this.level].answers[i]] = chance;
-            sum += chance
+            sum += chance;
           } else {
             // @ts-ignore
             this.statDict[this.quizList[this.level].answers[i]] = 100 - sum;
+            sum += 100 - sum
           }
         }
       }
-      if (sum > 100) {
+      if (sum != 100) {
         throw Error("Audience feature unexpected error.");
       }
     }

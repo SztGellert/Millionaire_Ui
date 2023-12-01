@@ -41,23 +41,27 @@
               <ion-col *ngIf="isDesktop()"></ion-col>
               <ion-button (click)="startQuiz()" *ngIf="level===0 && !startBtnClicked && networkError ==='' "
                           class="btn-grad"
+                          color="none"
                           id="startBtn"
                           style="width: 100%; display: inline-block;">START
               </ion-button>
               <ion-button (click)="!showTopicActionSheet ? showTopicActionSheet = true : ''"
                           *ngIf="level===0 && !startBtnClicked && networkError ==='' "
                           class="btn-grad"
+                          color="none"
                           style="width: 100%; display: inline-block;">SELECT TOPIC
               </ion-button>
               <ion-button (click)="!showDifficultyActionSheet ? showDifficultyActionSheet = true : ''"
                           *ngIf="level===0 && !startBtnClicked && networkError ==='' "
                           class="btn-grad"
+                          color="none"
                           style="width: 100%; display: inline-block;">SELECT
                 DIFFICULTY
               </ion-button>
               <ion-button (click)="!feedbackModal ? feedbackModal = true : '';"
                           *ngIf="level===0 && !startBtnClicked && networkError ==='' "
                           class="btn-grad"
+                          color="none"
                           style="width: 100%; display: inline-block;">FEEDBACK
               </ion-button>
               <ion-action-sheet
@@ -123,7 +127,7 @@
         </ion-card>
       </ion-col>
       <ion-col *ngIf="quizList[level] && startBtnClicked">
-        <ion-card style="--ion-text-color: #3880ff;">
+        <ion-card>
           <ion-card-title style="{{'background: border-radius: 5px;'}}">
             <ion-card
               [ngStyle]="{'background': quizList[level].value === 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!' ? 'orange' : ''}"
@@ -143,9 +147,11 @@
               <ion-row *ngIf="isDesktop()">
                 <ion-col size="6">
                   <ion-item *ngIf="quizList[level].answers[0]"
-                            [ngClass]="{'selected_answer': quizList[level].answers[0]===selectedAnswer && !isAlertOpen,
-                            'correct_answer': quizList[level].answers[0]===selectedAnswer && isAlertOpen && active || !active && quizList[level].answers[0]===quizList[level].correct_answer,
-                            'wrong_answer': quizList[level].answers[0]===selectedAnswer && isAlertOpen && !active}"
+                            [ngClass]="{
+                            'answer': quizList[level].answers[0]!==selectedAnswer && quizList[level].answers[0]!==quizList[level].correct_answer,
+                            'selected_answer': quizList[level].answers[0]===selectedAnswer && !checkedAnswer,
+                            'correct_answer': quizList[level].answers[0]===quizList[level].correct_answer && checkedAnswer,
+                            'wrong_answer': quizList[level].answers[0]===selectedAnswer && checkedAnswer && !active}"
                   >
                     <ion-badge *ngIf="Object.keys(statDict).length"
                                slot="start">{{  getStat(quizList[level].answers[0]).toString().length < 2 ? getStat(quizList[level].answers[0]) + " % " : getStat(quizList[level].answers[0]) + "%" }}</ion-badge>
@@ -161,9 +167,11 @@
                 </ion-col>
                 <ion-col size="6">
                   <ion-item *ngIf="quizList[level].answers[1]"
-                            [ngClass]="{'selected_answer': quizList[level].answers[1]===selectedAnswer  && !isAlertOpen,
-                            'correct_answer': quizList[level].answers[1]===selectedAnswer && isAlertOpen && active || !active && quizList[level].answers[1]===quizList[level].correct_answer,
-                            'wrong_answer': quizList[level].answers[1]===selectedAnswer  && !active}">
+                            [ngClass]="{
+                            'answer': quizList[level].answers[1]!==selectedAnswer && quizList[level].answers[1]!==quizList[level].correct_answer,
+                            'selected_answer': quizList[level].answers[1]===selectedAnswer  && !checkedAnswer,
+                            'correct_answer': quizList[level].answers[1]===quizList[level].correct_answer && checkedAnswer,
+                            'wrong_answer': quizList[level].answers[1]===selectedAnswer  && !active && checkedAnswer}">
                     <ion-badge *ngIf="Object.keys(statDict).length"
                                slot="start">{{  getStat(quizList[level].answers[1]).toString().length < 2 ? getStat(quizList[level].answers[1]) + " % " : getStat(quizList[level].answers[1]) + "%" }}</ion-badge>
                     <ion-icon *ngIf="usePhone && quizList[level].answers[1] === quizList[level]?.correct_answer "
@@ -179,9 +187,11 @@
               <ion-row *ngIf="isDesktop()">
                 <ion-col size="6">
                   <ion-item *ngIf="quizList[level].answers[2]"
-                            [ngClass]="{'selected_answer': quizList[level].answers[2]===selectedAnswer  && !isAlertOpen,
-                            'correct_answer': quizList[level].answers[2]===selectedAnswer && isAlertOpen && active || !active && quizList[level].answers[2]===quizList[level].correct_answer,
-                            'wrong_answer': quizList[level].answers[2]===selectedAnswer && !active}">
+                            [ngClass]="{
+                            'answer': quizList[level].answers[2]!==selectedAnswer && quizList[level].answers[2]!==quizList[level].correct_answer,
+                            'selected_answer': quizList[level].answers[2]===selectedAnswer  && !checkedAnswer,
+                            'correct_answer': quizList[level].answers[2]===quizList[level].correct_answer && checkedAnswer,
+                            'wrong_answer': quizList[level].answers[2]===selectedAnswer && !active && checkedAnswer}">
                     <ion-badge *ngIf="Object.keys(statDict).length"
                                slot="start">{{  getStat(quizList[level].answers[2]).toString().length < 2 ? getStat(quizList[level].answers[2]) + " % " : getStat(quizList[level].answers[2]) + "%" }}</ion-badge>
                     <ion-icon *ngIf="usePhone && quizList[level].answers[2] === quizList[level]?.correct_answer "
@@ -196,9 +206,11 @@
                 </ion-col>
                 <ion-col size="6">
                   <ion-item *ngIf="quizList[level].answers[3]"
-                            [ngClass]="{'selected_answer': quizList[level].answers[3]===selectedAnswer  && !isAlertOpen,
-                            'correct_answer': quizList[level].answers[3]===selectedAnswer && isAlertOpen && active || !active && quizList[level].answers[3]===quizList[level].correct_answer,
-                            'wrong_answer': quizList[level].answers[3]===selectedAnswer && !active}">
+                            [ngClass]="{
+                            'answer': quizList[level].answers[3]!==selectedAnswer && quizList[level].answers[3]!==quizList[level].correct_answer,
+                            'selected_answer': quizList[level].answers[3]===selectedAnswer  && !checkedAnswer,
+                            'correct_answer': quizList[level].answers[3]===quizList[level].correct_answer && checkedAnswer,
+                            'wrong_answer': quizList[level].answers[3]===selectedAnswer && !active && checkedAnswer}">
                     <ion-badge *ngIf="Object.keys(statDict).length"
                                slot="start">{{  getStat(quizList[level].answers[3]).toString().length < 2 ? getStat(quizList[level].answers[3]) + " % " : getStat(quizList[level].answers[3]) + "%" }}</ion-badge>
                     <ion-icon *ngIf="usePhone && quizList[level].answers[3] === quizList[level]?.correct_answer "
@@ -215,9 +227,15 @@
             </ion-card-content>
             <ion-card-content *ngIf="!isDesktop()">
               <ion-item *ngFor="let item of quizList[level]?.answers"
-                        [ngStyle]="{ '--background': !active && selectedAnswer === item  ? '#eb445a' : ''}"
+
+                        [ngClass]="{
+                            'answer': item!==selectedAnswer && item!==quizList[level].correct_answer,
+                            'selected_answer': item===selectedAnswer  && !checkedAnswer,
+                            'correct_answer': item===quizList[level].correct_answer && checkedAnswer,
+                            'wrong_answer': item===selectedAnswer && !active && checkedAnswer}"
                         class="item-text-wrap"
-                        style="{{!active && item === quizList[level]?.correct_answer ? '--background: #006600' : '' }}">
+                        disabled="{{!active}}"
+              >
                 <ion-col *ngIf="usePhone && item === quizList[level]?.correct_answer ">
                   <ion-icon name="call"></ion-icon>
                 </ion-col>

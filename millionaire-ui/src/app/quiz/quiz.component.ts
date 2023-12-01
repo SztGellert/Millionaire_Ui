@@ -66,6 +66,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   public topicActionSheetButtons: { text: string, role: string, data: { action: string, value: string } }[] = [];
   public difficultyActionSheetButtons: { text: string, role: string, data: { action: string, value: string } }[] = [];
   feedbackModal: boolean = false;
+  checkedAnswer: boolean = false;
 
   protected readonly Object = Object;
 
@@ -143,12 +144,14 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   checkAnswer(answer: string) {
+    this.checkedAnswer = true;
     if (this.quizList[this.level].correct_answer == answer && this.level < 14) {
       setTimeout(() => {
         this.isAlertOpen = false;
       }, 1500)
       setTimeout(() => {
         this.level += 1
+        this.checkedAnswer = false;
       }, 1800)
       this.isAlertOpen = true;
       this.usePhone = false;
@@ -247,6 +250,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.startBtnClicked = false;
     this.networkError = "";
     this.statDict = {};
+    this.checkedAnswer = false;
   }
 
   // @ts-ignore

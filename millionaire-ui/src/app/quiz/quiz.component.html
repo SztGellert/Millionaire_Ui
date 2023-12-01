@@ -33,21 +33,21 @@
                   </ion-img><ion-col></ion-col>
                     <ion-action-sheet
                       isOpen='{{showTopicActionSheet}}'
-                      header="Topic selection"
+                      header="{{'Topic:' + questionTopic }}"
                       [buttons]="topicActionSheetButtons"
                       (didDismiss)="logResult($event)"
                     ></ion-action-sheet>
                   <ion-action-sheet
                     isOpen='{{showDifficultyActionSheet}}'
-                    header="Difficulty selection"
+                    header="{{'Difficulty:' + questionDifficulty }}"
                     [buttons]="difficultyActionSheetButtons"
                     (didDismiss)="logResult($event)"
                   ></ion-action-sheet>
                   <ion-card>
                     <ion-card-header>
                       <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  (click)="startQuiz()" id="startBtn">START</ion-button>
-                      <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  (click)="!showTopicActionSheet ? showTopicActionSheet = true : ''" >Select Topic</ion-button>
-                      <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  (click)="!showDifficultyActionSheet ? showDifficultyActionSheet = true : ''" >Select Difficulty</ion-button>
+                      <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  (click)="!showTopicActionSheet ? showTopicActionSheet = true : ''" >SELECT TOPIC</ion-button>
+                      <ion-button *ngIf="level===0 && !startBtnClicked && networkError ==='' "  (click)="!showDifficultyActionSheet ? showDifficultyActionSheet = true : ''" >SELECT DIFFICULTY</ion-button>
                     </ion-card-header>
                   </ion-card>
                 </ion-col>

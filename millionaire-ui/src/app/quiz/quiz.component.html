@@ -92,7 +92,7 @@
                         class="item-text-wrap"
                         style="{{!active && item === quizList[level]?.correct_answer ? '--background: #006600' : '' }}">
                 <ion-col *ngIf="usePhone && item === quizList[level]?.correct_answer ">
-                  <ion-icon name="call-outline"></ion-icon>
+                  <ion-icon name="call"></ion-icon>
                 </ion-col>
                 <ion-badge *ngIf="Object.keys(statDict).length"
                            slot="start">{{  getStat(item).toString().length < 2 ? getStat(item) + " % " : getStat(item) + "%" }}</ion-badge>
@@ -105,27 +105,37 @@
             <ion-card-content>
               <ion-row>
                 <ion-col>
-                  <ion-button (click)="audience()"
-                              *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!'"
-                              [ngStyle]="{'--background': help_modules['audience'] ? '#3880ff' : 'red' }"
-                              matTooltip="{{ getTooltip('audience') }}"
-                              matTooltipPosition="above" style="width: 100%; display:inline-block;">Audience
-                  </ion-button>
-                </ion-col>
-                <ion-col>
                   <ion-button (click)="halving()"
                               *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!'"
                               [ngStyle]="{'--background': help_modules['halving'] ? '#3880ff' : 'red' }"
+                              disabled="{{!active || !help_modules['halving']}}"
                               matTooltip="{{ getTooltip('halving') }}"
-                              matTooltipPosition="above" style="width: 100%; display:inline-block;">Halving
+                              matTooltipPosition="above"
+                              style="width: 100%; display:inline-block;"
+                  >50:50
                   </ion-button>
                 </ion-col>
                 <ion-col>
                   <ion-button (click)="phone()"
                               *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!'"
                               [ngStyle]="{'--background': help_modules['phone'] ? '#3880ff' : 'red' }"
-                              matTooltip="{{ getTooltip('phone') }}"
-                              matTooltipPosition="above" style="width: 100%; display:inline-block;">Phone
+                              disabled="{{!active || !help_modules['phone']}}" matTooltip="{{ getTooltip('phone') }}"
+                              matTooltipPosition="above"
+                              style="width: 100%; display:inline-block;">
+                    <ion-icon name="call"></ion-icon>
+                  </ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button (click)="audience()"
+                              *ngIf=" quizList[level].value !== 'Fail' && quizList[level].value !== 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON '+ this.prizesList[14] + '!!!'"
+                              [ngStyle]="{'--background': help_modules['audience'] ? '#3880ff' : 'red' }"
+                              disabled="{{!active || !help_modules['audience']}}"
+                              matTooltip="{{ getTooltip('audience') }}"
+                              matTooltipPosition="above"
+                              style="width: 100%; display:inline-block;">
+                    <ion-icon name="person"></ion-icon>
+                    <ion-icon name="person"></ion-icon>
+                    <ion-icon name="person"></ion-icon>
                   </ion-button>
                 </ion-col>
                 <ion-col></ion-col>

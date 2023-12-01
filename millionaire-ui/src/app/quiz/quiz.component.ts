@@ -273,13 +273,24 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
 
-  getTooltip(help_type: string) {
-    // @ts-ignore
-    if (this.help_modules[help_type]) {
-      return "Use " + help_type
-    } else {
-      return "already used!"
+  getTooltip(help_type: string): string {
+    let label = "";
+
+    switch (help_type) {
+      case "halving":
+        label = "Take away two wrong answer";
+        break;
+      case "phone":
+        label = "Phone a friend";
+        break;
+      case "audience":
+        label = "Ask the audience";
+        break;
+      default:
+        break;
     }
+
+    return label;
   }
 
   // @ts-ignore

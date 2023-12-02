@@ -39,6 +39,8 @@
                 style="width: auto;">
               </ion-img>
               <ion-col *ngIf="isDesktop()"></ion-col>
+              <ion-icon (click)="allowSounds ? allowSounds= false : allowSounds = true" *ngIf="!isDesktop()"
+                        name="{{allowSounds ? 'volume-high' :  'volume-mute'}}"></ion-icon>
               <ion-button (click)="startQuiz()" *ngIf="level===0 && !startBtnClicked && networkError ==='' "
                           class="btn-grad"
                           color="none"

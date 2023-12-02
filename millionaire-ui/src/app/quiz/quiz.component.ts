@@ -67,6 +67,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   public difficultyActionSheetButtons: { text: string, role: string, data: { action: string, value: string } }[] = [];
   feedbackModal: boolean = false;
   checkedAnswer: boolean = false;
+  allowSounds: boolean = false;
 
   protected readonly Object = Object;
 
@@ -156,6 +157,7 @@ export class QuizComponent implements OnInit, OnDestroy {
       this.isAlertOpen = true;
       this.usePhone = false;
       this.statDict = {};
+      this.playAudio("correct_answer", 2)
       return
     }
     if (this.quizList[this.level].correct_answer == answer && this.level == 14) {
@@ -163,6 +165,7 @@ export class QuizComponent implements OnInit, OnDestroy {
       this.quizList[this.level].answers = [];
       return
     }
+    this.playAudio("wrong_answer")
     this.active = false;
     this.isAlertOpen = true;
     setTimeout(() => {
@@ -330,4 +333,35 @@ export class QuizComponent implements OnInit, OnDestroy {
       this.quizSvc.sendFeedbackEmail(email)
     }
   }
+
+  playAudio(name: string, timeout: number = 0) {
+    if (this.allowSounds) {
+      let src = "";
+      switch (name) {
+        case 'correct_answer':
+          src = "https://www.myinstants.com/media/sounds/correct_VsVqwRb.mp3";
+          break;
+        case 'wrong_answer':
+          src = 'https://www.myinstants.com/media/sounds/wrong_JbK803k.mp3'
+          break;
+
+        default:
+          break
+      }
+
+
+      let audio = new Audio();
+      audio.src = src;
+      audio.load();
+      audio.play();
+
+      if (timeout != 0) {
+        setTimeout(() => {
+          audio.pause()
+        }, timeout * 1000)
+      }
+
+    }
+  }
+
 }

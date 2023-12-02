@@ -247,7 +247,7 @@
                 <ion-badge *ngIf="Object.keys(statDict).length"
                            slot="start">{{  getStat(item).toString().length < 2 ? getStat(item) + " % " : getStat(item) + "%" }}</ion-badge>
                 <ion-radio (click)="selectAnswer($event)" justify="space-between" value="{{item}}"><span
-                  class="ion-text-wrap">{{item}}</span>
+                  class="ion-text-wrap">{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(item)] + item}}</span>
                 </ion-radio>
                 <br/>
               </ion-item>

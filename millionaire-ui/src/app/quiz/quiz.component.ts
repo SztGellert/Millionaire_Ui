@@ -1,7 +1,16 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChildren
+} from '@angular/core';
 import {Question, QuizService} from "./quiz.service";
-import {Subscription} from "rxjs";
-import {Platform} from '@ionic/angular';
+import {Subscription, timeout} from "rxjs";
+import {Animation, AnimationController, IonImg, Platform} from '@ionic/angular';
 import {NgForm} from "@angular/forms";
 
 @Component({
@@ -11,8 +20,10 @@ import {NgForm} from "@angular/forms";
 })
 
 
-export class QuizComponent implements OnInit, OnDestroy {
+export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
 
+  // @ts-ignore
+  @ViewChildren(IonImg, {read: ElementRef}) imgElements: QueryList<ElementRef<HTMLIonImgElement>>;
   level: number = 0;
   selectedAnswer: string = "";
   quizList: Question[] = [];
@@ -68,10 +79,15 @@ export class QuizComponent implements OnInit, OnDestroy {
   feedbackModal: boolean = false;
   checkedAnswer: boolean = false;
   allowSounds: boolean = false;
-
+  isReload: boolean = false;
+  audio = new Audio();
   protected readonly Object = Object;
+  // @ts-ignore
+  private imgA: Animation;
+  private helpTimeOut = timeout;
 
-  constructor(private quizSvc: QuizService, private platform: Platform) {
+  constructor(private quizSvc: QuizService, private platform: Platform, private animationCtrl: AnimationController) {
+
   }
 
   public isDesktop() {
@@ -80,6 +96,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log(this.isDesktop())
     this.quizListSubs = this.quizSvc.quizzesChanged.subscribe(quizzes => {
       this.quizList = quizzes;
       if (this.quizList?.length == 15) {
@@ -94,6 +111,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     })
     this.loadTopicActions();
     this.loadDifficultyActions();
+
   }
 
   loadDifficultyActions() {
@@ -153,16 +171,22 @@ export class QuizComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         this.level += 1
         this.checkedAnswer = false;
+        this.selectedAnswer = "";
       }, 1800)
       this.isAlertOpen = true;
       this.usePhone = false;
       this.statDict = {};
+      // @ts-ignore
+      clearTimeout(this.helpTimeOut);
       this.playAudio("correct_answer", 2)
       return
     }
     if (this.quizList[this.level].correct_answer == answer && this.level == 14) {
       this.quizList[this.level].value = 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON ' + this.prizesList[14] + '!!!';
       this.quizList[this.level].answers = [];
+      this.playAudio('final_theme')
+      // @ts-ignore
+      clearTimeout(this.helpTimeOut);
       return
     }
     this.playAudio("wrong_answer")
@@ -171,19 +195,22 @@ export class QuizComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.isAlertOpen = false;
     }, 1500)
+    // @ts-ignore
+    clearTimeout(this.helpTimeOut);
 
   }
 
   // @ts-ignore
-  selectAnswer(ev) {
-    this.selectedAnswer = ev.target.value;
+  selectAnswer(answer) {
+    this.selectedAnswer = answer;
     // @ts-ignore
     this.selectIndex = this.quizList[this.level].answers.indexOf(this.selectedAnswer);
   }
 
   audience() {
-    if (this.help_modules.audience) {
-      this.help_modules.audience = false;
+
+    // @ts-ignore
+    const func = () => {
       let max = 100;
       let min = 40;
       let correct_chance = Math.floor(Math.random() * (max - min + 1) + min)
@@ -209,6 +236,21 @@ export class QuizComponent implements OnInit, OnDestroy {
       if (sum != 100) {
         throw Error("Audience feature unexpected error.");
       }
+    };
+
+
+    if (this.help_modules.audience) {
+      this.help_modules.audience = false;
+      if (this.allowSounds) {
+        this.playAudio('audience', 36)
+        // @ts-ignore
+        this.helpTimeOut = setTimeout(() => {
+          func();
+        }, 33000);
+      } else {
+        func();
+      }
+
     }
   }
 
@@ -219,6 +261,7 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   halving() {
     if (this.help_modules.halving) {
+      this.playAudio('halving')
 
       this.help_modules.halving = false;
 
@@ -239,9 +282,17 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   phone() {
     if (this.help_modules.phone) {
-
+      if (!this.allowSounds) {
+        this.help_modules.phone = false;
+        this.usePhone = true;
+        return
+      }
+      this.playAudio('phone', 46)
       this.help_modules.phone = false;
-      this.usePhone = true;
+      // @ts-ignore
+      this.helpTimeOut = setTimeout(() => {
+        this.usePhone = true;
+      }, 42000)
     }
   }
 
@@ -256,6 +307,11 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.networkError = "";
     this.statDict = {};
     this.checkedAnswer = false;
+    this.selectedAnswer = "";
+    this.isReload = true;
+    this.audio.pause();
+    // @ts-ignore
+    clearTimeout(this.helpTimeOut);
   }
 
   // @ts-ignore
@@ -344,24 +400,99 @@ export class QuizComponent implements OnInit, OnDestroy {
         case 'wrong_answer':
           src = 'https://www.myinstants.com/media/sounds/wrong_JbK803k.mp3'
           break;
-
+        case 'final_theme':
+          src = "https://delta.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/uujixeault/62%20%241%2C000%2C000%20Win.mp3"
+          break;
+        case 'halving':
+          src = 'https://delta.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/oqmqjluggn/67%2050-50.mp3';
+          break;
+        case 'phone':
+          src = 'https://delta.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/tntjwcmahr/66%20Phone-A-Friend.mp3';
+          break;
+        case 'audience':
+          src = 'https://delta.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lwhnnzheda/68%20Ask%20The%20Audience.mp3';
+          break;
         default:
           break
       }
 
 
-      let audio = new Audio();
-      audio.src = src;
-      audio.load();
-      audio.play();
+      this.audio.src = src;
+      this.audio.load();
+      this.audio.play();
 
       if (timeout != 0) {
         setTimeout(() => {
-          audio.pause()
+          this.audio.pause()
         }, timeout * 1000)
       }
 
     }
   }
 
+  ngAfterViewInit() {
+    this.imgA = this.animationCtrl
+      .create()
+      // @ts-ignore
+      .addElement(this.imgElements.get(0).nativeElement)
+      .fill('none')
+      .duration(100000)
+      .keyframes([
+        {offset: 0, transform: 'scale(1) rotate(0)'},
+        {offset: 0.5, transform: 'scale(5.2) rotate(45deg)'},
+        {offset: 1, transform: 'scale(1) rotate(0)'},
+      ]);
+  }
+
+  ngAfterViewChecked() {
+    return
+    //this.play()
+  }
+
+  play() {
+    this.imgA.play();
+  }
+
+  pause() {
+    this.imgA.pause();
+  }
+
+  stop() {
+    this.imgA.stop();
+  }
+
+  getAnswerClass(answer: string) {
+
+    switch (answer) {
+
+      case this.selectedAnswer  : // all cases
+        if (!this.checkedAnswer) {
+          return 'selected_answer';
+        }
+        if (this.checkedAnswer && !this.active) {
+          return 'wrong_answer';
+        }
+        if (this.checkedAnswer && this.active) {
+          return 'correct_answer';
+        }
+        return 'answer';
+
+      case this.quizList[this.level].correct_answer :
+        if (this.checkedAnswer) {
+          return 'correct_answer';
+        }
+        return 'answer';
+
+      default:
+        if (!this.active) {
+          return 'disabled_answer';
+        }
+        if (this.selectedAnswer) {
+          return 'answer answer_transition';
+        }
+        return 'answer';
+
+
+    }
+  }
 }

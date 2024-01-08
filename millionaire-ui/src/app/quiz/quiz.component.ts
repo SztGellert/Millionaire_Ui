@@ -8,10 +8,19 @@ import {
   QueryList,
   ViewChildren
 } from '@angular/core';
-import {Question, QuizService} from "./quiz.service";
+import {QuizService} from "./quiz.service";
 import {Subscription, timeout} from "rxjs";
 import {Animation, AnimationController, IonImg, Platform} from '@ionic/angular';
 import {NgForm} from "@angular/forms";
+
+
+interface QuestionInGame {
+  value: string;
+  answers: string[];
+  correct_answer: string;
+  topic: string;
+  difficulty: boolean;
+}
 
 @Component({
   selector: 'app-quiz',
@@ -19,14 +28,15 @@ import {NgForm} from "@angular/forms";
   styleUrls: ['./quiz.component.scss'],
 })
 
-
 export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
 
   // @ts-ignore
   @ViewChildren(IonImg, {read: ElementRef}) imgElements: QueryList<ElementRef<HTMLIonImgElement>>;
   level: number = 0;
   selectedAnswer: string = "";
-  quizList: Question[] = [];
+
+
+  quizList: QuestionInGame[] = [];
   quizListSubs: Subscription = new Subscription();
   difficultyList: string[] = ["all", "easy", "medium", "hard"];
   topicList: string[] = [
@@ -63,6 +73,7 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
     "£500.000",
     "£1.000.000"
   ];
+  language = "en"
   isAlertOpen = false;
   questionDifficulty: string = "all";
   questionTopic: string = "all";
@@ -98,7 +109,13 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
   ngOnInit() {
     console.log(this.isDesktop())
     this.quizListSubs = this.quizSvc.quizzesChanged.subscribe(quizzes => {
-      this.quizList = quizzes;
+      for (let quiz of quizzes) {
+        let question = {} as QuestionInGame;
+        question.value = quiz.en.text;
+        question.answers = quiz.en.answers;
+        question.correct_answer = quiz.en.answers[quiz.en.correct_answer_index];
+        this.quizList.push(question)
+      }
       if (this.quizList?.length == 15) {
         for (let i = 0; i < this.quizList.length; i++) {
           this.quizList[i].answers = this.quizList[i].answers.sort(() => Math.random() - 0.5);

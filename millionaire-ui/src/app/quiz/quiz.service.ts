@@ -3,11 +3,17 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Subject} from "rxjs";
 
 export interface Question {
-  value: string;
-  answers: string[];
-  correct_answer: string;
+  en: QuestionDetail;
+  de: QuestionDetail;
+  hu: QuestionDetail;
   topic: string;
   difficulty: boolean;
+}
+
+export interface QuestionDetail {
+  text: string;
+  answers: string[];
+  correct_answer_index: number;
 }
 
 @Injectable({

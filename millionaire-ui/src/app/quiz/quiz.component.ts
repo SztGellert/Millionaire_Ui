@@ -13,7 +13,6 @@ import {Subscription, timeout} from "rxjs";
 import {Animation, AnimationController, IonImg, Platform} from '@ionic/angular';
 import {NgForm} from "@angular/forms";
 
-
 interface QuestionInGame {
   value: string;
   answers: string[];
@@ -111,9 +110,12 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
     this.quizListSubs = this.quizSvc.quizzesChanged.subscribe(quizzes => {
       for (let quiz of quizzes) {
         let question = {} as QuestionInGame;
-        question.value = quiz.en.text;
-        question.answers = quiz.en.answers;
-        question.correct_answer = quiz.en.answers[quiz.en.correct_answer_index];
+        // @ts-ignore
+        question.value = quiz[this.language].text;
+        // @ts-ignore
+        question.answers = quiz[this.language].answers;
+        // @ts-ignore
+        question.correct_answer = quiz[this.language].answers[quiz.en.correct_answer_index];
         this.quizList.push(question)
       }
       if (this.quizList?.length == 15) {
@@ -511,5 +513,9 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
 
 
     }
+  }
+
+  setLanguage(lang: string) {
+    this.language = lang;
   }
 }

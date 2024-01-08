@@ -131,8 +131,8 @@
 }
 
 span {
-  margin-left: 0px;
-  margin-right: 0px;
+  margin-left: 0;
+  margin-right: 0;
   width: 100%;
   clear: both;
   contain: content;
@@ -179,7 +179,9 @@ span {
   transition: 0.5s;
 }
 
-
+ion-chip {
+  padding-left: 3px;
+}
 
 
 

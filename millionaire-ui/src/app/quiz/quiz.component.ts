@@ -8,7 +8,7 @@ import {
   QueryList,
   ViewChildren
 } from '@angular/core';
-import {QuizService} from "./quiz.service";
+import {Question, QuizService} from "./quiz.service";
 import {Subscription, timeout} from "rxjs";
 import {Animation, AnimationController, IonImg, Platform} from '@ionic/angular';
 import {NgForm} from "@angular/forms";
@@ -34,7 +34,7 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
   level: number = 0;
   selectedAnswer: string = "";
 
-
+  quizData: Question[] = [];
   quizList: QuestionInGame[] = [];
   quizListSubs: Subscription = new Subscription();
   difficultyList: string[] = ["all", "easy", "medium", "hard"];
@@ -106,8 +106,8 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
   }
 
   ngOnInit() {
-    console.log(this.isDesktop())
     this.quizListSubs = this.quizSvc.quizzesChanged.subscribe(quizzes => {
+      this.quizData = quizzes;
       for (let quiz of quizzes) {
         let question = {} as QuestionInGame;
         // @ts-ignore
@@ -516,6 +516,21 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
   }
 
   setLanguage(lang: string) {
-    this.language = lang;
+    if (lang != this.language.substring(0, 2)) {
+      this.language = lang;
+      if (this.active) {
+        this.quizList = [];
+        for (let quiz of this.quizData) {
+          let question = {} as QuestionInGame;
+          // @ts-ignore
+          question.value = quiz[this.language].text;
+          // @ts-ignore
+          question.answers = quiz[this.language].answers;
+          // @ts-ignore
+          question.correct_answer = quiz[this.language].answers[quiz.en.correct_answer_index];
+          this.quizList.push(question)
+        }
+      }
+    }
   }
 }

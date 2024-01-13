@@ -12,14 +12,14 @@
           <ion-icon (click)="allowSounds ? allowSounds= false : allowSounds = true" *ngIf="isDesktop()"
                     name="{{allowSounds ? 'volume-high' :  'volume-mute'}}"></ion-icon>
         </ion-chip>
-        <ion-chip>
-          <ion-icon (click)="setLanguage('en')" class="fi fi-gb" size="small"></ion-icon>
+        <ion-chip (click)="setLanguage('en')">
+          <ion-icon class="fi fi-gb" size="small"></ion-icon>
         </ion-chip>
-        <ion-chip>
-          <ion-icon (click)="setLanguage('de')" class="fi fi-de"></ion-icon>
+        <ion-chip (click)="setLanguage('de')">
+          <ion-icon class="fi fi-de"></ion-icon>
         </ion-chip>
-        <ion-chip>
-          <ion-icon (click)="setLanguage('hu')" class="fi fi-hu"></ion-icon>
+        <ion-chip (click)="setLanguage('hu')">
+          <ion-icon class="fi fi-hu"></ion-icon>
         </ion-chip>
       </ion-col>
 
@@ -74,18 +74,18 @@
                   </ion-chip>
                 </ion-col>
                 <ion-col size="2">
-                  <ion-chip>
-                    <ion-icon (click)="setLanguage('en')" class="fi fi-gb" size="small"></ion-icon>
+                  <ion-chip (click)="setLanguage('en')">
+                    <ion-icon class="fi fi-gb" size="small"></ion-icon>
                   </ion-chip>
                 </ion-col>
                 <ion-col size="2">
-                  <ion-chip>
-                    <ion-icon (click)="setLanguage('de')" class="fi fi-de"></ion-icon>
+                  <ion-chip (click)="setLanguage('de')">
+                    <ion-icon class="fi fi-de"></ion-icon>
                   </ion-chip>
                 </ion-col>
                 <ion-col size="2">
-                  <ion-chip>
-                    <ion-icon (click)="setLanguage('hu')" class="fi fi-hu"></ion-icon>
+                  <ion-chip (click)="setLanguage('hu')">
+                    <ion-icon class="fi fi-hu"></ion-icon>
                   </ion-chip>
                 </ion-col>
               </ion-row>

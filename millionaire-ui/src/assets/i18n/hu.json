@@ -1,0 +1,35 @@
+{
+  "menu": {
+    "start": "Start",
+    "select_topic": "Témakörök",
+    "select_difficulty": "Nehézség",
+    "contact": "Kapcsolat",
+    "topics": {
+      "all": "Mind",
+      "arts": "Művészet",
+      "biology": "Biológia",
+      "chemistry": "Kémia",
+      "economy": "Közgazdaságtan",
+      "gastronomy": "Konyhaművészet",
+      "general": "Általános",
+      "geography": "Földrajz",
+      "history": "Történelem",
+      "literature": "Irodalom",
+      "mathematics": "Matematika",
+      "music": "Zene",
+      "original": "Eredeti",
+      "physics": "Fizika",
+      "sports": "Sport"
+    },
+    "difficulties": {
+      "all": "Mind",
+      "easy": "Könnyű",
+      "medium": "Közepes",
+      "hard": "Nehéz"
+    }
+  },
+  "app": {
+    "title": "Legyen Ön is Milliomos!",
+    "short_title": "Milliomos"
+  }
+}

@@ -3,7 +3,7 @@
     <ion-toolbar>
       <ion-title>
         <ion-col *ngIf="isDesktop()" size-md="10">
-          Who wants to be a millionaire?
+          {{ 'app.title' | translate }}
         </ion-col>
 
         <ion-col *ngIf="isDesktop()" offset-md="8" size-md="2">
@@ -25,7 +25,7 @@
       </ion-title>
       <ion-row *ngIf="!isDesktop()">
         <ion-col style="font-size: 14px; margin-top: 10px;">
-          Who wants to be a millionaire?
+          {{ 'app.title' | translate }}
         </ion-col>
         <ion-col *ngIf="!isDesktop()" size="1" style="margin-right: 5px;">
           <ion-chip>
@@ -83,37 +83,30 @@
                 src="././assets/millionaire.png"
                 style="width: auto;">
               </ion-img>
-              <ion-card *ngIf="isDesktop() && !isReload" class="feedBackCard">
-                <ion-header
-                  style="color: #00dbde">
-                  <ion-card-title
-                    style="text-align: center">{{"More than 1.4k+ questions to check out now!!"}}</ion-card-title>
-                </ion-header>
-              </ion-card>
               <ion-button (click)="startQuiz()" *ngIf="level===0 && !startBtnClicked && networkError ==='' "
                           class="btn-grad"
                           color="none"
                           id="startBtn"
-                          style="width: 100%; display: inline-block;">START
+                          style="width: 100%; display: inline-block;">{{ 'menu.start' | translate }}
+
               </ion-button>
               <ion-button (click)="!showTopicActionSheet ? showTopicActionSheet = true : ''"
                           *ngIf="level===0 && !startBtnClicked && networkError ==='' "
                           class="btn-grad"
                           color="none"
-                          style="width: 100%; display: inline-block;">SELECT TOPIC
+                          style="width: 100%; display: inline-block;">{{ 'menu.select_topic' | translate }}
               </ion-button>
               <ion-button (click)="!showDifficultyActionSheet ? showDifficultyActionSheet = true : ''"
                           *ngIf="level===0 && !startBtnClicked && networkError ==='' "
                           class="btn-grad"
                           color="none"
-                          style="width: 100%; display: inline-block;">SELECT
-                DIFFICULTY
+                          style="width: 100%; display: inline-block;">{{ 'menu.select_difficulty' | translate }}
               </ion-button>
               <ion-button (click)="!feedbackModal ? feedbackModal = true : '';"
                           *ngIf="level===0 && !startBtnClicked && networkError ==='' "
                           class="btn-grad"
                           color="none"
-                          style="width: 100%; display: inline-block;">CONTACT
+                          style="width: 100%; display: inline-block;">{{ 'menu.contact' | translate }}
               </ion-button>
               <ion-action-sheet
                 (didDismiss)="logResult($event)"

@@ -1,0 +1,35 @@
+{
+  "menu": {
+    "start": "Start",
+    "select_topic": "Select topic",
+    "select_difficulty": "Select difficulty",
+    "contact": "Contact",
+    "topics": {
+      "all": "All",
+      "arts": "Arts",
+      "biology": "Biology",
+      "chemistry": "Chemistry",
+      "economy": "Economy",
+      "gastronomy": "Gastronomy",
+      "general": "General",
+      "geography": "Geography",
+      "history": "History",
+      "literature": "Literature",
+      "mathematics": "Mathematics",
+      "music": "Music",
+      "original": "Original",
+      "physics": "Physics",
+      "sports": "Sports"
+    },
+    "difficulties": {
+      "all": "All",
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    }
+  },
+  "app": {
+    "title": "Who wants to be a millionaire?",
+    "short_title": "Millionaire"
+  }
+}

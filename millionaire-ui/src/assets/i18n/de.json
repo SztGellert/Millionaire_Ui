@@ -1,0 +1,35 @@
+{
+  "menu": {
+    "start": "Start",
+    "select_topic": "Thema auswählen",
+    "select_difficulty": "Schwierigkeit auswählen",
+    "contact": "Kontakt",
+    "topics": {
+      "all": "Alle",
+      "arts": "Kunst",
+      "biology": "Biologie",
+      "chemistry": "Chemie",
+      "economy": "Wirtschaft",
+      "gastronomy": "Gastronomie",
+      "general": "Allgemein",
+      "geography": "Geographie",
+      "history": "Geschichte",
+      "literature": "Literatur",
+      "mathematics": "Mathematik",
+      "music": "Musik",
+      "original": "Original",
+      "physics": "Physik",
+      "sports": "Sport"
+    },
+    "difficulties": {
+      "all": "Alle",
+      "easy": "Leicht",
+      "medium": "Mittel",
+      "hard": "Schwer"
+    }
+  },
+  "app": {
+    "title": "Wer wird Millionär?",
+    "short_title": "Millionär"
+  }
+}

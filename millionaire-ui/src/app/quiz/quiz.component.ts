@@ -12,6 +12,7 @@ import {Question, QuizService} from "./quiz.service";
 import {Subscription, timeout} from "rxjs";
 import {Animation, AnimationController, IonImg, Platform} from '@ionic/angular';
 import {NgForm} from "@angular/forms";
+import {TranslateService} from "@ngx-translate/core";
 
 interface QuestionInGame {
   value: string;
@@ -38,6 +39,7 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
   quizList: QuestionInGame[] = [];
   quizListSubs: Subscription = new Subscription();
   difficultyList: string[] = ["all", "easy", "medium", "hard"];
+  topicListLocalized = [];
   topicList: string[] = [
     "all",
     "arts",
@@ -72,7 +74,8 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
     "£500.000",
     "£1.000.000"
   ];
-  language = "en"
+  language: string = this.translateService.currentLang;
+  quiz_language = "en"
   isAlertOpen = false;
   questionDifficulty: string = "all";
   questionTopic: string = "all";
@@ -96,7 +99,7 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
   private imgA: Animation;
   private helpTimeOut = timeout;
 
-  constructor(private quizSvc: QuizService, private platform: Platform, private animationCtrl: AnimationController) {
+  constructor(private quizSvc: QuizService, private translateService: TranslateService, private platform: Platform, private animationCtrl: AnimationController) {
 
   }
 
@@ -111,11 +114,11 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
       for (let quiz of quizzes) {
         let question = {} as QuestionInGame;
         // @ts-ignore
-        question.value = quiz[this.language].text;
+        question.value = quiz[this.quiz_language].text;
         // @ts-ignore
-        question.answers = quiz[this.language].answers;
+        question.answers = quiz[this.quiz_language].answers;
         // @ts-ignore
-        question.correct_answer = quiz[this.language].answers[quiz.en.correct_answer_index];
+        question.correct_answer = quiz[this.quiz_language].answers[quiz.en.correct_answer_index];
         this.quizList.push(question)
       }
       if (this.quizList?.length == 15) {
@@ -128,22 +131,27 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
         this.networkError = "Service unavailable."
       }
     })
+
     this.loadTopicActions();
     this.loadDifficultyActions();
 
   }
 
   loadDifficultyActions() {
-    for (let item of this.difficultyList) {
-      this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
-        text: item,
-        role: "destructive",
-        data: {
-          action: "difficulty",
-          value: item,
-        },
-      },)
-    }
+    this.difficultyActionSheetButtons = [];
+    this.translateService.getTranslation(this.quiz_language)
+    this.translateService.get('menu.difficulties').subscribe((data: any) => {
+      for (let item of this.difficultyList) {
+        this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
+          text: data[item],
+          role: "destructive",
+          data: {
+            action: "difficulty",
+            value: item,
+          },
+        },)
+      }
+    });
     this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
       text: 'Cancel',
       role: 'cancel',
@@ -156,16 +164,20 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
   }
 
   loadTopicActions() {
-    for (let item of this.topicList) {
-      this.topicActionSheetButtons = this.topicActionSheetButtons.concat({
-        text: item,
-        role: "destructive",
-        data: {
-          action: "topic",
-          value: item,
-        },
-      },)
-    }
+    this.topicActionSheetButtons = [];
+    this.translateService.getTranslation(this.quiz_language)
+    this.translateService.get('menu.topics').subscribe((data: any) => {
+      for (let item of this.topicList) {
+        this.topicActionSheetButtons = this.topicActionSheetButtons.concat({
+          text: data[item],
+          role: "destructive",
+          data: {
+            action: "topic",
+            value: item,
+          },
+        },)
+      }
+    });
     this.topicActionSheetButtons = this.topicActionSheetButtons.concat({
       text: 'Cancel',
       role: 'cancel',
@@ -516,20 +528,24 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
   }
 
   setLanguage(lang: string) {
-    if (lang != this.language.substring(0, 2)) {
-      this.language = lang;
+    if (lang != this.quiz_language.substring(0, 2)) {
+      this.quiz_language = lang;
+      this.translateService.use(this.quiz_language);  // add this
       if (this.active) {
         this.quizList = [];
         for (let quiz of this.quizData) {
           let question = {} as QuestionInGame;
           // @ts-ignore
-          question.value = quiz[this.language].text;
+          question.value = quiz[this.quiz_language].text;
           // @ts-ignore
-          question.answers = quiz[this.language].answers;
+          question.answers = quiz[this.quiz_language].answers;
           // @ts-ignore
-          question.correct_answer = quiz[this.language].answers[quiz.en.correct_answer_index];
+          question.correct_answer = quiz[this.quiz_language].answers[quiz.en.correct_answer_index];
           this.quizList.push(question)
         }
+      } else {
+        this.loadTopicActions();
+        this.loadDifficultyActions();
       }
     }
   }

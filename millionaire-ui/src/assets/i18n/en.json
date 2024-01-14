@@ -4,6 +4,19 @@
     "select_topic": "Select topic",
     "select_difficulty": "Select difficulty",
     "contact": "Contact",
+    "contact_tab": {
+      "title": "Contact Tab",
+      "description": "Any issues or thoughts about the quiz? Feel free to tell us! Thank you for helping the development with your feedback!",
+      "submit": "Submit",
+      "input": "Enter text",
+      "input_type": "Type something here",
+      "disclaimer": "* Any personal data is optional.",
+      "name": "Name",
+      "email": "E-mail",
+      "message": "Message"
+    },
+    "current_topic": "Topic: {{topic}}",
+    "topic": "Topic",
     "topics": {
       "all": "All",
       "arts": "Arts",
@@ -21,6 +34,8 @@
       "physics": "Physics",
       "sports": "Sports"
     },
+    "cancel": "Cancel",
+    "current_difficulty": "Difficulty: {{difficulty}}",
     "difficulties": {
       "all": "All",
       "easy": "Easy",
@@ -30,6 +45,16 @@
   },
   "app": {
     "title": "Who wants to be a millionaire?",
-    "short_title": "Millionaire"
+    "short_title": "Millionaire",
+    "network_error": "Network connection error has occured."
+  },
+  "quiz": {
+    "won": "CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON  {{prize}} !!!",
+    "try_again": "Try Again",
+    "next": "Next",
+    "incorrect_answer": "Wrong answer.",
+    "halving": "Take away two wrong answer",
+    "phone": "Phone a friend",
+    "audience": "Ask the audience"
   }
 }

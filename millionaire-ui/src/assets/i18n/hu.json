@@ -4,6 +4,19 @@
     "select_topic": "Témakörök",
     "select_difficulty": "Nehézség",
     "contact": "Kapcsolat",
+    "contact_tab": {
+      "title": "Kapcsolat Fül",
+      "description": "Kérdése vagy véleménye van a kvízről? Ossza meg velünk! Köszönjük, hogy segíti a fejlesztést a visszajelzésével!",
+      "submit": "Küldés",
+      "input": "Szöveg beírása",
+      "input_type": "Írjon valamit ide",
+      "disclaimer": "* Személyes adatok megadása opcionális.",
+      "name": "Név",
+      "email": "E-mail",
+      "message": "Üzenet"
+    },
+    "current_topic": "Témakör: {{topic}}",
+    "topic": "Témakör",
     "topics": {
       "all": "Mind",
       "arts": "Művészet",
@@ -21,15 +34,27 @@
       "physics": "Fizika",
       "sports": "Sport"
     },
+    "current_difficulty": "Nehézség: {{difficulty}}",
     "difficulties": {
       "all": "Mind",
       "easy": "Könnyű",
       "medium": "Közepes",
       "hard": "Nehéz"
-    }
+    },
+    "cancel": "Mégse"
   },
   "app": {
     "title": "Legyen Ön is Milliomos!",
-    "short_title": "Milliomos"
+    "short_title": "Milliomos",
+    "network_error": "Hálózati hiba történt."
+  },
+  "quiz": {
+    "won": "CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON  {{prize}} !!!",
+    "try_again": "Próbálja újra",
+    "next": "Következő",
+    "incorrect_answer": "Rossz válasz.",
+    "halving": "Vegyen el két rossz választ",
+    "phone": "Hívjon fel egy barátot",
+    "audience": "Kérdezze meg a közönséget"
   }
 }

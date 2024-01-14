@@ -39,7 +39,6 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
   quizList: QuestionInGame[] = [];
   quizListSubs: Subscription = new Subscription();
   difficultyList: string[] = ["all", "easy", "medium", "hard"];
-  topicListLocalized = [];
   topicList: string[] = [
     "all",
     "arts",
@@ -76,11 +75,13 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
   ];
   language: string = this.translateService.currentLang;
   quiz_language = "en"
+  tooltips = {halving: "", audience: "", phone: ""}
   isAlertOpen = false;
   questionDifficulty: string = "all";
   questionTopic: string = "all";
   startBtnClicked: boolean = false;
   active: boolean = false;
+  isWinning: boolean = false;
   networkError = "";
   help_modules: { halving: boolean; audience: boolean; phone: boolean } = {halving: true, audience: true, phone: true};
   usePhone: boolean = false;
@@ -131,19 +132,28 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
         this.networkError = "Service unavailable."
       }
     })
-
+    this.loadTooltips();
     this.loadTopicActions();
     this.loadDifficultyActions();
 
   }
 
+  loadTooltips() {
+    this.translateService.getTranslation(this.quiz_language);
+    this.translateService.get('quiz').subscribe((data: any) => {
+      this.tooltips.halving = data.halving;
+      this.tooltips.audience = data.audience;
+      this.tooltips.phone = data.phone;
+    })
+  }
+
   loadDifficultyActions() {
     this.difficultyActionSheetButtons = [];
     this.translateService.getTranslation(this.quiz_language)
-    this.translateService.get('menu.difficulties').subscribe((data: any) => {
+    this.translateService.get('menu').subscribe((data: any) => {
       for (let item of this.difficultyList) {
         this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
-          text: data[item],
+          text: data.difficulties[item],
           role: "destructive",
           data: {
             action: "difficulty",
@@ -151,25 +161,26 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
           },
         },)
       }
+      this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
+        text: data.cancel,
+        role: 'cancel',
+        data: {
+          action: 'cancel',
+          value: ''
+        },
+      });
     });
-    this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
-      text: 'Cancel',
-      role: 'cancel',
-      data: {
-        action: 'cancel',
-        value: ''
-      },
-    });
+
 
   }
 
   loadTopicActions() {
     this.topicActionSheetButtons = [];
     this.translateService.getTranslation(this.quiz_language)
-    this.translateService.get('menu.topics').subscribe((data: any) => {
+    this.translateService.get('menu').subscribe((data: any) => {
       for (let item of this.topicList) {
         this.topicActionSheetButtons = this.topicActionSheetButtons.concat({
-          text: data[item],
+          text: data.topics[item],
           role: "destructive",
           data: {
             action: "topic",
@@ -177,16 +188,15 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
           },
         },)
       }
+      this.topicActionSheetButtons = this.topicActionSheetButtons.concat({
+        text: data.cancel,
+        role: 'cancel',
+        data: {
+          action: 'cancel',
+          value: ''
+        },
+      });
     });
-    this.topicActionSheetButtons = this.topicActionSheetButtons.concat({
-      text: 'Cancel',
-      role: 'cancel',
-      data: {
-        action: 'cancel',
-        value: ''
-      },
-    });
-
   }
 
   ngOnDestroy() {
@@ -213,8 +223,7 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
       return
     }
     if (this.quizList[this.level].correct_answer == answer && this.level == 14) {
-      this.quizList[this.level].value = 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON ' + this.prizesList[14] + '!!!';
-      this.quizList[this.level].answers = [];
+      this.isWinning = true;
       this.playAudio('final_theme')
       // @ts-ignore
       clearTimeout(this.helpTimeOut);
@@ -377,23 +386,8 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
   }
 
   getTooltip(help_type: string): string {
-    let label = "";
-
-    switch (help_type) {
-      case "halving":
-        label = "Take away two wrong answer";
-        break;
-      case "phone":
-        label = "Phone a friend";
-        break;
-      case "audience":
-        label = "Ask the audience";
-        break;
-      default:
-        break;
-    }
-
-    return label;
+    // @ts-ignore
+    return this.tooltips[help_type];
   }
 
   // @ts-ignore
@@ -532,6 +526,7 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
       this.quiz_language = lang;
       this.translateService.use(this.quiz_language);  // add this
       if (this.active) {
+        this.loadTooltips();
         this.quizList = [];
         for (let quiz of this.quizData) {
           let question = {} as QuestionInGame;

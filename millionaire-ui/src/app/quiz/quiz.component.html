@@ -24,27 +24,28 @@
 
       </ion-title>
       <ion-row *ngIf="!isDesktop()">
-        <ion-col style="font-size: 16px; margin-top: 8px;">
+        <ion-col style="font-size: 14px; margin-top: 10px;">
           Who wants to be a millionaire?
         </ion-col>
-        <ion-col *ngIf="!isDesktop() && active" size="1">
+        <ion-col *ngIf="!isDesktop()" size="1" style="margin-right: 4px;">
           <ion-chip>
             <ion-icon (click)="allowSounds ? allowSounds= false : allowSounds = true"
-                      class="mobile-ion-icon" name="{{allowSounds ? 'volume-high' :  'volume-mute'}}"
+                      name="{{allowSounds ? 'volume-high' :  'volume-mute'}}"
+                      style="font-size: 16px;"
             ></ion-icon>
           </ion-chip>
         </ion-col>
-        <ion-col *ngIf="!isDesktop() && active" size="1">
+        <ion-col *ngIf="!isDesktop()" size="1" style="margin-right: 9px;">
           <ion-chip (click)="setLanguage('en')">
             <ion-icon class="fi fi-gb mobile-ion-icon"></ion-icon>
           </ion-chip>
         </ion-col>
-        <ion-col *ngIf="!isDesktop() && active" size="1">
+        <ion-col *ngIf="!isDesktop()" size="1" style="margin-right: 9px;">
           <ion-chip (click)="setLanguage('de')">
             <ion-icon class="fi fi-de mobile-ion-icon"></ion-icon>
           </ion-chip>
         </ion-col>
-        <ion-col *ngIf="!isDesktop() && active" size="1" style="margin-right: 5px;">
+        <ion-col *ngIf="!isDesktop()" size="1" style="margin-right: 15px;">
           <ion-chip (click)="setLanguage('hu')">
             <ion-icon class="fi fi-hu mobile-ion-icon"></ion-icon>
           </ion-chip>
@@ -89,31 +90,6 @@
                     style="text-align: center">{{"More than 1.4k+ questions to check out now!!"}}</ion-card-title>
                 </ion-header>
               </ion-card>
-              <ion-row *ngIf="!isDesktop()">
-                <ion-col size="2"></ion-col>
-                <ion-col size="2">
-                  <ion-chip>
-                    <ion-icon (click)="allowSounds ? allowSounds= false : allowSounds = true"
-                              name="{{allowSounds ? 'volume-high' :  'volume-mute'}}"
-                    ></ion-icon>
-                  </ion-chip>
-                </ion-col>
-                <ion-col size="2">
-                  <ion-chip (click)="setLanguage('en')">
-                    <ion-icon class="fi fi-gb" size="small"></ion-icon>
-                  </ion-chip>
-                </ion-col>
-                <ion-col size="2">
-                  <ion-chip (click)="setLanguage('de')">
-                    <ion-icon class="fi fi-de"></ion-icon>
-                  </ion-chip>
-                </ion-col>
-                <ion-col size="2">
-                  <ion-chip (click)="setLanguage('hu')">
-                    <ion-icon class="fi fi-hu"></ion-icon>
-                  </ion-chip>
-                </ion-col>
-              </ion-row>
               <ion-button (click)="startQuiz()" *ngIf="level===0 && !startBtnClicked && networkError ==='' "
                           class="btn-grad"
                           color="none"

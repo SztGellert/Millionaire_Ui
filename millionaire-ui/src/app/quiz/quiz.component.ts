@@ -400,7 +400,6 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   startQuiz() {
-    this.level = 14;
     this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty);
   }
 

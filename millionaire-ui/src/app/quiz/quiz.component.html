@@ -1,38 +1,63 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      <ion-col *ngIf="isDesktop" size-md="10">
-        Who wants to be a millionaire?
-      </ion-col>
-      <ion-col *ngIf="!isDesktop">
-        Millionaire
-      </ion-col>
-      <ion-col *ngIf="isDesktop()" offset-md="8" size-md="2">
-        <ion-chip>
-          <ion-icon (click)="allowSounds ? allowSounds= false : allowSounds = true" *ngIf="isDesktop()"
-                    name="{{allowSounds ? 'volume-high' :  'volume-mute'}}"></ion-icon>
-        </ion-chip>
-        <ion-chip (click)="setLanguage('en')">
-          <ion-icon class="fi fi-gb" size="small"></ion-icon>
-        </ion-chip>
-        <ion-chip (click)="setLanguage('de')">
-          <ion-icon class="fi fi-de"></ion-icon>
-        </ion-chip>
-        <ion-chip (click)="setLanguage('hu')">
-          <ion-icon class="fi fi-hu"></ion-icon>
-        </ion-chip>
-      </ion-col>
-
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-<ion-alert
-  [isOpen]="isAlertOpen"
-  class="{{!active ? 'redalert' : 'cssalert'}}"
-  header="{{active ? prizesList[level] : 'Wrong answer.'}}"
->
-</ion-alert>
 <ion-content [fullscreen]="true">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>
+        <ion-col *ngIf="isDesktop()" size-md="10">
+          Who wants to be a millionaire?
+        </ion-col>
+
+        <ion-col *ngIf="isDesktop()" offset-md="8" size-md="2">
+          <ion-chip>
+            <ion-icon (click)="allowSounds ? allowSounds= false : allowSounds = true" *ngIf="isDesktop()"
+                      name="{{allowSounds ? 'volume-high' :  'volume-mute'}}"></ion-icon>
+          </ion-chip>
+          <ion-chip (click)="setLanguage('en')">
+            <ion-icon class="fi fi-gb"></ion-icon>
+          </ion-chip>
+          <ion-chip (click)="setLanguage('de')">
+            <ion-icon class="fi fi-de"></ion-icon>
+          </ion-chip>
+          <ion-chip (click)="setLanguage('hu')">
+            <ion-icon class="fi fi-hu"></ion-icon>
+          </ion-chip>
+        </ion-col>
+
+      </ion-title>
+      <ion-row *ngIf="!isDesktop()">
+        <ion-col style="font-size: 16px; margin-top: 8px;">
+          Who wants to be a millionaire?
+        </ion-col>
+        <ion-col *ngIf="!isDesktop() && active" size="1">
+          <ion-chip>
+            <ion-icon (click)="allowSounds ? allowSounds= false : allowSounds = true"
+                      class="mobile-ion-icon" name="{{allowSounds ? 'volume-high' :  'volume-mute'}}"
+            ></ion-icon>
+          </ion-chip>
+        </ion-col>
+        <ion-col *ngIf="!isDesktop() && active" size="1">
+          <ion-chip (click)="setLanguage('en')">
+            <ion-icon class="fi fi-gb mobile-ion-icon"></ion-icon>
+          </ion-chip>
+        </ion-col>
+        <ion-col *ngIf="!isDesktop() && active" size="1">
+          <ion-chip (click)="setLanguage('de')">
+            <ion-icon class="fi fi-de mobile-ion-icon"></ion-icon>
+          </ion-chip>
+        </ion-col>
+        <ion-col *ngIf="!isDesktop() && active" size="1" style="margin-right: 5px;">
+          <ion-chip (click)="setLanguage('hu')">
+            <ion-icon class="fi fi-hu mobile-ion-icon"></ion-icon>
+          </ion-chip>
+        </ion-col>
+      </ion-row>
+    </ion-toolbar>
+  </ion-header>
+  <ion-alert
+    [isOpen]="isAlertOpen"
+    class="{{!active ? 'redalert' : 'cssalert'}}"
+    header="{{active ? prizesList[level] : 'Wrong answer.'}}"
+  >
+  </ion-alert>
   <ion-grid>
     <ion-row>
       <ng-container *ngIf="networkError">

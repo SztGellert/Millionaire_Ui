@@ -1,0 +1,60 @@
+{
+  "menu": {
+    "start": "Start",
+    "select_topic": "Thema auswählen",
+    "select_difficulty": "Schwierigkeit auswählen",
+    "contact": "Kontakt",
+    "current_topic": "Thema: {{topic}}",
+    "topic": "Thema",
+    "topics": {
+      "all": "Alle",
+      "arts": "Kunst",
+      "biology": "Biologie",
+      "chemistry": "Chemie",
+      "economy": "Wirtschaft",
+      "gastronomy": "Gastronomie",
+      "general": "Allgemein",
+      "geography": "Geographie",
+      "history": "Geschichte",
+      "literature": "Literatur",
+      "mathematics": "Mathematik",
+      "music": "Musik",
+      "original": "Original",
+      "physics": "Physik",
+      "sports": "Sport"
+    },
+    "cancel": "Abbrechen",
+    "contact_tab": {
+      "title": "Kontakt Tab",
+      "description": "Irgendwelche Fragen oder Gedanken zum Quiz? Fühlen Sie sich frei, uns das mitzuteilen! Danke, dass Sie die Entwicklung mit Ihrem Feedback unterstützen!",
+      "submit": "Abschicken",
+      "input": "Text eingeben",
+      "input_type": "Geben Sie hier etwas ein",
+      "disclaimer": "* Alle persönlichen Angaben sind freiwillig.",
+      "name": "Name",
+      "email": "E-Mail",
+      "message": "Nachricht"
+    },
+    "current_difficulty": "Schwierigkeit: {{difficulty}}",
+    "difficulties": {
+      "all": "Alle",
+      "easy": "Leicht",
+      "medium": "Mittel",
+      "hard": "Schwer"
+    }
+  },
+  "app": {
+    "title": "Wer wird Millionär?",
+    "short_title": "Millionär",
+    "network_error": "Es ist ein Netzwerkverbindungsfehler aufgetreten."
+  },
+  "quiz": {
+    "won": "HERZLICHEN GLÜCKWUNSCH!!! SIE SIND MILLIONÄR!! Sie haben gerade den {{prize}} gewonnen !!!",
+    "try_again": "Nochmal versuchen",
+    "next": "Nächster",
+    "incorrect_answer": "Falsche Antwort",
+    "halving": "Nimm zwei falsche Antworten weg",
+    "phone": "Ruf einen Freund an",
+    "audience": "Frag das Publikum"
+  }
+}

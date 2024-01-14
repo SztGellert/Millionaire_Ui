@@ -1,8 +1,26 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChildren
+} from '@angular/core';
 import {Question, QuizService} from "./quiz.service";
-import {Subscription} from "rxjs";
-import {Platform} from '@ionic/angular';
+import {Subscription, timeout} from "rxjs";
+import {Animation, AnimationController, IonImg, Platform} from '@ionic/angular';
 import {NgForm} from "@angular/forms";
+import {TranslateService} from "@ngx-translate/core";
+
+interface QuestionInGame {
+  value: string;
+  answers: string[];
+  correct_answer: string;
+  topic: string;
+  difficulty: boolean;
+}
 
 @Component({
   selector: 'app-quiz',
@@ -10,12 +28,15 @@ import {NgForm} from "@angular/forms";
   styleUrls: ['./quiz.component.scss'],
 })
 
+export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
 
-export class QuizComponent implements OnInit, OnDestroy {
-
+  // @ts-ignore
+  @ViewChildren(IonImg, {read: ElementRef}) imgElements: QueryList<ElementRef<HTMLIonImgElement>>;
   level: number = 0;
   selectedAnswer: string = "";
-  quizList: Question[] = [];
+
+  quizData: Question[] = [];
+  quizList: QuestionInGame[] = [];
   quizListSubs: Subscription = new Subscription();
   difficultyList: string[] = ["all", "easy", "medium", "hard"];
   topicList: string[] = [
@@ -52,11 +73,15 @@ export class QuizComponent implements OnInit, OnDestroy {
     "£500.000",
     "£1.000.000"
   ];
+  language: string = this.translateService.currentLang;
+  quiz_language = "en"
+  tooltips = {halving: "", audience: "", phone: ""}
   isAlertOpen = false;
   questionDifficulty: string = "all";
   questionTopic: string = "all";
   startBtnClicked: boolean = false;
   active: boolean = false;
+  isWinning: boolean = false;
   networkError = "";
   help_modules: { halving: boolean; audience: boolean; phone: boolean } = {halving: true, audience: true, phone: true};
   usePhone: boolean = false;
@@ -67,10 +92,16 @@ export class QuizComponent implements OnInit, OnDestroy {
   public difficultyActionSheetButtons: { text: string, role: string, data: { action: string, value: string } }[] = [];
   feedbackModal: boolean = false;
   checkedAnswer: boolean = false;
-
+  allowSounds: boolean = false;
+  isReload: boolean = false;
+  audio = new Audio();
   protected readonly Object = Object;
+  // @ts-ignore
+  private imgA: Animation;
+  private helpTimeOut = timeout;
 
-  constructor(private quizSvc: QuizService, private platform: Platform) {
+  constructor(private quizSvc: QuizService, private translateService: TranslateService, private platform: Platform, private animationCtrl: AnimationController) {
+
   }
 
   public isDesktop() {
@@ -80,7 +111,17 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.quizListSubs = this.quizSvc.quizzesChanged.subscribe(quizzes => {
-      this.quizList = quizzes;
+      this.quizData = quizzes;
+      for (let quiz of quizzes) {
+        let question = {} as QuestionInGame;
+        // @ts-ignore
+        question.value = quiz[this.quiz_language].text;
+        // @ts-ignore
+        question.answers = quiz[this.quiz_language].answers;
+        // @ts-ignore
+        question.correct_answer = quiz[this.quiz_language].answers[quiz.en.correct_answer_index];
+        this.quizList.push(question)
+      }
       if (this.quizList?.length == 15) {
         for (let i = 0; i < this.quizList.length; i++) {
           this.quizList[i].answers = this.quizList[i].answers.sort(() => Math.random() - 0.5);
@@ -91,52 +132,71 @@ export class QuizComponent implements OnInit, OnDestroy {
         this.networkError = "Service unavailable."
       }
     })
+    this.loadTooltips();
     this.loadTopicActions();
     this.loadDifficultyActions();
+
+  }
+
+  loadTooltips() {
+    this.translateService.getTranslation(this.quiz_language);
+    this.translateService.get('quiz').subscribe((data: any) => {
+      this.tooltips.halving = data.halving;
+      this.tooltips.audience = data.audience;
+      this.tooltips.phone = data.phone;
+    })
   }
 
   loadDifficultyActions() {
-    for (let item of this.difficultyList) {
+    this.difficultyActionSheetButtons = [];
+    this.translateService.getTranslation(this.quiz_language)
+    this.translateService.get('menu').subscribe((data: any) => {
+      for (let item of this.difficultyList) {
+        this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
+          text: data.difficulties[item],
+          role: "destructive",
+          data: {
+            action: "difficulty",
+            value: item,
+          },
+        },)
+      }
       this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
-        text: item,
-        role: "destructive",
+        text: data.cancel,
+        role: 'cancel',
         data: {
-          action: "difficulty",
-          value: item,
+          action: 'cancel',
+          value: ''
         },
-      },)
-    }
-    this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
-      text: 'Cancel',
-      role: 'cancel',
-      data: {
-        action: 'cancel',
-        value: ''
-      },
+      });
     });
+
 
   }
 
   loadTopicActions() {
-    for (let item of this.topicList) {
+    this.topicActionSheetButtons = [];
+    this.translateService.getTranslation(this.quiz_language)
+    this.translateService.get('menu').subscribe((data: any) => {
+      for (let item of this.topicList) {
+        this.topicActionSheetButtons = this.topicActionSheetButtons.concat({
+          text: data.topics[item],
+          role: "destructive",
+          data: {
+            action: "topic",
+            value: item,
+          },
+        },)
+      }
       this.topicActionSheetButtons = this.topicActionSheetButtons.concat({
-        text: item,
-        role: "destructive",
+        text: data.cancel,
+        role: 'cancel',
         data: {
-          action: "topic",
-          value: item,
+          action: 'cancel',
+          value: ''
         },
-      },)
-    }
-    this.topicActionSheetButtons = this.topicActionSheetButtons.concat({
-      text: 'Cancel',
-      role: 'cancel',
-      data: {
-        action: 'cancel',
-        value: ''
-      },
+      });
     });
-
   }
 
   ngOnDestroy() {
@@ -152,35 +212,45 @@ export class QuizComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         this.level += 1
         this.checkedAnswer = false;
+        this.selectedAnswer = "";
       }, 1800)
       this.isAlertOpen = true;
       this.usePhone = false;
       this.statDict = {};
+      // @ts-ignore
+      clearTimeout(this.helpTimeOut);
+      this.playAudio("correct_answer", 2)
       return
     }
     if (this.quizList[this.level].correct_answer == answer && this.level == 14) {
-      this.quizList[this.level].value = 'CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON ' + this.prizesList[14] + '!!!';
-      this.quizList[this.level].answers = [];
+      this.isWinning = true;
+      this.playAudio('final_theme')
+      // @ts-ignore
+      clearTimeout(this.helpTimeOut);
       return
     }
+    this.playAudio("wrong_answer")
     this.active = false;
     this.isAlertOpen = true;
     setTimeout(() => {
       this.isAlertOpen = false;
     }, 1500)
+    // @ts-ignore
+    clearTimeout(this.helpTimeOut);
 
   }
 
   // @ts-ignore
-  selectAnswer(ev) {
-    this.selectedAnswer = ev.target.value;
+  selectAnswer(answer) {
+    this.selectedAnswer = answer;
     // @ts-ignore
     this.selectIndex = this.quizList[this.level].answers.indexOf(this.selectedAnswer);
   }
 
   audience() {
-    if (this.help_modules.audience) {
-      this.help_modules.audience = false;
+
+    // @ts-ignore
+    const func = () => {
       let max = 100;
       let min = 40;
       let correct_chance = Math.floor(Math.random() * (max - min + 1) + min)
@@ -206,6 +276,21 @@ export class QuizComponent implements OnInit, OnDestroy {
       if (sum != 100) {
         throw Error("Audience feature unexpected error.");
       }
+    };
+
+
+    if (this.help_modules.audience) {
+      this.help_modules.audience = false;
+      if (this.allowSounds) {
+        this.playAudio('audience', 36)
+        // @ts-ignore
+        this.helpTimeOut = setTimeout(() => {
+          func();
+        }, 33000);
+      } else {
+        func();
+      }
+
     }
   }
 
@@ -216,6 +301,7 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   halving() {
     if (this.help_modules.halving) {
+      this.playAudio('halving')
 
       this.help_modules.halving = false;
 
@@ -236,9 +322,17 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   phone() {
     if (this.help_modules.phone) {
-
+      if (!this.allowSounds) {
+        this.help_modules.phone = false;
+        this.usePhone = true;
+        return
+      }
+      this.playAudio('phone', 46)
       this.help_modules.phone = false;
-      this.usePhone = true;
+      // @ts-ignore
+      this.helpTimeOut = setTimeout(() => {
+        this.usePhone = true;
+      }, 42000)
     }
   }
 
@@ -253,6 +347,11 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.networkError = "";
     this.statDict = {};
     this.checkedAnswer = false;
+    this.selectedAnswer = "";
+    this.isReload = true;
+    this.audio.pause();
+    // @ts-ignore
+    clearTimeout(this.helpTimeOut);
   }
 
   // @ts-ignore
@@ -287,23 +386,8 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   getTooltip(help_type: string): string {
-    let label = "";
-
-    switch (help_type) {
-      case "halving":
-        label = "Take away two wrong answer";
-        break;
-      case "phone":
-        label = "Phone a friend";
-        break;
-      case "audience":
-        label = "Ask the audience";
-        break;
-      default:
-        break;
-    }
-
-    return label;
+    // @ts-ignore
+    return this.tooltips[help_type];
   }
 
   // @ts-ignore
@@ -328,6 +412,136 @@ export class QuizComponent implements OnInit, OnDestroy {
     if (contactForm.valid) {
       const email = contactForm.value;
       this.quizSvc.sendFeedbackEmail(email)
+    }
+  }
+
+  playAudio(name: string, timeout: number = 0) {
+    if (this.allowSounds) {
+      let src = "";
+      switch (name) {
+        case 'correct_answer':
+          src = "https://www.myinstants.com/media/sounds/correct_VsVqwRb.mp3";
+          break;
+        case 'wrong_answer':
+          src = 'https://www.myinstants.com/media/sounds/wrong_JbK803k.mp3'
+          break;
+        case 'final_theme':
+          src = "https://delta.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/uujixeault/62%20%241%2C000%2C000%20Win.mp3"
+          break;
+        case 'halving':
+          src = 'https://delta.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/oqmqjluggn/67%2050-50.mp3';
+          break;
+        case 'phone':
+          src = 'https://delta.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/tntjwcmahr/66%20Phone-A-Friend.mp3';
+          break;
+        case 'audience':
+          src = 'https://delta.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lwhnnzheda/68%20Ask%20The%20Audience.mp3';
+          break;
+        default:
+          break
+      }
+
+
+      this.audio.src = src;
+      this.audio.load();
+      this.audio.play();
+
+      if (timeout != 0) {
+        setTimeout(() => {
+          this.audio.pause()
+        }, timeout * 1000)
+      }
+
+    }
+  }
+
+  ngAfterViewInit() {
+    this.imgA = this.animationCtrl
+      .create()
+      // @ts-ignore
+      .addElement(this.imgElements.get(0).nativeElement)
+      .fill('none')
+      .duration(100000)
+      .keyframes([
+        {offset: 0, transform: 'scale(1) rotate(0)'},
+        {offset: 0.5, transform: 'scale(5.2) rotate(45deg)'},
+        {offset: 1, transform: 'scale(1) rotate(0)'},
+      ]);
+  }
+
+  ngAfterViewChecked() {
+    return
+    //this.play()
+  }
+
+  play() {
+    this.imgA.play();
+  }
+
+  pause() {
+    this.imgA.pause();
+  }
+
+  stop() {
+    this.imgA.stop();
+  }
+
+  getAnswerClass(answer: string) {
+
+    switch (answer) {
+
+      case this.selectedAnswer  : // all cases
+        if (!this.checkedAnswer) {
+          return 'selected_answer';
+        }
+        if (this.checkedAnswer && !this.active) {
+          return 'wrong_answer';
+        }
+        if (this.checkedAnswer && this.active) {
+          return 'correct_answer';
+        }
+        return 'answer';
+
+      case this.quizList[this.level].correct_answer :
+        if (this.checkedAnswer) {
+          return 'correct_answer';
+        }
+        return 'answer';
+
+      default:
+        if (!this.active) {
+          return 'disabled_answer';
+        }
+        if (this.selectedAnswer) {
+          return 'answer answer_transition';
+        }
+        return 'answer';
+
+
+    }
+  }
+
+  setLanguage(lang: string) {
+    if (lang != this.quiz_language.substring(0, 2)) {
+      this.quiz_language = lang;
+      this.translateService.use(this.quiz_language);  // add this
+      if (this.active) {
+        this.loadTooltips();
+        this.quizList = [];
+        for (let quiz of this.quizData) {
+          let question = {} as QuestionInGame;
+          // @ts-ignore
+          question.value = quiz[this.quiz_language].text;
+          // @ts-ignore
+          question.answers = quiz[this.quiz_language].answers;
+          // @ts-ignore
+          question.correct_answer = quiz[this.quiz_language].answers[quiz.en.correct_answer_index];
+          this.quizList.push(question)
+        }
+      } else {
+        this.loadTopicActions();
+        this.loadDifficultyActions();
+      }
     }
   }
 }

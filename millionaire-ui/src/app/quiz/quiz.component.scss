@@ -9,7 +9,7 @@
 
 .btn-grad {
   --background: none;
-  background-image: linear-gradient(to right, #fc00ff 0%, #00dbde 51%, #fc00ff 100%);
+  background-image: linear-gradient(to right, #8a52fd 0%, #67c7e7 51%, #8a52fd 100%);
   text-align: center;
   text-transform: uppercase;
   transition: 0.5s;
@@ -37,6 +37,7 @@
   box-shadow: 0 0 20px #eee;
   border-radius: 10px;
   display: block;
+
 }
 
 
@@ -60,13 +61,13 @@
 
 .grad2:hover {
   background-position: right center; /* change the direction of the change here */
-  color: #fff;
+  color: #eca01c;
   text-decoration: none;
 }
 
 
 .selected_answer {
-  --background: linear-gradient(to right, #FF8008 0%, #FFC837 51%, #FF8008 100%);
+  background-image: linear-gradient(to right, #FF8008 0%, #FFC837 51%, #FF8008 100%);
   text-align: center;
   text-transform: uppercase;
   transition: 0.5s;
@@ -74,6 +75,8 @@
   color: white;
   box-shadow: 0 0 20px #eee;
   border-radius: 5px;
+  display: block;
+
 }
 
 
@@ -84,7 +87,7 @@
 }
 
 .wrong_answer {
-  --background: linear-gradient(to right, #F00000 0%, #DC281E 51%, #F00000 100%);
+  background-image: linear-gradient(to right, #F00000 0%, #DC281E 51%, #F00000 100%);
   text-align: center;
   text-transform: uppercase;
   transition: 0.5s;
@@ -92,6 +95,8 @@
   color: white;
   box-shadow: 0 0 20px #eee;
   border-radius: 5px;
+  display: block;
+
 }
 
 
@@ -103,7 +108,7 @@
 
 
 .correct_answer {
-  --background: linear-gradient(to right, #56ab2f 0%, #a8e063 51%, #56ab2f 100%);
+  background-image: linear-gradient(to right, #56ab2f 0%, #a8e063 51%, #56ab2f 100%);
   text-align: center;
   text-transform: uppercase;
   transition: 0.5s;
@@ -111,6 +116,8 @@
   color: white;
   box-shadow: 0 0 20px #eee;
   border-radius: 5px;
+  display: block;
+
 }
 
 .correct_answer {
@@ -122,3 +129,67 @@
 .feedBackCard {
   background-image: linear-gradient(to right, #4776E6 0%, #8E54E9 51%, #4776E6 100%);
 }
+
+span {
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  clear: both;
+  contain: content;
+  word-break: break-all;
+  text-align: left;
+
+}
+
+
+.answer {
+  background-image: linear-gradient(to right, #ffffff 0%, #eeeded 51%, #ffffff 100%);
+  border-image: linear-gradient(#4776E6, #8E54E9) 10;
+  border-width: 5px;
+  border-style: solid;
+  text-align: left;
+  text-transform: uppercase;
+  opacity: 0.9;
+  background-size: 200% auto;
+  color: black;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 5px;
+  display: block;
+}
+
+.answer:hover {
+  background-image: linear-gradient(to right, #ffffff 0%, #eca01c 51%, #ffffff 100%);
+  background-position: right center; /* change the direction of the change here */
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.disabled_answer {
+  background-image: linear-gradient(to right, #ffffff 0%, #eeeded 51%, #ffffff 100%);
+  text-transform: uppercase;
+  opacity: 0.5;
+  background-size: 200% auto;
+  color: black;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 5px;
+  display: block;
+}
+
+.answer_transition {
+  transition: 0.5s;
+}
+
+ion-chip {
+  padding-left: 3px;
+  padding-right: 13px;
+}
+
+.mobile-ion-icon {
+  font-size: 16px;
+}
+
+
+
+
+
+

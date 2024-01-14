@@ -1,13 +1,4 @@
-import {
-  AfterViewChecked,
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  QueryList,
-  ViewChildren
-} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {Question, QuizService} from "./quiz.service";
 import {Subscription, timeout} from "rxjs";
 import {Animation, AnimationController, IonImg, Platform} from '@ionic/angular';
@@ -28,7 +19,7 @@ interface QuestionInGame {
   styleUrls: ['./quiz.component.scss'],
 })
 
-export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
+export class QuizComponent implements OnInit, OnDestroy {
 
   // @ts-ignore
   @ViewChildren(IonImg, {read: ElementRef}) imgElements: QueryList<ElementRef<HTMLIonImgElement>>;
@@ -204,39 +195,65 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
   }
 
   checkAnswer(answer: string) {
-    this.checkedAnswer = true;
-    if (this.quizList[this.level].correct_answer == answer && this.level < 14) {
+
+
+    if (this.quizList[this.level].correct_answer == answer) {
+
+      if (this.level < 14) {
+        setTimeout(() => {
+          this.checkedAnswer = true;
+          this.isAlertOpen = true;
+          // @ts-ignore
+          clearTimeout(this.helpTimeOut);
+          this.playAudio("correct_answer", 2)
+          this.usePhone = false;
+          this.statDict = {};
+        }, 4000)
+        setTimeout(() => {
+          this.isAlertOpen = false;
+        }, 5000)
+        setTimeout(() => {
+          this.level += 1
+          this.checkedAnswer = false;
+          this.selectedAnswer = "";
+        }, 5300)
+        this.playAudio('final', 3900)
+
+
+      } else {
+
+        setTimeout(() => {
+          this.checkedAnswer = true;
+          this.isWinning = true;
+          this.playAudio('final_theme')
+          // @ts-ignore
+          clearTimeout(this.helpTimeOut);
+          return
+        }, 7100)
+        this.playAudio('final_answer', 7)
+
+      }
+
+    } else {
+      let timeout = 4000;
+      let sound = "final"
+      if (this.level == 14) {
+        timeout = 7000;
+        sound = 'final_answer'
+      }
       setTimeout(() => {
-        this.isAlertOpen = false;
-      }, 1500)
-      setTimeout(() => {
-        this.level += 1
-        this.checkedAnswer = false;
-        this.selectedAnswer = "";
-      }, 1800)
-      this.isAlertOpen = true;
-      this.usePhone = false;
-      this.statDict = {};
-      // @ts-ignore
-      clearTimeout(this.helpTimeOut);
-      this.playAudio("correct_answer", 2)
-      return
+        this.checkedAnswer = true;
+        this.playAudio("wrong_answer")
+        this.active = false;
+        this.isAlertOpen = true;
+        setTimeout(() => {
+          this.isAlertOpen = false;
+        }, 2500)
+        // @ts-ignore
+        clearTimeout(this.helpTimeOut);
+      }, timeout)
+      this.playAudio(sound, timeout - 100)
     }
-    if (this.quizList[this.level].correct_answer == answer && this.level == 14) {
-      this.isWinning = true;
-      this.playAudio('final_theme')
-      // @ts-ignore
-      clearTimeout(this.helpTimeOut);
-      return
-    }
-    this.playAudio("wrong_answer")
-    this.active = false;
-    this.isAlertOpen = true;
-    setTimeout(() => {
-      this.isAlertOpen = false;
-    }, 1500)
-    // @ts-ignore
-    clearTimeout(this.helpTimeOut);
 
   }
 
@@ -348,6 +365,7 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
     this.statDict = {};
     this.checkedAnswer = false;
     this.selectedAnswer = "";
+    this.isWinning = false;
     this.isReload = true;
     this.audio.pause();
     // @ts-ignore
@@ -382,6 +400,7 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
   }
 
   startQuiz() {
+    this.level = 14;
     this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty);
   }
 
@@ -437,6 +456,12 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
         case 'audience':
           src = 'https://delta.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lwhnnzheda/68%20Ask%20The%20Audience.mp3';
           break;
+        case 'final' :
+          src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/awanowgypj/15%20%242%2C000%20Final%20Answer-.mp3"
+          break;
+        case 'final_answer':
+          src = 'https://www.myinstants.com/media/sounds/final_2_41YMqQj.mp3';
+          break;
         default:
           break
       }
@@ -453,37 +478,6 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
       }
 
     }
-  }
-
-  ngAfterViewInit() {
-    this.imgA = this.animationCtrl
-      .create()
-      // @ts-ignore
-      .addElement(this.imgElements.get(0).nativeElement)
-      .fill('none')
-      .duration(100000)
-      .keyframes([
-        {offset: 0, transform: 'scale(1) rotate(0)'},
-        {offset: 0.5, transform: 'scale(5.2) rotate(45deg)'},
-        {offset: 1, transform: 'scale(1) rotate(0)'},
-      ]);
-  }
-
-  ngAfterViewChecked() {
-    return
-    //this.play()
-  }
-
-  play() {
-    this.imgA.play();
-  }
-
-  pause() {
-    this.imgA.pause();
-  }
-
-  stop() {
-    this.imgA.stop();
   }
 
   getAnswerClass(answer: string) {
@@ -524,7 +518,7 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
   setLanguage(lang: string) {
     if (lang != this.quiz_language.substring(0, 2)) {
       this.quiz_language = lang;
-      this.translateService.use(this.quiz_language);  // add this
+      this.translateService.use(this.quiz_language);
       if (this.active) {
         this.loadTooltips();
         this.quizList = [];
@@ -538,10 +532,9 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
           question.correct_answer = quiz[this.quiz_language].answers[quiz.en.correct_answer_index];
           this.quizList.push(question)
         }
-      } else {
-        this.loadTopicActions();
-        this.loadDifficultyActions();
       }
+      this.loadTopicActions();
+      this.loadDifficultyActions();
     }
   }
 }

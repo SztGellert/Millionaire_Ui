@@ -13,10 +13,21 @@
   text-align: center;
   text-transform: uppercase;
   transition: 0.5s;
-  background-size: 200% auto;
+  @media (min-width: 400px) {
+    background-size: 200% auto;
+    box-shadow: 0 0 20px #eee;
+    width: 100%;
+  }
+  @media (max-width: 400px) {
+    background-size: 180% auto;
+    box-shadow: 0 0 8px #eee;
+    width: 99%;
+
+  }
   color: white;
-  box-shadow: 0 0 20px #eee;
   border-radius: 4px;
+
+  display: inline-block;
 }
 
 .btn-grad:hover {
@@ -188,7 +199,9 @@ ion-chip {
   font-size: 16px;
 }
 
-
+.mobileCard {
+  margin: 0;
+}
 
 
 

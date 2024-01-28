@@ -82,7 +82,7 @@
         </ion-header>
       </ng-container>
       <ion-col *ngIf="level===0 && !startBtnClicked" offset-md="2" size-md="8" style="fill: #56ab2f">
-        <ion-card>
+        <ion-card [ngClass]="isDesktop() ? '': 'mobileCard'">
           <ion-row *ngIf="level===0 && !startBtnClicked">
             <ion-col offset-md="4" size-md="4">
               <ion-img
@@ -93,26 +93,26 @@
                           class="btn-grad"
                           color="none"
                           id="startBtn"
-                          style="width: 100%; display: inline-block;">{{ 'menu.start' | translate }}
+              >{{ 'menu.start' | translate }}
 
               </ion-button>
               <ion-button (click)="!showTopicActionSheet ? showTopicActionSheet = true : ''"
                           *ngIf="level===0 && !startBtnClicked && networkError ==='' "
                           class="btn-grad"
                           color="none"
-                          style="width: 100%; display: inline-block;">{{ 'menu.select_topic' | translate }}
+              >{{ 'menu.select_topic' | translate }}
               </ion-button>
               <ion-button (click)="!showDifficultyActionSheet ? showDifficultyActionSheet = true : ''"
                           *ngIf="level===0 && !startBtnClicked && networkError ==='' "
                           class="btn-grad"
                           color="none"
-                          style="width: 100%; display: inline-block;">{{ 'menu.select_difficulty' | translate }}
+              >{{ 'menu.select_difficulty' | translate }}
               </ion-button>
               <ion-button (click)="!feedbackModal ? feedbackModal = true : '';"
                           *ngIf="level===0 && !startBtnClicked && networkError ==='' "
                           class="btn-grad"
                           color="none"
-                          style="width: 100%; display: inline-block;">{{ 'menu.contact' | translate }}
+              >{{ 'menu.contact' | translate }}
 
               </ion-button>
               <ion-action-sheet
@@ -187,7 +187,7 @@
         </ion-card>
       </ion-col>
       <ion-col *ngIf="quizList[level] && startBtnClicked" offset-md="2" size-md="8">
-        <ion-card>
+        <ion-card [ngClass]="isDesktop() ? '': 'mobileCard'">
           <ion-card-title style="{{'background: border-radius: 5px;'}}">
             <ion-card
               [ngStyle]="{'background': isWinning ? 'orange' : ''}"
@@ -296,7 +296,7 @@
                             [ngStyle]="{'--background': help_modules['halving'] ? '' : 'red' }"
                             class="ion-align-self-end grad2"
                             color="none"
-                            disabled="{{!active || !help_modules['halving']}}"
+                            disabled="{{!active || !help_modules['halving'] || pendingAnswer}}"
                             matTooltip="{{ getTooltip('halving') }}"
                             matTooltipPosition="above" size="small"
                             style="{{isDesktop() ? 'width: 25%;' : 'width: 30%;'}}"
@@ -307,7 +307,7 @@
                             [ngStyle]="{'--background': help_modules['phone'] ? '' : 'red' }"
                             class="ion-align-self-end grad2"
                             color="none"
-                            disabled="{{!active || !help_modules['phone']}}"
+                            disabled="{{!active || !help_modules['phone'] || pendingAnswer}}"
                             matTooltip="{{ getTooltip('phone') }}"
                             matTooltipPosition="above"
                             size="small"
@@ -319,7 +319,7 @@
                             *ngIf=" quizList[level].value !== 'Fail' && !isWinning"
                             class="ion-align-self-end grad2"
                             color="none"
-                            disabled="{{!active || !help_modules['audience']}}"
+                            disabled="{{!active || !help_modules['audience'] || pendingAnswer}}"
                             matTooltip="{{ getTooltip('audience') }}"
                             matTooltipPosition="above"
                             size="small"
@@ -335,6 +335,7 @@
                 <ion-button (click)="checkAnswer(selectedAnswer)"
                             *ngIf=" quizList[level]?.value !== 'Fail' && !isWinning && active"
                             class="grad2" color="none"
+                            disabled="{{pendingAnswer}}"
                             size="small"
                             style="width: 100%; display: inline-block;">{{ 'quiz.next' | translate }}
                 </ion-button>

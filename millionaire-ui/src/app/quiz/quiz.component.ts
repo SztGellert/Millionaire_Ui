@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {Question, QuizService} from "./quiz.service";
 import {Subscription, timeout} from "rxjs";
-import {Animation, AnimationController, IonImg, Platform} from '@ionic/angular';
+import {AnimationController, IonImg, Platform} from '@ionic/angular';
 import {NgForm} from "@angular/forms";
 import {TranslateService} from "@ngx-translate/core";
 
@@ -83,12 +83,12 @@ export class QuizComponent implements OnInit, OnDestroy {
   public difficultyActionSheetButtons: { text: string, role: string, data: { action: string, value: string } }[] = [];
   feedbackModal: boolean = false;
   checkedAnswer: boolean = false;
+  pendingAnswer: boolean = false;
   allowSounds: boolean = false;
   isReload: boolean = false;
   audio = new Audio();
   protected readonly Object = Object;
   // @ts-ignore
-  private imgA: Animation;
   private helpTimeOut = timeout;
 
   constructor(private quizSvc: QuizService, private translateService: TranslateService, private platform: Platform, private animationCtrl: AnimationController) {
@@ -196,6 +196,7 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   checkAnswer(answer: string) {
 
+    this.pendingAnswer = true;
 
     if (this.quizList[this.level].correct_answer == answer) {
 
@@ -216,6 +217,7 @@ export class QuizComponent implements OnInit, OnDestroy {
           this.level += 1
           this.checkedAnswer = false;
           this.selectedAnswer = "";
+          this.pendingAnswer = false;
         }, 5300)
         this.playAudio('final', 3900)
 
@@ -363,6 +365,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.startBtnClicked = false;
     this.networkError = "";
     this.statDict = {};
+    this.pendingAnswer = false;
     this.checkedAnswer = false;
     this.selectedAnswer = "";
     this.isWinning = false;

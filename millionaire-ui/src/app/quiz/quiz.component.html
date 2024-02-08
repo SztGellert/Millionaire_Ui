@@ -124,7 +124,7 @@
               <ion-action-sheet
                 (didDismiss)="logResult($event)"
                 [buttons]="difficultyActionSheetButtons"
-                header="   {{ 'menu.current_difficulty' | translate:{difficulty: 'menu.topics.'+ questionDifficulty | translate} }}"
+                header="   {{ 'menu.current_difficulty' | translate:{difficulty: 'menu.difficulties.'+ questionDifficulty | translate} }}"
                 isOpen='{{showDifficultyActionSheet}}'
               ></ion-action-sheet>
               <ion-modal (didDismiss)="setOpen(false)" [isOpen]="feedbackModal"
@@ -220,7 +220,8 @@
                              slot="start">{{  getStat(quizList[level].answers[0]).toString().length < 2 ? getStat(quizList[level].answers[0]) + " % " : getStat(quizList[level].answers[0]) + "%" }}</ion-badge>
                   <ion-icon *ngIf="usePhone && quizList[level].answers[0] === quizList[level]?.correct_answer "
                             name="call"></ion-icon>
-                  <span class="ion-text-wrap" style="{{ isDesktop() ? '' : 'font-size: 11px;' }}"
+                  <span class="ion-text-wrap"
+                        style="{{ isDesktop() ? 'contain: none;' : 'font-size: 11px; contain: none;' }}"
 
                   >{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(quizList[level].answers[0])] + quizList[level].answers[0]}}</span>
                 </ion-button>
@@ -239,7 +240,8 @@
                              slot="start">{{  getStat(quizList[level].answers[1]).toString().length < 2 ? getStat(quizList[level].answers[1]) + " % " : getStat(quizList[level].answers[1]) + "%" }}</ion-badge>
                   <ion-icon *ngIf="usePhone && quizList[level].answers[1] === quizList[level]?.correct_answer "
                             name="call"></ion-icon>
-                  <span class="ion-text-wrap" style="{{ isDesktop() ? '' : 'font-size: 11px;' }}"
+                  <span class="ion-text-wrap"
+                        style="{{ isDesktop() ? 'contain: none;' : 'font-size: 11px; contain: none;' }}"
 
                   >{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(quizList[level].answers[1])] + quizList[level].answers[1]}}</span>
 
@@ -263,7 +265,7 @@
                   <ion-icon *ngIf="usePhone && quizList[level].answers[2] === quizList[level]?.correct_answer "
                             name="call"></ion-icon>
                   <span class="ion-text-wrap"
-                        style="{{ isDesktop() ? '' : 'font-size: 11px;' }}"
+                        style="{{ isDesktop() ? 'contain: none;' : 'font-size: 11px; contain: none;' }}"
                   >{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(quizList[level].answers[2])] + quizList[level].answers[2]}}</span>
                 </ion-button>
               </ion-col>
@@ -280,7 +282,7 @@
                   <ion-icon *ngIf="usePhone && quizList[level].answers[3] === quizList[level]?.correct_answer "
                             name="call"></ion-icon>
                   <span class="ion-text-wrap"
-                        style="{{ isDesktop() ? '' : 'font-size: 11px;' }}"
+                        style="{{ isDesktop() ? 'contain: none;' : 'font-size: 11px; contain: none;' }}"
                   >{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(quizList[level].answers[3])] + quizList[level].answers[3]}}</span>
 
 

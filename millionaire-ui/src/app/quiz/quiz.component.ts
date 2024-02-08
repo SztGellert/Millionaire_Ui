@@ -300,11 +300,29 @@ export class QuizComponent implements OnInit, OnDestroy {
 
     if (this.help_modules.audience) {
       this.help_modules.audience = false;
+
       if (this.allowSounds) {
+        let phoneChanged = false;
+        let halvingChanged = false;
+
+        if (this.help_modules.phone) {
+          this.help_modules.phone = false;
+          phoneChanged = true;
+        }
+        if (this.help_modules.halving) {
+          this.help_modules.halving = false;
+          halvingChanged = true;
+        }
         this.playAudio('audience', 36)
         // @ts-ignore
         this.helpTimeOut = setTimeout(() => {
           func();
+          if (phoneChanged) {
+            this.help_modules.phone = true;
+          }
+          if (halvingChanged) {
+            this.help_modules.halving = true;
+          }
         }, 33000);
       } else {
         func();
@@ -348,9 +366,25 @@ export class QuizComponent implements OnInit, OnDestroy {
       }
       this.playAudio('phone', 46)
       this.help_modules.phone = false;
+      let audienceChanged = false;
+      let halvingChanged = false;
+      if (this.help_modules.audience) {
+        this.help_modules.audience = false;
+        audienceChanged = true;
+      }
+      if (this.help_modules.halving) {
+        this.help_modules.halving = false;
+        halvingChanged = true;
+      }
       // @ts-ignore
       this.helpTimeOut = setTimeout(() => {
         this.usePhone = true;
+        if (audienceChanged) {
+          this.help_modules.audience = true;
+        }
+        if (halvingChanged) {
+          this.help_modules.halving = true;
+        }
       }, 42000)
     }
   }

@@ -8,7 +8,7 @@
             {{ 'app.title' | translate }}
           </ion-col>
           <ion-col *ngIf="isDesktop()" class="ion-text-end" size-md="6">
-            <ion-chip (click)="allowMusic ? allowMusic = false : allowMusic = true"
+            <ion-chip (click)="allowMusic ? stopMusic() : playMusic()"
                       [ngClass]="allowMusic ? '' : 'inactive-chip' "
                       class="ion-text-end">
               <ion-icon *ngIf="isDesktop()"

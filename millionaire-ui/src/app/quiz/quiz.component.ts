@@ -500,6 +500,18 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   }
 
+  playMusic() {
+    this.allowMusic = true;
+    if (this.active) {
+      this.playAudioMusic();
+    }
+  }
+
+  stopMusic() {
+    this.allowMusic = false;
+    this.music.pause()
+  }
+
   playAudio(name: string, timeout: number = 0) {
     if (this.allowSounds) {
       let src = "";

@@ -8,7 +8,8 @@
             {{ 'app.title' | translate }}
           </ion-col>
           <ion-col *ngIf="isDesktop()" class="ion-text-end" size-md="6">
-            <ion-chip (click)="allowSounds ? allowSounds = false : allowSounds = true" [ngClass]="allowSounds ? '' : 'inactive-chip' "
+            <ion-chip (click)="allowSounds ? allowSounds = false : allowSounds = true"
+                      [ngClass]="allowSounds ? '' : 'inactive-chip' "
                       class="ion-text-end">
               <ion-icon *ngIf="isDesktop()"
                         name="{{allowSounds ? 'volume-high' :  'volume-mute'}}"></ion-icon>
@@ -231,7 +232,6 @@
 
                   >{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(quizList[level].answers[0])] + quizList[level].answers[0]}}</span>
                 </ion-button>
-
               </ion-col>
               <ion-col size="6">
                 <ion-button (click)="selectAnswer(quizList[level].answers[1])" *ngIf="quizList[level].answers[1]"
@@ -290,8 +290,6 @@
                   <span class="ion-text-wrap"
                         style="{{ isDesktop() ? 'contain: none;' : 'font-size: 11px; contain: none;' }}"
                   >{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(quizList[level].answers[3])] + quizList[level].answers[3]}}</span>
-
-
                 </ion-button>
               </ion-col>
             </ion-row>
@@ -301,45 +299,39 @@
               <ion-col size="{{isDesktop() ? '' : '8'  }}">
                 <ion-button (click)="halving()"
                             *ngIf=" quizList[level].value !== 'Fail' && !isWinning "
-                            [ngStyle]="{'--background': help_modules['halving'] ? '' : 'red' }"
-                            class="ion-align-self-end grad2"
+                            class="ion-align-self-end help-button"
                             color="none"
                             disabled="{{!active || !help_modules['halving'] || pendingAnswer}}"
                             matTooltip="{{ getTooltip('halving') }}"
                             matTooltipPosition="above" size="small"
-                            style="{{isDesktop() ? 'width: 25%;' : 'width: 30%;'}}"
                 >50:50
                 </ion-button>
                 <ion-button (click)="phone()"
                             *ngIf=" quizList[level].value !== 'Fail' && !isWinning"
-                            [ngStyle]="{'--background': help_modules['phone'] ? '' : 'red' }"
-                            class="ion-align-self-end grad2"
+                            class="ion-align-self-end help-button"
                             color="none"
                             disabled="{{!active || !help_modules['phone'] || pendingAnswer}}"
                             matTooltip="{{ getTooltip('phone') }}"
                             matTooltipPosition="above"
                             size="small"
-                            style="{{isDesktop() ? 'width: 25%;' : 'width: 30%;'}}"
                 >
                   <ion-icon name="call"></ion-icon>
                 </ion-button>
                 <ion-button (click)="audience()"
                             *ngIf=" quizList[level].value !== 'Fail' && !isWinning"
-                            class="ion-align-self-end grad2"
+                            class="ion-align-self-end help-button"
                             color="none"
                             disabled="{{!active || !help_modules['audience'] || pendingAnswer}}"
                             matTooltip="{{ getTooltip('audience') }}"
                             matTooltipPosition="above"
                             size="small"
-                            style="{{isDesktop() ? 'width: 25%;' : 'width: 30%;'}}"
                 >
                   <ion-icon name="person"></ion-icon>
                   <ion-icon name="person"></ion-icon>
                   <ion-icon name="person"></ion-icon>
                 </ion-button>
               </ion-col>
-              <ion-col *ngIf="isDesktop()" size='6'></ion-col>
-              <ion-col size="{{isDesktop() ? '' : '4'  }}">
+              <ion-col offset-md="2" size-md="3">
                 <ion-button (click)="checkAnswer(selectedAnswer)"
                             *ngIf=" quizList[level]?.value !== 'Fail' && !isWinning && active"
                             class="grad2" color="none"

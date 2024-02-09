@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {Question, QuizService} from "./quiz.service";
 import {Subscription, timeout} from "rxjs";
-import {AnimationController, IonImg, Platform} from '@ionic/angular';
+import {IonImg, Platform} from '@ionic/angular';
 import {NgForm} from "@angular/forms";
 import {TranslateService} from "@ngx-translate/core";
 
@@ -91,7 +91,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   // @ts-ignore
   private helpTimeOut = timeout;
 
-  constructor(private quizSvc: QuizService, private translateService: TranslateService, private platform: Platform, private animationCtrl: AnimationController) {
+  constructor(private quizSvc: QuizService, private translateService: TranslateService, private platform: Platform) {
 
   }
 
@@ -195,11 +195,8 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   checkAnswer(answer: string) {
-
     this.pendingAnswer = true;
-
     if (this.quizList[this.level].correct_answer == answer) {
-
       if (this.level < 14) {
         setTimeout(() => {
           this.checkedAnswer = true;
@@ -219,29 +216,22 @@ export class QuizComponent implements OnInit, OnDestroy {
           this.selectedAnswer = "";
           this.pendingAnswer = false;
         }, 5300)
-        this.playAudio('final', 3900)
-
-
+        this.playAudio('final')
       } else {
-
         setTimeout(() => {
           this.checkedAnswer = true;
           this.isWinning = true;
-          this.playAudio('final_theme')
+          this.playAudio('correct_answer')
           // @ts-ignore
           clearTimeout(this.helpTimeOut);
           return
         }, 7100)
-        this.playAudio('final_answer', 7)
-
+        this.playAudio('final')
       }
-
     } else {
       let timeout = 4000;
-      let sound = "final"
       if (this.level == 14) {
         timeout = 7000;
-        sound = 'final_answer'
       }
       setTimeout(() => {
         this.checkedAnswer = true;
@@ -254,9 +244,8 @@ export class QuizComponent implements OnInit, OnDestroy {
         // @ts-ignore
         clearTimeout(this.helpTimeOut);
       }, timeout)
-      this.playAudio(sound, timeout - 100)
+      this.playAudio("final")
     }
-
   }
 
   // @ts-ignore
@@ -475,13 +464,58 @@ export class QuizComponent implements OnInit, OnDestroy {
       let src = "";
       switch (name) {
         case 'correct_answer':
-          src = "https://www.myinstants.com/media/sounds/correct_VsVqwRb.mp3";
+          if (this.level === 4) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/blntezgaun/12%20Win%20%241%2C000.mp3";
+            timeout = 8;
+          } else if (this.level === 5) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/njmvthwqgw/17%20%242%2C000%20Win.mp3";
+          } else if (this.level === 6) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/pjijryqyei/22%20%244%2C000%20Win.mp3";
+          } else if (this.level === 7) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/isggfzkliv/27%20%248%2C000%20Win.mp3";
+          } else if (this.level === 8) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/yuzvzpvpmx/32%20%2416%2C000%20Win.mp3";
+          } else if (this.level === 9) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/yhsegolhfo/37%20%2432%2C000%20Win.mp3";
+            timeout = 8;
+          } else if (this.level === 10) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/ereqgtncsi/42%20%2464%2C000%20Win.mp3";
+          } else if (this.level === 11) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/evyfifizmc/47%20%24125%2C000%20Win.mp3";
+          } else if (this.level === 12) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/evrltjdslu/52%20%24250%2C000%20Win.mp3";
+          } else if (this.level === 13) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/isnasksttn/57%20%24500%2C000%20Win.mp3";
+          } else if (this.level === 14) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/jhorhztmvh/77%20%241%2C000%2C000%20Win%20%28Double%20String%20Version%29.mp3";
+          } else {
+            src = "https://www.myinstants.com/media/sounds/correct_VsVqwRb.mp3";
+          }
           break;
         case 'wrong_answer':
-          src = 'https://www.myinstants.com/media/sounds/wrong_JbK803k.mp3'
-          break;
-        case 'final_theme':
-          src = "https://delta.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/uujixeault/62%20%241%2C000%2C000%20Win.mp3"
+          if (this.level === 5) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/rjhzqvzlas/16%20%242%2C000%20Lose.mp3";
+          } else if (this.level === 6) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/yfeukwjqpi/21%20%244%2C000%20Lose.mp3";
+          } else if (this.level === 7) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/wuabusrlky/26%20%248%2C000%20Lose.mp3";
+          } else if (this.level === 8) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lcjeyuuohe/31%20%2416%2C000%20Lose.mp3";
+          } else if (this.level === 9) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/nsgdfbhohc/36%20%2432%2C000%20Lose.mp3";
+          } else if (this.level === 10) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lxmljojuyt/41%20%2464%2C000%20Lose.mp3";
+          } else if (this.level === 11) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/hljjczjopk/46%20%24125%2C000%20Lose.mp3";
+          } else if (this.level === 12) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/mobwortxts/51%20%24250%2C000%20Lose.mp3";
+          } else if (this.level === 13) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/brhweclkpt/56%20%24500%2C000%20Lose.mp3";
+          } else if (this.level === 14) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/szpzgiupts/61%20%241%2C000%2C000%20Lose.mp3";
+          } else {
+            src = 'https://www.myinstants.com/media/sounds/wrong_JbK803k.mp3'
+          }
           break;
         case 'halving':
           src = 'https://delta.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/oqmqjluggn/67%2050-50.mp3';
@@ -493,13 +527,33 @@ export class QuizComponent implements OnInit, OnDestroy {
           src = 'https://delta.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lwhnnzheda/68%20Ask%20The%20Audience.mp3';
           break;
         case 'final' :
-          src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/awanowgypj/15%20%242%2C000%20Final%20Answer-.mp3"
+          if (this.level === 5) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/awanowgypj/15%20%242%2C000%20Final%20Answer-.mp3"
+          } else if (this.level === 6) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/kdklojqnph/20%20%244%2C000%20Final%20Answer-.mp3";
+          } else if (this.level === 7) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lhyuugzgqk/25%20%248%2C000%20Final%20Answer-.mp3"
+          } else if (this.level === 8) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lsxtvfepru/30%20%2416%2C000%20Final%20Answer-.mp3";
+          } else if (this.level === 9) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/qmedsiwtys/35%20%2432%2C000%20Final%20Answer-.mp3";
+          } else if (this.level === 10) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/jecbhnngvg/40%20%2464%2C000%20Final%20Answer-.mp3";
+          } else if (this.level === 11) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/zossgcnjxl/45%20%24125%2C000%20Final%20Answer-.mp3";
+          } else if (this.level === 12) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/dbmdofpign/50%20%24250%2C000%20Final%20Answer-.mp3";
+          } else if (this.level === 13) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/kxzosrrgrk/55%20%24500%2C000%20Final%20Answer-.mp3";
+          } else if (this.level === 14) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/pzaiedrqha/60%20%241%2C000%2C000%20Final%20Answer-.mp3";
+          } else {
+            src = ''
+          }
           break;
-        case 'final_answer':
-          src = 'https://www.myinstants.com/media/sounds/final_2_41YMqQj.mp3';
-          break;
+
         default:
-          break
+          break;
       }
 
 

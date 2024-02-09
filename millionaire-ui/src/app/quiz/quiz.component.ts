@@ -85,8 +85,11 @@ export class QuizComponent implements OnInit, OnDestroy {
   checkedAnswer: boolean = false;
   pendingAnswer: boolean = false;
   allowSounds: boolean = false;
+  allowMusic: boolean = false;
   isReload: boolean = false;
   audio = new Audio();
+  music = new Audio();
+
   protected readonly Object = Object;
   // @ts-ignore
   private helpTimeOut = timeout;
@@ -215,6 +218,7 @@ export class QuizComponent implements OnInit, OnDestroy {
           this.checkedAnswer = false;
           this.selectedAnswer = "";
           this.pendingAnswer = false;
+          this.playAudioMusic();
         }, 5300)
         this.playAudio('final')
       } else {
@@ -235,6 +239,7 @@ export class QuizComponent implements OnInit, OnDestroy {
       }
       setTimeout(() => {
         this.checkedAnswer = true;
+        this.music.pause();
         this.playAudio("wrong_answer")
         this.active = false;
         this.isAlertOpen = true;
@@ -394,6 +399,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.isWinning = false;
     this.isReload = true;
     this.audio.pause();
+    this.music.pause();
     // @ts-ignore
     clearTimeout(this.helpTimeOut);
   }
@@ -426,6 +432,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   startQuiz() {
+    this.playAudioMusic();
     this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty);
   }
 
@@ -457,6 +464,40 @@ export class QuizComponent implements OnInit, OnDestroy {
       const email = contactForm.value;
       this.quizSvc.sendFeedbackEmail(email)
     }
+  }
+
+  playAudioMusic() {
+    if (this.allowMusic) {
+      let src = "";
+      if (this.level < 5) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/gbsxnbblhj/11%20%24100-%241%2C000%20Questions.mp3"
+      } else if (this.level === 5) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/aokfkhoocj/14%20%242%2C000%20Question.mp3"
+      } else if (this.level === 6) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/mksvhlwtxc/19%20%244%2C000%20Question.mp3"
+      } else if (this.level === 7) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/jpwsuamjxy/24%20%248%2C000%20Question.mp3"
+      } else if (this.level === 8) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/qeevmijfco/29%20%2416%2C000%20Question.mp3"
+      } else if (this.level === 9) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/zitvaxtwyx/34%20%2432%2C000%20Question.mp3"
+      } else if (this.level === 10) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/rpjteuukem/39%20%2464%2C000%20Question.mp3"
+      } else if (this.level === 11) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/foourcouxn/44%20%24125%2C000%20Question.mp3"
+      } else if (this.level === 12) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/ffaekfyhys/49%20%24250%2C000%20Question.mp3"
+      } else if (this.level === 13) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/wvlsjrnuzp/54%20%24500%2C000%20Question.mp3"
+      } else {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/hidywqfcea/59%20%241%2C000%2C000%20Question.mp3"
+      }
+      this.music.src = src;
+      this.music.loop = true;
+      this.music.load();
+      this.music.play();
+    }
+
   }
 
   playAudio(name: string, timeout: number = 0) {
@@ -556,6 +597,9 @@ export class QuizComponent implements OnInit, OnDestroy {
           break;
       }
 
+      if (name !== "final" && this.level > 5 && this.allowMusic) {
+        this.music.pause();
+      }
 
       this.audio.src = src;
       this.audio.load();

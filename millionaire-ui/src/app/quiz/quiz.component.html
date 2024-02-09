@@ -8,6 +8,12 @@
             {{ 'app.title' | translate }}
           </ion-col>
           <ion-col *ngIf="isDesktop()" class="ion-text-end" size-md="6">
+            <ion-chip (click)="allowMusic ? allowMusic = false : allowMusic = true"
+                      [ngClass]="allowMusic ? '' : 'inactive-chip' "
+                      class="ion-text-end">
+              <ion-icon *ngIf="isDesktop()"
+                        name="musical-notes-outline"></ion-icon>
+            </ion-chip>
             <ion-chip (click)="allowSounds ? allowSounds = false : allowSounds = true"
                       [ngClass]="allowSounds ? '' : 'inactive-chip' "
                       class="ion-text-end">
@@ -32,6 +38,15 @@
       <ion-row *ngIf="!isDesktop()">
         <ion-col style="font-size: 14px; margin-top: 10px;">
           {{ 'app.title' | translate }}
+        </ion-col>
+        <ion-col *ngIf="!isDesktop()" size="1" style="margin-right: 5px;">
+          <ion-chip (click)="allowMusic ? allowMusic = false : allowMusic = true"
+                    [ngClass]="allowMusic ? '' : 'inactive-chip' ">
+            <ion-icon
+              name="musical-notes-outline"
+              style="font-size: 16px;"
+            ></ion-icon>
+          </ion-chip>
         </ion-col>
         <ion-col *ngIf="!isDesktop()" size="1" style="margin-right: 5px;">
           <ion-chip (click)="allowSounds ? allowSounds= false : allowSounds = true"

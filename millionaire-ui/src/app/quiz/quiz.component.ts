@@ -1,16 +1,7 @@
-import {
-  AfterViewChecked,
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  QueryList,
-  ViewChildren
-} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {Question, QuizService} from "./quiz.service";
 import {Subscription, timeout} from "rxjs";
-import {Animation, AnimationController, IonImg, Platform} from '@ionic/angular';
+import {IonImg, Platform} from '@ionic/angular';
 import {NgForm} from "@angular/forms";
 import {TranslateService} from "@ngx-translate/core";
 
@@ -28,7 +19,7 @@ interface QuestionInGame {
   styleUrls: ['./quiz.component.scss'],
 })
 
-export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
+export class QuizComponent implements OnInit, OnDestroy {
 
   // @ts-ignore
   @ViewChildren(IonImg, {read: ElementRef}) imgElements: QueryList<ElementRef<HTMLIonImgElement>>;
@@ -92,15 +83,18 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
   public difficultyActionSheetButtons: { text: string, role: string, data: { action: string, value: string } }[] = [];
   feedbackModal: boolean = false;
   checkedAnswer: boolean = false;
+  pendingAnswer: boolean = false;
   allowSounds: boolean = false;
+  allowMusic: boolean = false;
   isReload: boolean = false;
   audio = new Audio();
+  music = new Audio();
+
   protected readonly Object = Object;
   // @ts-ignore
-  private imgA: Animation;
   private helpTimeOut = timeout;
 
-  constructor(private quizSvc: QuizService, private translateService: TranslateService, private platform: Platform, private animationCtrl: AnimationController) {
+  constructor(private quizSvc: QuizService, private translateService: TranslateService, private platform: Platform) {
 
   }
 
@@ -204,40 +198,59 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
   }
 
   checkAnswer(answer: string) {
-    this.checkedAnswer = true;
-    if (this.quizList[this.level].correct_answer == answer && this.level < 14) {
+    this.pendingAnswer = true;
+    if (this.quizList[this.level].correct_answer == answer) {
+      if (this.level < 14) {
+        setTimeout(() => {
+          this.checkedAnswer = true;
+          this.isAlertOpen = true;
+          // @ts-ignore
+          clearTimeout(this.helpTimeOut);
+          this.playAudio("correct_answer", 2)
+          this.usePhone = false;
+          this.statDict = {};
+        }, 4000)
+        setTimeout(() => {
+          this.isAlertOpen = false;
+        }, 5000)
+        setTimeout(() => {
+          this.level += 1
+          this.checkedAnswer = false;
+          this.selectedAnswer = "";
+          this.pendingAnswer = false;
+          this.playAudioMusic();
+        }, 5300)
+        this.playAudio('final')
+      } else {
+        setTimeout(() => {
+          this.checkedAnswer = true;
+          this.isWinning = true;
+          this.playAudio('correct_answer')
+          // @ts-ignore
+          clearTimeout(this.helpTimeOut);
+          return
+        }, 7100)
+        this.playAudio('final')
+      }
+    } else {
+      let timeout = 4000;
+      if (this.level == 14) {
+        timeout = 7000;
+      }
       setTimeout(() => {
-        this.isAlertOpen = false;
-      }, 1500)
-      setTimeout(() => {
-        this.level += 1
-        this.checkedAnswer = false;
-        this.selectedAnswer = "";
-      }, 1800)
-      this.isAlertOpen = true;
-      this.usePhone = false;
-      this.statDict = {};
-      // @ts-ignore
-      clearTimeout(this.helpTimeOut);
-      this.playAudio("correct_answer", 2)
-      return
+        this.checkedAnswer = true;
+        this.music.pause();
+        this.playAudio("wrong_answer")
+        this.active = false;
+        this.isAlertOpen = true;
+        setTimeout(() => {
+          this.isAlertOpen = false;
+        }, 2500)
+        // @ts-ignore
+        clearTimeout(this.helpTimeOut);
+      }, timeout)
+      this.playAudio("final")
     }
-    if (this.quizList[this.level].correct_answer == answer && this.level == 14) {
-      this.isWinning = true;
-      this.playAudio('final_theme')
-      // @ts-ignore
-      clearTimeout(this.helpTimeOut);
-      return
-    }
-    this.playAudio("wrong_answer")
-    this.active = false;
-    this.isAlertOpen = true;
-    setTimeout(() => {
-      this.isAlertOpen = false;
-    }, 1500)
-    // @ts-ignore
-    clearTimeout(this.helpTimeOut);
-
   }
 
   // @ts-ignore
@@ -281,11 +294,29 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
 
     if (this.help_modules.audience) {
       this.help_modules.audience = false;
+
       if (this.allowSounds) {
+        let phoneChanged = false;
+        let halvingChanged = false;
+
+        if (this.help_modules.phone) {
+          this.help_modules.phone = false;
+          phoneChanged = true;
+        }
+        if (this.help_modules.halving) {
+          this.help_modules.halving = false;
+          halvingChanged = true;
+        }
         this.playAudio('audience', 36)
         // @ts-ignore
         this.helpTimeOut = setTimeout(() => {
           func();
+          if (phoneChanged) {
+            this.help_modules.phone = true;
+          }
+          if (halvingChanged) {
+            this.help_modules.halving = true;
+          }
         }, 33000);
       } else {
         func();
@@ -329,9 +360,25 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
       }
       this.playAudio('phone', 46)
       this.help_modules.phone = false;
+      let audienceChanged = false;
+      let halvingChanged = false;
+      if (this.help_modules.audience) {
+        this.help_modules.audience = false;
+        audienceChanged = true;
+      }
+      if (this.help_modules.halving) {
+        this.help_modules.halving = false;
+        halvingChanged = true;
+      }
       // @ts-ignore
       this.helpTimeOut = setTimeout(() => {
         this.usePhone = true;
+        if (audienceChanged) {
+          this.help_modules.audience = true;
+        }
+        if (halvingChanged) {
+          this.help_modules.halving = true;
+        }
       }, 42000)
     }
   }
@@ -346,10 +393,13 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
     this.startBtnClicked = false;
     this.networkError = "";
     this.statDict = {};
+    this.pendingAnswer = false;
     this.checkedAnswer = false;
     this.selectedAnswer = "";
+    this.isWinning = false;
     this.isReload = true;
     this.audio.pause();
+    this.music.pause();
     // @ts-ignore
     clearTimeout(this.helpTimeOut);
   }
@@ -382,6 +432,7 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
   }
 
   startQuiz() {
+    this.playAudioMusic();
     this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty);
   }
 
@@ -415,18 +466,109 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
     }
   }
 
+  playAudioMusic() {
+    if (this.allowMusic) {
+      let src = "";
+      if (this.level < 5) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/gbsxnbblhj/11%20%24100-%241%2C000%20Questions.mp3"
+      } else if (this.level === 5) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/aokfkhoocj/14%20%242%2C000%20Question.mp3"
+      } else if (this.level === 6) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/mksvhlwtxc/19%20%244%2C000%20Question.mp3"
+      } else if (this.level === 7) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/jpwsuamjxy/24%20%248%2C000%20Question.mp3"
+      } else if (this.level === 8) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/qeevmijfco/29%20%2416%2C000%20Question.mp3"
+      } else if (this.level === 9) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/zitvaxtwyx/34%20%2432%2C000%20Question.mp3"
+      } else if (this.level === 10) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/rpjteuukem/39%20%2464%2C000%20Question.mp3"
+      } else if (this.level === 11) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/foourcouxn/44%20%24125%2C000%20Question.mp3"
+      } else if (this.level === 12) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/ffaekfyhys/49%20%24250%2C000%20Question.mp3"
+      } else if (this.level === 13) {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/wvlsjrnuzp/54%20%24500%2C000%20Question.mp3"
+      } else {
+        src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/hidywqfcea/59%20%241%2C000%2C000%20Question.mp3"
+      }
+      this.music.src = src;
+      this.music.loop = true;
+      this.music.load();
+      this.music.play();
+    }
+
+  }
+
+  playMusic() {
+    this.allowMusic = true;
+    if (this.active) {
+      this.playAudioMusic();
+    }
+  }
+
+  stopMusic() {
+    this.allowMusic = false;
+    this.music.pause()
+  }
+
   playAudio(name: string, timeout: number = 0) {
     if (this.allowSounds) {
       let src = "";
       switch (name) {
         case 'correct_answer':
-          src = "https://www.myinstants.com/media/sounds/correct_VsVqwRb.mp3";
+          if (this.level === 4) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/blntezgaun/12%20Win%20%241%2C000.mp3";
+            timeout = 8;
+          } else if (this.level === 5) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/njmvthwqgw/17%20%242%2C000%20Win.mp3";
+          } else if (this.level === 6) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/pjijryqyei/22%20%244%2C000%20Win.mp3";
+          } else if (this.level === 7) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/isggfzkliv/27%20%248%2C000%20Win.mp3";
+          } else if (this.level === 8) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/yuzvzpvpmx/32%20%2416%2C000%20Win.mp3";
+          } else if (this.level === 9) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/yhsegolhfo/37%20%2432%2C000%20Win.mp3";
+            timeout = 8;
+          } else if (this.level === 10) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/ereqgtncsi/42%20%2464%2C000%20Win.mp3";
+          } else if (this.level === 11) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/evyfifizmc/47%20%24125%2C000%20Win.mp3";
+          } else if (this.level === 12) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/evrltjdslu/52%20%24250%2C000%20Win.mp3";
+          } else if (this.level === 13) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/isnasksttn/57%20%24500%2C000%20Win.mp3";
+          } else if (this.level === 14) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/jhorhztmvh/77%20%241%2C000%2C000%20Win%20%28Double%20String%20Version%29.mp3";
+          } else {
+            src = "https://www.myinstants.com/media/sounds/correct_VsVqwRb.mp3";
+          }
           break;
         case 'wrong_answer':
-          src = 'https://www.myinstants.com/media/sounds/wrong_JbK803k.mp3'
-          break;
-        case 'final_theme':
-          src = "https://delta.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/uujixeault/62%20%241%2C000%2C000%20Win.mp3"
+          if (this.level === 5) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/rjhzqvzlas/16%20%242%2C000%20Lose.mp3";
+          } else if (this.level === 6) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/yfeukwjqpi/21%20%244%2C000%20Lose.mp3";
+          } else if (this.level === 7) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/wuabusrlky/26%20%248%2C000%20Lose.mp3";
+          } else if (this.level === 8) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lcjeyuuohe/31%20%2416%2C000%20Lose.mp3";
+          } else if (this.level === 9) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/nsgdfbhohc/36%20%2432%2C000%20Lose.mp3";
+          } else if (this.level === 10) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lxmljojuyt/41%20%2464%2C000%20Lose.mp3";
+          } else if (this.level === 11) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/hljjczjopk/46%20%24125%2C000%20Lose.mp3";
+          } else if (this.level === 12) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/mobwortxts/51%20%24250%2C000%20Lose.mp3";
+          } else if (this.level === 13) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/brhweclkpt/56%20%24500%2C000%20Lose.mp3";
+          } else if (this.level === 14) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/szpzgiupts/61%20%241%2C000%2C000%20Lose.mp3";
+          } else {
+            src = 'https://www.myinstants.com/media/sounds/wrong_JbK803k.mp3'
+          }
           break;
         case 'halving':
           src = 'https://delta.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/oqmqjluggn/67%2050-50.mp3';
@@ -437,10 +579,39 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
         case 'audience':
           src = 'https://delta.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lwhnnzheda/68%20Ask%20The%20Audience.mp3';
           break;
+        case 'final' :
+          if (this.level === 5) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/awanowgypj/15%20%242%2C000%20Final%20Answer-.mp3"
+          } else if (this.level === 6) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/kdklojqnph/20%20%244%2C000%20Final%20Answer-.mp3";
+          } else if (this.level === 7) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lhyuugzgqk/25%20%248%2C000%20Final%20Answer-.mp3"
+          } else if (this.level === 8) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lsxtvfepru/30%20%2416%2C000%20Final%20Answer-.mp3";
+          } else if (this.level === 9) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/qmedsiwtys/35%20%2432%2C000%20Final%20Answer-.mp3";
+          } else if (this.level === 10) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/jecbhnngvg/40%20%2464%2C000%20Final%20Answer-.mp3";
+          } else if (this.level === 11) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/zossgcnjxl/45%20%24125%2C000%20Final%20Answer-.mp3";
+          } else if (this.level === 12) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/dbmdofpign/50%20%24250%2C000%20Final%20Answer-.mp3";
+          } else if (this.level === 13) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/kxzosrrgrk/55%20%24500%2C000%20Final%20Answer-.mp3";
+          } else if (this.level === 14) {
+            src = "https://vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/pzaiedrqha/60%20%241%2C000%2C000%20Final%20Answer-.mp3";
+          } else {
+            src = ''
+          }
+          break;
+
         default:
-          break
+          break;
       }
 
+      if (name !== "final" && this.level > 5 && this.allowMusic) {
+        this.music.pause();
+      }
 
       this.audio.src = src;
       this.audio.load();
@@ -453,37 +624,6 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
       }
 
     }
-  }
-
-  ngAfterViewInit() {
-    this.imgA = this.animationCtrl
-      .create()
-      // @ts-ignore
-      .addElement(this.imgElements.get(0).nativeElement)
-      .fill('none')
-      .duration(100000)
-      .keyframes([
-        {offset: 0, transform: 'scale(1) rotate(0)'},
-        {offset: 0.5, transform: 'scale(5.2) rotate(45deg)'},
-        {offset: 1, transform: 'scale(1) rotate(0)'},
-      ]);
-  }
-
-  ngAfterViewChecked() {
-    return
-    //this.play()
-  }
-
-  play() {
-    this.imgA.play();
-  }
-
-  pause() {
-    this.imgA.pause();
-  }
-
-  stop() {
-    this.imgA.stop();
   }
 
   getAnswerClass(answer: string) {
@@ -524,7 +664,7 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
   setLanguage(lang: string) {
     if (lang != this.quiz_language.substring(0, 2)) {
       this.quiz_language = lang;
-      this.translateService.use(this.quiz_language);  // add this
+      this.translateService.use(this.quiz_language);
       if (this.active) {
         this.loadTooltips();
         this.quizList = [];
@@ -538,10 +678,9 @@ export class QuizComponent implements OnInit, OnDestroy, AfterViewInit, AfterVie
           question.correct_answer = quiz[this.quiz_language].answers[quiz.en.correct_answer_index];
           this.quizList.push(question)
         }
-      } else {
-        this.loadTopicActions();
-        this.loadDifficultyActions();
       }
+      this.loadTopicActions();
+      this.loadDifficultyActions();
     }
   }
 }

@@ -5,7 +5,7 @@
     "select_difficulty": "Select difficulty",
     "contact": "Contact",
     "contact_tab": {
-      "title": "Contact Tab",
+      "title": "Contact",
       "description": "Any issues or thoughts about the quiz? Feel free to tell us! Thank you for helping the development with your feedback!",
       "submit": "Submit",
       "input": "Enter text",
@@ -53,7 +53,7 @@
     "try_again": "Try Again",
     "next": "Next",
     "incorrect_answer": "Wrong answer.",
-    "halving": "Take away two wrong answer",
+    "halving": "Take away two wrong answers",
     "phone": "Phone a friend",
     "audience": "Ask the audience"
   }

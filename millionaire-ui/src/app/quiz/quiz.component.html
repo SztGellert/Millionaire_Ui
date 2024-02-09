@@ -2,51 +2,73 @@
   <ion-header>
     <ion-toolbar>
       <ion-title>
-        <ion-col *ngIf="isDesktop()" size-md="10">
-          {{ 'app.title' | translate }}
-        </ion-col>
-
-        <ion-col *ngIf="isDesktop()" offset-md="8" size-md="2">
-          <ion-chip>
-            <ion-icon (click)="allowSounds ? allowSounds= false : allowSounds = true" *ngIf="isDesktop()"
-                      name="{{allowSounds ? 'volume-high' :  'volume-mute'}}"></ion-icon>
-          </ion-chip>
-          <ion-chip (click)="setLanguage('en')">
-            <ion-icon class="fi fi-gb"></ion-icon>
-          </ion-chip>
-          <ion-chip (click)="setLanguage('de')">
-            <ion-icon class="fi fi-de"></ion-icon>
-          </ion-chip>
-          <ion-chip (click)="setLanguage('hu')">
-            <ion-icon class="fi fi-hu"></ion-icon>
-          </ion-chip>
-        </ion-col>
-
+        <ion-row>
+          <ion-col *ngIf="isDesktop()" size-md="6"
+                   style="display: flex; align-items: center;">
+            {{ 'app.title' | translate }}
+          </ion-col>
+          <ion-col *ngIf="isDesktop()" class="ion-text-end" size-md="6">
+            <ion-chip (click)="allowMusic ? stopMusic() : playMusic()"
+                      [ngClass]="allowMusic ? '' : 'inactive-chip' "
+                      class="ion-text-end">
+              <ion-icon *ngIf="isDesktop()"
+                        name="musical-notes-outline"></ion-icon>
+            </ion-chip>
+            <ion-chip (click)="allowSounds ? allowSounds = false : allowSounds = true"
+                      [ngClass]="allowSounds ? '' : 'inactive-chip' "
+                      class="ion-text-end">
+              <ion-icon *ngIf="isDesktop()"
+                        name="{{allowSounds ? 'volume-high' :  'volume-mute'}}"></ion-icon>
+            </ion-chip>
+            <ion-chip (click)="setLanguage('en')" [ngClass]="quiz_language === 'en' ? '' : 'inactive-chip' "
+                      class="ion-text-end">
+              <ion-icon class="fi fi-gb"></ion-icon>
+            </ion-chip>
+            <ion-chip (click)="setLanguage('de')" [ngClass]="quiz_language === 'de' ? '' : 'inactive-chip' "
+                      class="ion-text-end">
+              <ion-icon class="fi fi-de"></ion-icon>
+            </ion-chip>
+            <ion-chip (click)="setLanguage('hu')" [ngClass]="quiz_language === 'hu' ? '' : 'inactive-chip' "
+                      class="ion-text-end">
+              <ion-icon class="fi fi-hu"></ion-icon>
+            </ion-chip>
+          </ion-col>
+        </ion-row>
       </ion-title>
       <ion-row *ngIf="!isDesktop()">
         <ion-col style="font-size: 14px; margin-top: 10px;">
           {{ 'app.title' | translate }}
         </ion-col>
         <ion-col *ngIf="!isDesktop()" size="1" style="margin-right: 5px;">
-          <ion-chip>
-            <ion-icon (click)="allowSounds ? allowSounds= false : allowSounds = true"
-                      name="{{allowSounds ? 'volume-high' :  'volume-mute'}}"
-                      style="font-size: 16px;"
+          <ion-chip (click)="allowMusic ? allowMusic = false : allowMusic = true"
+                    [ngClass]="allowMusic ? '' : 'inactive-chip' ">
+            <ion-icon
+              name="musical-notes-outline"
+              style="font-size: 16px;"
+            ></ion-icon>
+          </ion-chip>
+        </ion-col>
+        <ion-col *ngIf="!isDesktop()" size="1" style="margin-right: 5px;">
+          <ion-chip (click)="allowSounds ? allowSounds= false : allowSounds = true"
+                    [ngClass]="allowSounds ? '' : 'inactive-chip' ">
+            <ion-icon
+              name="{{allowSounds ? 'volume-high' :  'volume-mute'}}"
+              style="font-size: 16px;"
             ></ion-icon>
           </ion-chip>
         </ion-col>
         <ion-col *ngIf="!isDesktop()" size="1" style="margin-right: 10px;">
-          <ion-chip (click)="setLanguage('en')">
+          <ion-chip (click)="setLanguage('en')" [ngClass]="quiz_language === 'en' ? '' : 'inactive-chip' ">
             <ion-icon class="fi fi-gb mobile-ion-icon"></ion-icon>
           </ion-chip>
         </ion-col>
         <ion-col *ngIf="!isDesktop()" size="1" style="margin-right: 10px;">
-          <ion-chip (click)="setLanguage('de')">
+          <ion-chip (click)="setLanguage('de')" [ngClass]="quiz_language === 'de' ? '' : 'inactive-chip' ">
             <ion-icon class="fi fi-de mobile-ion-icon"></ion-icon>
           </ion-chip>
         </ion-col>
         <ion-col *ngIf="!isDesktop()" size="1" style="margin-right: 18px;">
-          <ion-chip (click)="setLanguage('hu')">
+          <ion-chip (click)="setLanguage('hu')" [ngClass]="quiz_language === 'hu' ? '' : 'inactive-chip' ">
             <ion-icon class="fi fi-hu mobile-ion-icon"></ion-icon>
           </ion-chip>
         </ion-col>
@@ -82,7 +104,7 @@
         </ion-header>
       </ng-container>
       <ion-col *ngIf="level===0 && !startBtnClicked" offset-md="2" size-md="8" style="fill: #56ab2f">
-        <ion-card>
+        <ion-card [ngClass]="isDesktop() ? '': 'mobileCard'">
           <ion-row *ngIf="level===0 && !startBtnClicked">
             <ion-col offset-md="4" size-md="4">
               <ion-img
@@ -93,26 +115,26 @@
                           class="btn-grad"
                           color="none"
                           id="startBtn"
-                          style="width: 100%; display: inline-block;">{{ 'menu.start' | translate }}
+              >{{ 'menu.start' | translate }}
 
               </ion-button>
               <ion-button (click)="!showTopicActionSheet ? showTopicActionSheet = true : ''"
                           *ngIf="level===0 && !startBtnClicked && networkError ==='' "
                           class="btn-grad"
                           color="none"
-                          style="width: 100%; display: inline-block;">{{ 'menu.select_topic' | translate }}
+              >{{ 'menu.select_topic' | translate }}
               </ion-button>
               <ion-button (click)="!showDifficultyActionSheet ? showDifficultyActionSheet = true : ''"
                           *ngIf="level===0 && !startBtnClicked && networkError ==='' "
                           class="btn-grad"
                           color="none"
-                          style="width: 100%; display: inline-block;">{{ 'menu.select_difficulty' | translate }}
+              >{{ 'menu.select_difficulty' | translate }}
               </ion-button>
               <ion-button (click)="!feedbackModal ? feedbackModal = true : '';"
                           *ngIf="level===0 && !startBtnClicked && networkError ==='' "
                           class="btn-grad"
                           color="none"
-                          style="width: 100%; display: inline-block;">{{ 'menu.contact' | translate }}
+              >{{ 'menu.contact' | translate }}
 
               </ion-button>
               <ion-action-sheet
@@ -124,7 +146,7 @@
               <ion-action-sheet
                 (didDismiss)="logResult($event)"
                 [buttons]="difficultyActionSheetButtons"
-                header="   {{ 'menu.current_difficulty' | translate:{difficulty: 'menu.topics.'+ questionDifficulty | translate} }}"
+                header="   {{ 'menu.current_difficulty' | translate:{difficulty: 'menu.difficulties.'+ questionDifficulty | translate} }}"
                 isOpen='{{showDifficultyActionSheet}}'
               ></ion-action-sheet>
               <ion-modal (didDismiss)="setOpen(false)" [isOpen]="feedbackModal"
@@ -187,7 +209,7 @@
         </ion-card>
       </ion-col>
       <ion-col *ngIf="quizList[level] && startBtnClicked" offset-md="2" size-md="8">
-        <ion-card>
+        <ion-card [ngClass]="isDesktop() ? '': 'mobileCard'">
           <ion-card-title style="{{'background: border-radius: 5px;'}}">
             <ion-card
               [ngStyle]="{'background': isWinning ? 'orange' : ''}"
@@ -220,11 +242,11 @@
                              slot="start">{{  getStat(quizList[level].answers[0]).toString().length < 2 ? getStat(quizList[level].answers[0]) + " % " : getStat(quizList[level].answers[0]) + "%" }}</ion-badge>
                   <ion-icon *ngIf="usePhone && quizList[level].answers[0] === quizList[level]?.correct_answer "
                             name="call"></ion-icon>
-                  <span class="ion-text-wrap" style="{{ isDesktop() ? '' : 'font-size: 11px;' }}"
+                  <span class="ion-text-wrap"
+                        style="{{ isDesktop() ? 'contain: none;' : 'font-size: 11px; contain: none;' }}"
 
                   >{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(quizList[level].answers[0])] + quizList[level].answers[0]}}</span>
                 </ion-button>
-
               </ion-col>
               <ion-col size="6">
                 <ion-button (click)="selectAnswer(quizList[level].answers[1])" *ngIf="quizList[level].answers[1]"
@@ -239,7 +261,8 @@
                              slot="start">{{  getStat(quizList[level].answers[1]).toString().length < 2 ? getStat(quizList[level].answers[1]) + " % " : getStat(quizList[level].answers[1]) + "%" }}</ion-badge>
                   <ion-icon *ngIf="usePhone && quizList[level].answers[1] === quizList[level]?.correct_answer "
                             name="call"></ion-icon>
-                  <span class="ion-text-wrap" style="{{ isDesktop() ? '' : 'font-size: 11px;' }}"
+                  <span class="ion-text-wrap"
+                        style="{{ isDesktop() ? 'contain: none;' : 'font-size: 11px; contain: none;' }}"
 
                   >{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(quizList[level].answers[1])] + quizList[level].answers[1]}}</span>
 
@@ -263,7 +286,7 @@
                   <ion-icon *ngIf="usePhone && quizList[level].answers[2] === quizList[level]?.correct_answer "
                             name="call"></ion-icon>
                   <span class="ion-text-wrap"
-                        style="{{ isDesktop() ? '' : 'font-size: 11px;' }}"
+                        style="{{ isDesktop() ? 'contain: none;' : 'font-size: 11px; contain: none;' }}"
                   >{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(quizList[level].answers[2])] + quizList[level].answers[2]}}</span>
                 </ion-button>
               </ion-col>
@@ -280,10 +303,8 @@
                   <ion-icon *ngIf="usePhone && quizList[level].answers[3] === quizList[level]?.correct_answer "
                             name="call"></ion-icon>
                   <span class="ion-text-wrap"
-                        style="{{ isDesktop() ? '' : 'font-size: 11px;' }}"
+                        style="{{ isDesktop() ? 'contain: none;' : 'font-size: 11px; contain: none;' }}"
                   >{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(quizList[level].answers[3])] + quizList[level].answers[3]}}</span>
-
-
                 </ion-button>
               </ion-col>
             </ion-row>
@@ -293,48 +314,43 @@
               <ion-col size="{{isDesktop() ? '' : '8'  }}">
                 <ion-button (click)="halving()"
                             *ngIf=" quizList[level].value !== 'Fail' && !isWinning "
-                            [ngStyle]="{'--background': help_modules['halving'] ? '' : 'red' }"
-                            class="ion-align-self-end grad2"
+                            class="ion-align-self-end help-button"
                             color="none"
-                            disabled="{{!active || !help_modules['halving']}}"
+                            disabled="{{!active || !help_modules['halving'] || pendingAnswer}}"
                             matTooltip="{{ getTooltip('halving') }}"
                             matTooltipPosition="above" size="small"
-                            style="{{isDesktop() ? 'width: 25%;' : 'width: 30%;'}}"
                 >50:50
                 </ion-button>
                 <ion-button (click)="phone()"
                             *ngIf=" quizList[level].value !== 'Fail' && !isWinning"
-                            [ngStyle]="{'--background': help_modules['phone'] ? '' : 'red' }"
-                            class="ion-align-self-end grad2"
+                            class="ion-align-self-end help-button"
                             color="none"
-                            disabled="{{!active || !help_modules['phone']}}"
+                            disabled="{{!active || !help_modules['phone'] || pendingAnswer}}"
                             matTooltip="{{ getTooltip('phone') }}"
                             matTooltipPosition="above"
                             size="small"
-                            style="{{isDesktop() ? 'width: 25%;' : 'width: 30%;'}}"
                 >
                   <ion-icon name="call"></ion-icon>
                 </ion-button>
                 <ion-button (click)="audience()"
                             *ngIf=" quizList[level].value !== 'Fail' && !isWinning"
-                            class="ion-align-self-end grad2"
+                            class="ion-align-self-end help-button"
                             color="none"
-                            disabled="{{!active || !help_modules['audience']}}"
+                            disabled="{{!active || !help_modules['audience'] || pendingAnswer}}"
                             matTooltip="{{ getTooltip('audience') }}"
                             matTooltipPosition="above"
                             size="small"
-                            style="{{isDesktop() ? 'width: 25%;' : 'width: 30%;'}}"
                 >
                   <ion-icon name="person"></ion-icon>
                   <ion-icon name="person"></ion-icon>
                   <ion-icon name="person"></ion-icon>
                 </ion-button>
               </ion-col>
-              <ion-col *ngIf="isDesktop()" size='6'></ion-col>
-              <ion-col size="{{isDesktop() ? '' : '4'  }}">
+              <ion-col offset-md="2" size-md="3">
                 <ion-button (click)="checkAnswer(selectedAnswer)"
                             *ngIf=" quizList[level]?.value !== 'Fail' && !isWinning && active"
                             class="grad2" color="none"
+                            disabled="{{pendingAnswer}}"
                             size="small"
                             style="width: 100%; display: inline-block;">{{ 'quiz.next' | translate }}
                 </ion-button>

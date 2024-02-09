@@ -8,19 +8,20 @@
             {{ 'app.title' | translate }}
           </ion-col>
           <ion-col *ngIf="isDesktop()" class="ion-text-end" size-md="6">
-            <ion-chip (click)="allowSounds ? allowSounds = false : allowSounds = true" class="ion-text-end">
+            <ion-chip (click)="allowSounds ? allowSounds = false : allowSounds = true" [ngClass]="allowSounds ? '' : 'inactive-chip' "
+                      class="ion-text-end">
               <ion-icon *ngIf="isDesktop()"
                         name="{{allowSounds ? 'volume-high' :  'volume-mute'}}"></ion-icon>
             </ion-chip>
-            <ion-chip (click)="setLanguage('en')" [ngClass]="quiz_language === 'en' ? '' : 'non-active-lang' "
+            <ion-chip (click)="setLanguage('en')" [ngClass]="quiz_language === 'en' ? '' : 'inactive-chip' "
                       class="ion-text-end">
               <ion-icon class="fi fi-gb"></ion-icon>
             </ion-chip>
-            <ion-chip (click)="setLanguage('de')" [ngClass]="quiz_language === 'de' ? '' : 'non-active-lang' "
+            <ion-chip (click)="setLanguage('de')" [ngClass]="quiz_language === 'de' ? '' : 'inactive-chip' "
                       class="ion-text-end">
               <ion-icon class="fi fi-de"></ion-icon>
             </ion-chip>
-            <ion-chip (click)="setLanguage('hu')" [ngClass]="quiz_language === 'hu' ? '' : 'non-active-lang' "
+            <ion-chip (click)="setLanguage('hu')" [ngClass]="quiz_language === 'hu' ? '' : 'inactive-chip' "
                       class="ion-text-end">
               <ion-icon class="fi fi-hu"></ion-icon>
             </ion-chip>
@@ -32,7 +33,8 @@
           {{ 'app.title' | translate }}
         </ion-col>
         <ion-col *ngIf="!isDesktop()" size="1" style="margin-right: 5px;">
-          <ion-chip (click)="allowSounds ? allowSounds= false : allowSounds = true">
+          <ion-chip (click)="allowSounds ? allowSounds= false : allowSounds = true"
+                    [ngClass]="allowSounds ? '' : 'inactive-chip' ">
             <ion-icon
               name="{{allowSounds ? 'volume-high' :  'volume-mute'}}"
               style="font-size: 16px;"
@@ -40,17 +42,17 @@
           </ion-chip>
         </ion-col>
         <ion-col *ngIf="!isDesktop()" size="1" style="margin-right: 10px;">
-          <ion-chip (click)="setLanguage('en')" [ngClass]="quiz_language === 'en' ? '' : 'non-active-lang' ">
+          <ion-chip (click)="setLanguage('en')" [ngClass]="quiz_language === 'en' ? '' : 'inactive-chip' ">
             <ion-icon class="fi fi-gb mobile-ion-icon"></ion-icon>
           </ion-chip>
         </ion-col>
         <ion-col *ngIf="!isDesktop()" size="1" style="margin-right: 10px;">
-          <ion-chip (click)="setLanguage('de')" [ngClass]="quiz_language === 'de' ? '' : 'non-active-lang' ">
+          <ion-chip (click)="setLanguage('de')" [ngClass]="quiz_language === 'de' ? '' : 'inactive-chip' ">
             <ion-icon class="fi fi-de mobile-ion-icon"></ion-icon>
           </ion-chip>
         </ion-col>
         <ion-col *ngIf="!isDesktop()" size="1" style="margin-right: 18px;">
-          <ion-chip (click)="setLanguage('hu')" [ngClass]="quiz_language === 'hu' ? '' : 'non-active-lang' ">
+          <ion-chip (click)="setLanguage('hu')" [ngClass]="quiz_language === 'hu' ? '' : 'inactive-chip' ">
             <ion-icon class="fi fi-hu mobile-ion-icon"></ion-icon>
           </ion-chip>
         </ion-col>

@@ -52,9 +52,10 @@
     "won": "HERZLICHEN GLÜCKWUNSCH!!! SIE SIND MILLIONÄR!! Sie haben gerade den {{prize}} gewonnen !!!",
     "try_again": "Nochmal versuchen",
     "next": "Nächster",
-    "incorrect_answer": "Falsche Antwort",
+    "incorrect_answer": "Falsche Antwort. Ihren Gewinn: {{prize}}!",
     "halving": "Nimm zwei falsche Antworten weg",
     "phone": "Ruf einen Freund an",
-    "audience": "Frag das Publikum"
+    "audience": "Frag das Publikum",
+    "stop": "Antwort außer Spiel"
   }
 }

@@ -11,8 +11,8 @@
       "input": "Enter text",
       "input_type": "Type something here",
       "disclaimer": "* Any personal data is optional.",
-      "name": "Name",
-      "email": "E-mail",
+      "name": "Name (optional)",
+      "email": "E-mail (optional)",
       "message": "Message"
     },
     "current_topic": "Topic: {{topic}}",
@@ -52,9 +52,10 @@
     "won": "CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON  {{prize}} !!!",
     "try_again": "Try Again",
     "next": "Next",
-    "incorrect_answer": "Wrong answer.",
+    "incorrect_answer": "Wrong answer. Your prize is {{prize}}!",
     "halving": "Take away two wrong answers",
     "phone": "Phone a friend",
-    "audience": "Ask the audience"
+    "audience": "Ask the audience",
+    "stop": "Out of game answer"
   }
 }

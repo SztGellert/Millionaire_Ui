@@ -66,13 +66,14 @@ export class QuizComponent implements OnInit, OnDestroy {
   ];
   language: string = this.translateService.currentLang;
   quiz_language = "en"
-  tooltips = {halving: "", audience: "", phone: ""}
+  tooltips = {halving: "", audience: "", phone: "", stop: ""}
   isAlertOpen = false;
   questionDifficulty: string = "all";
   questionTopic: string = "all";
   startBtnClicked: boolean = false;
   active: boolean = false;
   isWinning: boolean = false;
+  outOfGame: boolean = false;
   networkError = "";
   help_modules: { halving: boolean; audience: boolean; phone: boolean } = {halving: true, audience: true, phone: true};
   usePhone: boolean = false;
@@ -138,6 +139,7 @@ export class QuizComponent implements OnInit, OnDestroy {
       this.tooltips.halving = data.halving;
       this.tooltips.audience = data.audience;
       this.tooltips.phone = data.phone;
+      this.tooltips.stop = data.stop;
     })
   }
 
@@ -214,11 +216,17 @@ export class QuizComponent implements OnInit, OnDestroy {
           this.isAlertOpen = false;
         }, 5000)
         setTimeout(() => {
-          this.level += 1
-          this.checkedAnswer = false;
-          this.selectedAnswer = "";
-          this.pendingAnswer = false;
-          this.playAudioMusic();
+          if (!this.outOfGame) {
+            this.level += 1
+            this.checkedAnswer = false;
+            this.selectedAnswer = "";
+            this.pendingAnswer = false;
+            this.playAudioMusic();
+          } else {
+            this.active = false;
+            this.pendingAnswer = false;
+          }
+
         }, 5300)
         this.playAudio('final')
       } else {
@@ -397,6 +405,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.checkedAnswer = false;
     this.selectedAnswer = "";
     this.isWinning = false;
+    this.outOfGame = false;
     this.isReload = true;
     this.audio.pause();
     this.music.pause();
@@ -502,7 +511,7 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   playMusic() {
     this.allowMusic = true;
-    if (this.active) {
+    if (this.active && !this.outOfGame) {
       this.playAudioMusic();
     }
   }
@@ -513,7 +522,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   playAudio(name: string, timeout: number = 0) {
-    if (this.allowSounds) {
+    if (this.allowSounds && !this.outOfGame) {
       let src = "";
       switch (name) {
         case 'correct_answer':
@@ -634,8 +643,14 @@ export class QuizComponent implements OnInit, OnDestroy {
         if (!this.checkedAnswer) {
           return 'selected_answer';
         }
-        if (this.checkedAnswer && !this.active) {
+        if (this.checkedAnswer && !this.active && !this.outOfGame) {
           return 'wrong_answer';
+        }
+        if (this.checkedAnswer && this.outOfGame && !this.active) {
+          if (this.selectedAnswer !== this.quizList[this.level].correct_answer) {
+            return 'wrong_answer';
+          }
+          return 'correct_answer';
         }
         if (this.checkedAnswer && this.active) {
           return 'correct_answer';
@@ -682,5 +697,29 @@ export class QuizComponent implements OnInit, OnDestroy {
       this.loadTopicActions();
       this.loadDifficultyActions();
     }
+  }
+
+  answerOutOfGame() {
+    this.stopMusic();
+    this.outOfGame = true;
+  }
+
+  getPrize(): string {
+    if (this.outOfGame) {
+      if (this.level > 0) {
+        return this.prizesList[this.level - 1]
+      }
+      return "£0"
+    }
+    if (!this.active) {
+      if (this.level > 9) {
+        return this.prizesList[9]
+      } else if (this.level > 4) {
+        return this.prizesList[4]
+      } else {
+        return "£0"
+      }
+    }
+    return this.prizesList[this.level]
   }
 }

@@ -647,6 +647,9 @@ export class QuizComponent implements OnInit, OnDestroy {
           return 'wrong_answer';
         }
         if (this.checkedAnswer && this.outOfGame && !this.active) {
+          if (this.selectedAnswer !== this.quizList[this.level].correct_answer) {
+            return 'wrong_answer';
+          }
           return 'correct_answer';
         }
         if (this.checkedAnswer && this.active) {

@@ -11,8 +11,8 @@
       "input": "Enter text",
       "input_type": "Type something here",
       "disclaimer": "* Any personal data is optional.",
-      "name": "Name",
-      "email": "E-mail",
+      "name": "Name (optional)",
+      "email": "E-mail (optional)",
       "message": "Message"
     },
     "current_topic": "Topic: {{topic}}",

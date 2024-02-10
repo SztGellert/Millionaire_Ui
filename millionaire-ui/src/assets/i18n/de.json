@@ -30,10 +30,10 @@
       "submit": "Abschicken",
       "input": "Text eingeben",
       "input_type": "Geben Sie hier etwas ein",
-      "disclaimer": "* Alle persönlichen Angaben sind freiwillig.",
-      "name": "Name",
-      "email": "E-Mail",
-      "message": "Nachricht"
+      "disclaimer": "*Alle persönlichen Angaben sind freiwillig.",
+      "name": "Name (optional)",
+      "email": "E-Mail (optional)",
+      "message": "Nachricht (optional)"
     },
     "current_difficulty": "Schwierigkeit: {{difficulty}}",
     "difficulties": {

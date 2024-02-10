@@ -11,8 +11,8 @@
       "input": "Szöveg beírása",
       "input_type": "Írjon valamit ide",
       "disclaimer": "* Személyes adatok megadása opcionális.",
-      "name": "Név",
-      "email": "E-mail",
+      "name": "Név (opcionális)",
+      "email": "E-mail (opcionális)",
       "message": "Üzenet"
     },
     "current_topic": "Témakör: {{topic}}",

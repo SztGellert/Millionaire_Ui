@@ -12,7 +12,9 @@
                       [ngClass]="allowMusic ? '' : 'inactive-chip' "
                       class="ion-text-end">
               <ion-icon *ngIf="isDesktop()"
-                        name="musical-notes-outline"></ion-icon>
+                        [ngClass]="allowMusic ? '' : 'music-icon'"
+                        name="musical-notes"
+              ></ion-icon>
             </ion-chip>
             <ion-chip (click)="allowSounds ? allowSounds = false : allowSounds = true"
                       [ngClass]="allowSounds ? '' : 'inactive-chip' "
@@ -43,7 +45,8 @@
           <ion-chip (click)="allowMusic ? allowMusic = false : allowMusic = true"
                     [ngClass]="allowMusic ? '' : 'inactive-chip' ">
             <ion-icon
-              name="musical-notes-outline"
+              [ngClass]="allowMusic ? '' : 'music-icon'"
+              name="musical-notes"
               style="font-size: 16px;"
             ></ion-icon>
           </ion-chip>

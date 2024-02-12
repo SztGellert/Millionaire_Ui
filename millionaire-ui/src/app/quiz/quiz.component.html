@@ -236,12 +236,60 @@
           </ion-card-title>
           <ion-card-subtitle>
           </ion-card-subtitle>
-
+          <ion-card-content class="help-content">
+            <ion-row>
+              <ion-col>
+                <ion-button (click)="answerOutOfGame()"
+                            *ngIf=" quizList[level].value !== 'Fail' && !isWinning && !outOfGame && active"
+                            class="help-button ion-float-left"
+                            color="none"
+                            disabled="{{!active || pendingAnswer}}"
+                            matTooltip="{{ getTooltip('stop') }}"
+                            matTooltipPosition="above"
+                            size="small"
+                            style="float:right;"
+                >
+                  <ion-icon name="stop"></ion-icon>
+                </ion-button>
+                <ion-button (click)="halving()"
+                            *ngIf=" quizList[level].value !== 'Fail' && !isWinning && !outOfGame && active"
+                            class="help-button ion-float-right"
+                            color="none"
+                            disabled="{{!active || !help_modules['halving'] || pendingAnswer}}"
+                            matTooltip="{{ getTooltip('halving') }}"
+                            matTooltipPosition="above" size="small"
+                >50:50
+                </ion-button>
+                <ion-button (click)="phone()"
+                            *ngIf=" quizList[level].value !== 'Fail' && !isWinning && !outOfGame && active"
+                            class="help-button ion-float-right"
+                            color="none"
+                            disabled="{{!active || !help_modules['phone'] || pendingAnswer}}"
+                            matTooltip="{{ getTooltip('phone') }}"
+                            matTooltipPosition="above"
+                            size="small"
+                >
+                  <ion-icon name="call"></ion-icon>
+                </ion-button>
+                <ion-button (click)="audience()"
+                            *ngIf=" quizList[level].value !== 'Fail' && !isWinning && !outOfGame && active"
+                            class="help-button ion-float-right"
+                            color="none"
+                            disabled="{{!active || !help_modules['audience'] || pendingAnswer}}"
+                            matTooltip="{{ getTooltip('audience') }}"
+                            matTooltipPosition="above"
+                            size="small"
+                >
+                  <ion-icon name="person"></ion-icon>
+                  <ion-icon name="person"></ion-icon>
+                  <ion-icon name="person"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
           <ion-card-content>
-
             <ion-row>
               <ion-col size="6">
-
                 <ion-button
                   (click)="selectAnswer(quizList[level].answers[0])" *ngIf="quizList[level].answers[0]"
                   [ngClass]="getAnswerClass(quizList[level].answers[0])"
@@ -277,8 +325,6 @@
                         style="{{ isDesktop() ? 'contain: none;' : 'font-size: 11px; contain: none;' }}"
 
                   >{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(quizList[level].answers[1])] + quizList[level].answers[1]}}</span>
-
-
                 </ion-button>
               </ion-col>
             </ion-row>
@@ -323,53 +369,7 @@
           </ion-card-content>
           <ion-card-content>
             <ion-row>
-              <ion-col size="{{isDesktop() ? '' : '8'  }}">
-                <ion-button (click)="halving()"
-                            *ngIf=" quizList[level].value !== 'Fail' && !isWinning && !outOfGame && active"
-                            class="ion-align-self-end help-button"
-                            color="none"
-                            disabled="{{!active || !help_modules['halving'] || pendingAnswer}}"
-                            matTooltip="{{ getTooltip('halving') }}"
-                            matTooltipPosition="above" size="small"
-                >50:50
-                </ion-button>
-                <ion-button (click)="phone()"
-                            *ngIf=" quizList[level].value !== 'Fail' && !isWinning && !outOfGame && active"
-                            class="ion-align-self-end help-button"
-                            color="none"
-                            disabled="{{!active || !help_modules['phone'] || pendingAnswer}}"
-                            matTooltip="{{ getTooltip('phone') }}"
-                            matTooltipPosition="above"
-                            size="small"
-                >
-                  <ion-icon name="call"></ion-icon>
-                </ion-button>
-                <ion-button (click)="audience()"
-                            *ngIf=" quizList[level].value !== 'Fail' && !isWinning && !outOfGame && active"
-                            class="ion-align-self-end help-button"
-                            color="none"
-                            disabled="{{!active || !help_modules['audience'] || pendingAnswer}}"
-                            matTooltip="{{ getTooltip('audience') }}"
-                            matTooltipPosition="above"
-                            size="small"
-                >
-                  <ion-icon name="person"></ion-icon>
-                  <ion-icon name="person"></ion-icon>
-                  <ion-icon name="person"></ion-icon>
-                </ion-button>
-                <ion-button (click)="answerOutOfGame()"
-                            *ngIf=" quizList[level].value !== 'Fail' && !isWinning && !outOfGame && active"
-                            class="ion-align-self-end help-button"
-                            color="none"
-                            disabled="{{!active || pendingAnswer}}"
-                            matTooltip="{{ getTooltip('stop') }}"
-                            matTooltipPosition="above"
-                            size="small"
-                >
-                  <ion-icon name="pause-outline"></ion-icon>
-                </ion-button>
-              </ion-col>
-              <ion-col offset-md="2" size-md="3">
+              <ion-col offset-md="8" size-md="4" size-xs="12">
                 <ion-button (click)="checkAnswer(selectedAnswer)"
                             *ngIf=" quizList[level]?.value !== 'Fail' && !isWinning && active"
                             class="grad2" color="none"
@@ -387,7 +387,6 @@
                         style="width: 100%; display:inline-block;">
               <ion-icon name="reload" style="margin-right: 5px"></ion-icon>
               {{ 'quiz.try_again' | translate }}
-
             </ion-button>
           </ion-card-content>
         </ion-card>

@@ -254,7 +254,10 @@ ion-chip {
   transform: rotate(-45deg) translateX(-10px) scaleY(3.5);
 }
 
-
+.help-content {
+  background-image: linear-gradient(to right, #ffffff 0%, #eeeded 51%, #ffffff 100%);
+  border-image: linear-gradient(#4776E6, #8E54E9) 10;
+}
 
 
 

@@ -15,7 +15,7 @@
       "email": "E-mail (opcionális)",
       "message": "Üzenet"
     },
-    "current_topic": "Témakör: {{topic}}",
+    "topic_header": "Témakör",
     "topic": "Témakör",
     "topics": {
       "all": "Mind",
@@ -34,7 +34,7 @@
       "physics": "Fizika",
       "sports": "Sport"
     },
-    "current_difficulty": "Nehézség: {{difficulty}}",
+    "difficulty_header": "Nehézség",
     "difficulties": {
       "all": "Mind",
       "easy": "Könnyű",

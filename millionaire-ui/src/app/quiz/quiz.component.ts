@@ -80,8 +80,8 @@ export class QuizComponent implements OnInit, OnDestroy {
   showTopicActionSheet: boolean = false;
   showDifficultyActionSheet: boolean = false;
   statDict: {} = {};
-  public topicActionSheetButtons: { text: string, role: string, data: { action: string, value: string } }[] = [];
-  public difficultyActionSheetButtons: { text: string, role: string, data: { action: string, value: string } }[] = [];
+  public topicActionSheetButtons: any[] = [];
+  public difficultyActionSheetButtons: any[] = [];
   feedbackModal: boolean = false;
   checkedAnswer: boolean = false;
   pendingAnswer: boolean = false;
@@ -169,6 +169,7 @@ export class QuizComponent implements OnInit, OnDestroy {
       for (let item of this.difficultyList) {
         this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
           text: data.difficulties[item],
+          cssClass: this.questionDifficulty === item ? 'redalert' : '',
           role: "destructive",
           data: {
             action: "difficulty",
@@ -196,6 +197,7 @@ export class QuizComponent implements OnInit, OnDestroy {
       for (let item of this.topicList) {
         this.topicActionSheetButtons = this.topicActionSheetButtons.concat({
           text: data.topics[item],
+          cssClass: this.questionTopic === item ? 'redalert' : '',
           role: "destructive",
           data: {
             action: "topic",

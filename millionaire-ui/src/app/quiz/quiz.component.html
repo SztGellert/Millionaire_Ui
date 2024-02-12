@@ -143,13 +143,13 @@
               <ion-action-sheet
                 (didDismiss)="logResult($event)"
                 [buttons]="topicActionSheetButtons"
-                header="   {{ 'menu.current_topic' | translate:{topic: 'menu.topics.'+ questionTopic | translate} }}"
+                header="   {{ 'menu.topic_header' | translate }}"
                 isOpen='{{showTopicActionSheet}}'
               ></ion-action-sheet>
               <ion-action-sheet
                 (didDismiss)="logResult($event)"
                 [buttons]="difficultyActionSheetButtons"
-                header="   {{ 'menu.current_difficulty' | translate:{difficulty: 'menu.difficulties.'+ questionDifficulty | translate} }}"
+                header="   {{ 'menu.difficulty_header' | translate }}"
                 isOpen='{{showDifficultyActionSheet}}'
               ></ion-action-sheet>
               <ion-modal (didDismiss)="setOpen(false)" [isOpen]="feedbackModal"

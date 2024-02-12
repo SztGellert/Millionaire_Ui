@@ -15,7 +15,7 @@
       "email": "E-mail (optional)",
       "message": "Message"
     },
-    "current_topic": "Topic: {{topic}}",
+    "topic_header": "Topic",
     "topic": "Topic",
     "topics": {
       "all": "All",
@@ -35,7 +35,7 @@
       "sports": "Sports"
     },
     "cancel": "Cancel",
-    "current_difficulty": "Difficulty: {{difficulty}}",
+    "difficulty_header": "Difficulty",
     "difficulties": {
       "all": "All",
       "easy": "Easy",

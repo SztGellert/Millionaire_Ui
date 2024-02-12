@@ -106,7 +106,7 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.quizListSubs = this.quizSvc.quizzesChanged.subscribe(quizzes => {
-      this.quizData = quizzes;
+      this.quizData = structuredClone(quizzes);
       for (let quiz of quizzes) {
         let question = {} as QuestionInGame;
         // @ts-ignore
@@ -114,12 +114,31 @@ export class QuizComponent implements OnInit, OnDestroy {
         // @ts-ignore
         question.answers = quiz[this.quiz_language].answers;
         // @ts-ignore
-        question.correct_answer = quiz[this.quiz_language].answers[quiz.en.correct_answer_index];
+        question.correct_answer = quiz[this.quiz_language].answers[quiz[this.quiz_language].correct_answer_index];
         this.quizList.push(question)
       }
       if (this.quizList?.length == 15) {
+        let sortOrder = ""
         for (let i = 0; i < this.quizList.length; i++) {
+          // @ts-ignore
+          this.quizData[i][this.quiz_language].correct_answer = this.quizList[i].correct_answer
           this.quizList[i].answers = this.quizList[i].answers.sort(() => Math.random() - 0.5);
+          // @ts-ignore
+          for (let j = 0; j < 4; j++) {
+            // @ts-ignore
+            sortOrder += this.quizList[i].answers.indexOf(this.quizData[i][this.quiz_language].answers[j]).toString()
+          }
+          const langs = ["en", "de", "hu"]
+          for (let l = 0; l < langs.length; l++) {
+            // @ts-ignore
+            this.quizData[i][langs[l]].correct_answer = this.quizData[i][langs[l]].answers[this.quizData[i][langs[l]].correct_answer_index]
+            // @ts-ignore
+            const clone = structuredClone(this.quizData[i][langs[l]].answers);
+            for (let k = 0; k < 4; k++) {
+              // @ts-ignore
+              this.quizData[i][langs[l]].answers[parseInt(sortOrder[k])] = clone[k]
+            }
+          }
         }
         this.startBtnClicked = true;
         this.active = true;
@@ -690,7 +709,8 @@ export class QuizComponent implements OnInit, OnDestroy {
           // @ts-ignore
           question.answers = quiz[this.quiz_language].answers;
           // @ts-ignore
-          question.correct_answer = quiz[this.quiz_language].answers[quiz.en.correct_answer_index];
+          question.correct_answer = quiz[this.quiz_language].correct_answer;
+
           this.quizList.push(question)
         }
       }

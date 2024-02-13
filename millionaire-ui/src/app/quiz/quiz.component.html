@@ -172,9 +172,9 @@
                         {{ 'menu.contact_tab.description' | translate }}
                       </ion-card-header>
                     </ion-card>
-                    <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)">
+                    <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)" class="ion-padding-horizontal">
                       <ion-list>
-                        <ion-item class="ion-padding-end">
+                        <ion-item class="ion-content">
                           <ion-input #name="ngModel" label="{{ 'menu.contact_tab.name' | translate }}"
                                      label-placement="floating" name="name"
                                      ngModel

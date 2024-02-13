@@ -147,8 +147,8 @@ export class QuizComponent implements OnInit, OnDestroy {
       }
     })
     this.loadTooltips();
-    this.loadTopicActions(true)
-    this.loadDifficultyActions(true);
+    this.loadTopicActions()
+    this.loadDifficultyActions();
 
   }
 
@@ -162,35 +162,20 @@ export class QuizComponent implements OnInit, OnDestroy {
     })
   }
 
-  loadDifficultyActions(isOpen = false) {
+  loadDifficultyActions() {
     this.difficultyActionSheetButtons = [];
     this.translateService.getTranslation(this.quiz_language)
     this.translateService.get('menu').subscribe((data: any) => {
       for (let item of this.difficultyList) {
-        if (isOpen) {
-          this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
-            text: data.difficulties[item],
-            cssClass: this.questionDifficulty === item ? 'selected-action' : '',
-            role: item === this.difficultyList[3] ? "destructive" : "",
-            data: {
-              action: "difficulty",
-              value: item,
-            },
-            handler: () => {
-              return false;
-            }
-          },)
-        } else {
-          this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
-            text: data.difficulties[item],
-            cssClass: this.questionDifficulty === item ? 'selected-action' : '',
-            role: item === this.difficultyList[3] ? "destructive" : "",
-            data: {
-              action: "difficulty",
-              value: item,
-            },
-          },)
-        }
+        this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
+          text: data.difficulties[item],
+          cssClass: this.questionDifficulty === item ? 'selected-action' : '',
+          role: "destructive",
+          data: {
+            action: "difficulty",
+            value: item,
+          },
+        },)
       }
       this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
         text: data.cancel,
@@ -203,36 +188,22 @@ export class QuizComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadTopicActions(isOpen = false) {
+  loadTopicActions() {
     this.topicActionSheetButtons = [];
     this.translateService.getTranslation(this.quiz_language)
     this.translateService.get('menu').subscribe((data: any) => {
       for (let item of this.topicList) {
-        if (isOpen) {
-          this.topicActionSheetButtons = this.topicActionSheetButtons.concat({
-            text: data.topics[item],
-            cssClass: this.questionTopic === item ? 'selected-action' : '',
-            role: "",
-            data: {
-              action: "topic",
-              value: item,
-            },
-            handler: () => {
-              return false;
-            }
-          },)
-        } else {
-          this.topicActionSheetButtons = this.topicActionSheetButtons.concat({
-            text: data.topics[item],
-            cssClass: this.questionTopic === item ? 'selected-action' : '',
-            role: "",
-            data: {
-              action: "topic",
-              value: item,
-            },
-          },)
-        }
+        this.topicActionSheetButtons = this.topicActionSheetButtons.concat({
+          text: data.topics[item],
+          cssClass: this.questionTopic === item ? 'selected-action' : '',
+          role: "",
+          data: {
+            action: "topic",
+            value: item,
+          },
+        },)
       }
+
       this.topicActionSheetButtons = this.topicActionSheetButtons.concat({
         text: data.cancel,
         role: 'cancel',
@@ -487,41 +458,16 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   // @ts-ignore
   logResult(ev) {
-    const value = ev.target.children[0]?.childNodes[0]?.data.toLowerCase();
-    if (value) {
-      if (this.topicList.includes(value)) {
-        this.questionTopic = value;
-        let newButtons = []
-        for (let button of this.topicActionSheetButtons) {
-          if (button.cssClass === "selected-action") {
-            button.cssClass = "";
-          }
-          if (button.data.value === value) {
-            button.cssClass = "selected-action";
-          }
-          newButtons.push(button)
-        }
-        this.topicActionSheetButtons = [];
-        for (let button of newButtons) {
-          this.topicActionSheetButtons.push(button)
-        }
+    if (ev.detail.data?.value) {
+      if (ev.detail.data.action == "topic" && ev.detail.data.value) {
+        this.questionTopic = ev.detail.data.value;
+        this.loadTopicActions();
+        this.showTopicActionSheet = false;
       }
-      if (this.difficultyList.includes(value)) {
-        this.questionDifficulty = value;
-        let newButtons = []
-        for (let button of this.difficultyActionSheetButtons) {
-          if (button.cssClass === "selected-action") {
-            button.cssClass = "";
-          }
-          if (button.data.value === value) {
-            button.cssClass = "selected-action";
-          }
-          newButtons.push(button)
-        }
-        this.difficultyActionSheetButtons = [];
-        for (let button of newButtons) {
-          this.difficultyActionSheetButtons.push(button)
-        }
+      if (ev.detail.data.action == "difficulty" && ev.detail.data.value) {
+        this.questionDifficulty = ev.detail.data.value;
+        this.loadDifficultyActions();
+        this.showDifficultyActionSheet = false;
       }
     }
   }

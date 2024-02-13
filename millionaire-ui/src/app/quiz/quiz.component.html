@@ -28,8 +28,9 @@
           <ion-icon ios="ellipsis-horizontal" md="ellipsis-vertical" slot="icon-only"></ion-icon>
         </ion-button>
       </ion-buttons>
-      <ion-title (click)="reloadPage()" class="millionaire-header">
-        <span>{{ 'app.title' | translate }}</span>
+      <ion-title (click)="reloadPage()" [ngClass]="isMobileScreen() ? 'ion-no-padding' : ''"
+                 class="millionaire-header">
+        {{ 'app.title' | translate }}
       </ion-title>
     </ion-toolbar>
     <ion-toolbar *ngIf="showToolbar && isMobileScreen()">
@@ -126,7 +127,7 @@
               </ion-button>
               <ion-action-sheet
                 (click)="logResult($event)"
-                (didDismiss)="showTopicActionSheet=false"
+                (didDismiss)="logResult($event)"
                 [buttons]="topicActionSheetButtons"
                 header="   {{ 'menu.topic_header' | translate }}"
                 id="actionSheet"
@@ -134,7 +135,7 @@
               ></ion-action-sheet>
               <ion-action-sheet
                 (click)="logResult($event)"
-                (didDismiss)="showDifficultyActionSheet=false"
+                (didDismiss)="logResult($event)"
                 [buttons]="difficultyActionSheetButtons"
                 header="   {{ 'menu.difficulty_header' | translate }}"
                 isOpen="{{showDifficultyActionSheet}}"

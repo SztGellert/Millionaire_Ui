@@ -141,16 +141,19 @@
 
               </ion-button>
               <ion-action-sheet
-                (didDismiss)="logResult($event)"
+                (click)="logResult($event)"
+                (didDismiss)="showTopicActionSheet=false"
                 [buttons]="topicActionSheetButtons"
                 header="   {{ 'menu.topic_header' | translate }}"
-                isOpen='{{showTopicActionSheet}}'
+                id="actionSheet"
+                isOpen="{{showTopicActionSheet}}"
               ></ion-action-sheet>
               <ion-action-sheet
-                (didDismiss)="logResult($event)"
+                (click)="logResult($event)"
+                (didDismiss)="showDifficultyActionSheet=false"
                 [buttons]="difficultyActionSheetButtons"
                 header="   {{ 'menu.difficulty_header' | translate }}"
-                isOpen='{{showDifficultyActionSheet}}'
+                isOpen="{{showDifficultyActionSheet}}"
               ></ion-action-sheet>
               <ion-modal (didDismiss)="setOpen(false)" [isOpen]="feedbackModal"
               >

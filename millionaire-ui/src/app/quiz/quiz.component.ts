@@ -171,7 +171,7 @@ export class QuizComponent implements OnInit, OnDestroy {
           this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
             text: data.difficulties[item],
             cssClass: this.questionDifficulty === item ? 'selected-action' : '',
-            role: "destructive",
+            role: item === this.difficultyList[3] ? "destructive" : "",
             data: {
               action: "difficulty",
               value: item,
@@ -184,7 +184,7 @@ export class QuizComponent implements OnInit, OnDestroy {
           this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
             text: data.difficulties[item],
             cssClass: this.questionDifficulty === item ? 'selected-action' : '',
-            role: "destructive",
+            role: item === this.difficultyList[3] ? "destructive" : "",
             data: {
               action: "difficulty",
               value: item,
@@ -212,7 +212,7 @@ export class QuizComponent implements OnInit, OnDestroy {
           this.topicActionSheetButtons = this.topicActionSheetButtons.concat({
             text: data.topics[item],
             cssClass: this.questionTopic === item ? 'selected-action' : '',
-            role: "destructive",
+            role: "",
             data: {
               action: "topic",
               value: item,
@@ -225,7 +225,7 @@ export class QuizComponent implements OnInit, OnDestroy {
           this.topicActionSheetButtons = this.topicActionSheetButtons.concat({
             text: data.topics[item],
             cssClass: this.questionTopic === item ? 'selected-action' : '',
-            role: "destructive",
+            role: "",
             data: {
               action: "topic",
               value: item,

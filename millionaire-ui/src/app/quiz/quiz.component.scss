@@ -261,7 +261,20 @@ ion-chip {
   }
 }
 
+.millionaire-header {
+  //background-image: linear-gradient(to right, #4776E6 0%, #8E54E9 51%, #4776E6 100%);
+  //background-size: 180% auto;
+  cursor: pointer;
+  //font-size: 20px;
+  //display: flex;
+  //border-radius: 5px;
+  //margin-top: 5px;
+  //margin-bottom: 4px;
+}
 
+.millionaire-header:hover {
+  color: gray;
+}
 
 
 

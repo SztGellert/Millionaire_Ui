@@ -90,7 +90,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   isReload: boolean = false;
   audio = new Audio();
   music = new Audio();
-
+  showToolbar: boolean = false;
   protected readonly Object = Object;
   // @ts-ignore
   private helpTimeOut = timeout;
@@ -784,5 +784,10 @@ export class QuizComponent implements OnInit, OnDestroy {
       }
     }
     return this.prizesList[this.level]
+  }
+
+  isMobileScreen() {
+    console.log(this.platform.width());
+    return this.platform.width() <= 560;
   }
 }

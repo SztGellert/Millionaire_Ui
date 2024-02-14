@@ -172,7 +172,7 @@ export class QuizComponent implements OnInit, OnDestroy {
         this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
           text: data.difficulties[item],
           cssClass: this.questionDifficulty === item ? 'selected-action' : '',
-          role: "destructive",
+          role: item === this.difficultyList[3] ? 'destructive' : '',
           data: {
             action: "difficulty",
             value: item,

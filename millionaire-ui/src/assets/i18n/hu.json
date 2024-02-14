@@ -10,10 +10,12 @@
       "submit": "Küldés",
       "input": "Szöveg beírása",
       "input_type": "Írjon valamit ide",
-      "disclaimer": "* Személyes adatok megadása opcionális.",
+      "disclaimer": "*Személyes adatok megadása opcionális.",
       "name": "Név (opcionális)",
       "email": "E-mail (opcionális)",
-      "message": "Üzenet"
+      "message": "Üzenet",
+      "privacy_policy": "Adatkezelési tájékoztató",
+      "required_text": "Üzenet mező kitöltése kötelező"
     },
     "topic_header": "Témakör",
     "topic": "Témakör",

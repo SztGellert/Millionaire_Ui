@@ -10,10 +10,12 @@
       "submit": "Submit",
       "input": "Enter text",
       "input_type": "Type something here",
-      "disclaimer": "* Any personal data is optional.",
+      "disclaimer": "*Any personal data is optional.",
       "name": "Name (optional)",
       "email": "E-mail (optional)",
-      "message": "Message"
+      "message": "Message",
+      "privacy_policy": "Privacy policy",
+      "required_text": "Message field is required"
     },
     "topic_header": "Topic",
     "topic": "Topic",

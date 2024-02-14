@@ -91,7 +91,9 @@ export class QuizComponent implements OnInit, OnDestroy {
   audio = new Audio();
   music = new Audio();
   showToolbar: boolean = false;
+  submitClicked: boolean = false;
   protected readonly Object = Object;
+  protected readonly onsubmit = onsubmit;
   // @ts-ignore
   private helpTimeOut = timeout;
 
@@ -462,14 +464,15 @@ export class QuizComponent implements OnInit, OnDestroy {
       if (ev.detail.data.action == "topic" && ev.detail.data.value) {
         this.questionTopic = ev.detail.data.value;
         this.loadTopicActions();
-        this.showTopicActionSheet = false;
       }
       if (ev.detail.data.action == "difficulty" && ev.detail.data.value) {
         this.questionDifficulty = ev.detail.data.value;
         this.loadDifficultyActions();
-        this.showDifficultyActionSheet = false;
       }
     }
+    this.showTopicActionSheet = false;
+    this.showDifficultyActionSheet = false;
+
   }
 
   setOpen(isOpen: boolean) {
@@ -478,8 +481,14 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   onSubmit(contactForm: NgForm) {
     if (contactForm.valid) {
+      contactForm.reset()
       const email = contactForm.value;
       this.quizSvc.sendFeedbackEmail(email)
+    } else {
+      let messages = document.getElementById("messages");
+      messages?.classList.add("ion-touched");
+      messages?.classList.add("ion-invalid");
+      this.submitClicked = true;
     }
   }
 
@@ -733,7 +742,6 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   isMobileScreen() {
-    console.log(this.platform.width());
     return this.platform.width() <= 560;
   }
 }

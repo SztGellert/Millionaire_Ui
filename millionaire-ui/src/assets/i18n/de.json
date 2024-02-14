@@ -33,7 +33,9 @@
       "disclaimer": "*Alle persönlichen Angaben sind freiwillig.",
       "name": "Name (optional)",
       "email": "E-Mail (optional)",
-      "message": "Nachricht (optional)"
+      "message": "Nachricht",
+      "privacy_policy": "Datenschutzbestimmungen",
+      "required_text": "Nachricht ist erforderlich"
     },
     "difficulty_header": "Schwierigkeit",
     "difficulties": {

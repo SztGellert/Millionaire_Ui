@@ -53,11 +53,12 @@
   "quiz": {
     "won": "CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON  {{prize}} !!!",
     "try_again": "Próbálja újra",
-    "next": "Következő",
+    "next": "Tovább",
     "incorrect_answer": "Rossz válasz. Az Ön nyereménye: {{prize}}!",
     "halving": "Vegyen el két rossz választ",
     "phone": "Hívjon fel egy barátot",
     "audience": "Kérdezze meg a közönséget",
-    "stop": "Játékon kívüli válasz"
+    "stop": "Játékon kívüli válasz",
+    "stop_button": "Stop"
   }
 }

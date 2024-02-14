@@ -231,19 +231,24 @@
           </ion-card-subtitle>
           <ion-card-content class="help-content">
             <ion-row>
+              <ion-col></ion-col>
+              <ion-col class="button-xs ion-justify-content-center align-items-center " style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 4px;
+              margin: 5px;
+              text-decoration-color: #0A174E;
+              background-color: #F5D042;
+
+    ">
+                <div class="display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;"
+                >{{prizesList[this.level]}}</div>
+              </ion-col>
               <ion-col>
-                <ion-button (click)="answerOutOfGame()"
-                            *ngIf=" quizList[level].value !== 'Fail' && !isWinning && !outOfGame && active"
-                            class="help-button ion-float-left"
-                            color="none"
-                            disabled="{{!active || pendingAnswer}}"
-                            matTooltip="{{ getTooltip('stop') }}"
-                            matTooltipPosition="above"
-                            size="small"
-                            style="float:right;"
-                >
-                  <ion-icon name="stop"></ion-icon>
-                </ion-button>
                 <ion-button (click)="halving()"
                             *ngIf=" quizList[level].value !== 'Fail' && !isWinning && !outOfGame && active"
                             class="help-button ion-float-right"
@@ -362,13 +367,35 @@
           </ion-card-content>
           <ion-card-content>
             <ion-row>
-              <ion-col offset-md="8" size-md="4" size-xs="12">
+              <ion-col offset-md="6" size-md="3" size-xs="6">
+
+
+                <ion-button (click)="answerOutOfGame()"
+                            *ngIf=" quizList[level].value !== 'Fail' && !isWinning && !outOfGame && active"
+
+
+                            class="grad2"
+                            color="none"
+                            disabled="{{!active || pendingAnswer}}"
+
+
+                            matTooltip="{{ getTooltip('stop') }}" matTooltipPosition="above"
+
+                            size="small"
+                            style="width: 100%; display: inline-block; opacity: 0.6; background-image: linear-gradient(to right, #ff0000 0%, #f6aeae  51%, #ff0000  100%);">
+                  <ion-icon name="stop" slot="start"></ion-icon>
+                  {{ 'quiz.stop_button' | translate }}
+                </ion-button>
+              </ion-col>
+              <ion-col size-md="3" size-xs="6">
                 <ion-button (click)="checkAnswer(selectedAnswer)"
                             *ngIf=" quizList[level]?.value !== 'Fail' && !isWinning && active"
                             class="grad2" color="none"
                             disabled="{{pendingAnswer}}"
                             size="small"
-                            style="width: 100%; display: inline-block;">{{ 'quiz.next' | translate }}
+                            style="background-image: linear-gradient(to right, #69e647 0%, #92FE9D  51%, #47e64a  100%); width: 100%; display: inline-block;">
+                  <ion-icon name="play" slot="start"></ion-icon>
+                  {{ 'quiz.next' | translate }}
                 </ion-button>
               </ion-col>
             </ion-row>

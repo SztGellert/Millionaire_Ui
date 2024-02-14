@@ -53,11 +53,12 @@
   "quiz": {
     "won": "CONGRATULATIONS!!! YOU ARE A MILLIONAIRE!! YOU JUST WON  {{prize}} !!!",
     "try_again": "Try Again",
-    "next": "Next",
+    "next": "Continue",
     "incorrect_answer": "Wrong answer. Your prize is {{prize}}!",
     "halving": "Take away two wrong answers",
     "phone": "Phone a friend",
     "audience": "Ask the audience",
-    "stop": "Out of game answer"
+    "stop": "Out of game answer",
+    "stop_button": "Stop"
   }
 }

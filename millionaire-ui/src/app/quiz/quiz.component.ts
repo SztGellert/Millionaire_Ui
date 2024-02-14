@@ -92,6 +92,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   music = new Audio();
   showToolbar: boolean = false;
   submitClicked: boolean = false;
+  stat: number = 0;
   protected readonly Object = Object;
   protected readonly onsubmit = onsubmit;
   // @ts-ignore
@@ -296,30 +297,53 @@ export class QuizComponent implements OnInit, OnDestroy {
     const func = () => {
       let max = 100;
       let min = 40;
-      let correct_chance = Math.floor(Math.random() * (max - min + 1) + min)
-      let sum = correct_chance;
+
+      let sum = 0;
       let chance = 0;
+      let chances = [];
       // @ts-ignore
-      this.statDict[this.quizList[this.level].correct_answer] = correct_chance;
       for (let i = 0; i < this.quizList[this.level].answers.length; i++) {
-        // @ts-ignore
-        if (this.quizList[this.level].answers[i] != this.quizList[this.level].correct_answer) {
-          if (i < 3) {
-            chance = Math.floor(Math.random() * (100 - correct_chance - chance + 1))
-            // @ts-ignore
-            this.statDict[this.quizList[this.level].answers[i]] = chance;
-            sum += chance;
-          } else {
-            // @ts-ignore
-            this.statDict[this.quizList[this.level].answers[i]] = 100 - sum;
-            sum += 100 - sum
-          }
+        if (i == 0) {
+          chance = Math.floor(Math.random() * (max - min + 1) + min)
+          // @ts-ignore
+          //this.statDict[this.quizList[this.level].correct_answer] = chance;
+          sum += chance;
+          chances.push(chance)
+        } else if (i < 3 && this.quizList[this.level].answers.length == 4) {
+
+          chance = Math.floor(Math.random() * (100 - sum + 1))
+
+          // @ts-ignore
+          //this.statDict[this.quizList[this.level].answers[i]] = chance;
+          sum += chance;
+          chances.push(chance)
+
+        } else {
+          chance = 100 - sum
+          // @ts-ignore
+          //this.statDict[this.quizList[this.level].answers[i]] = 100 - sum;
+          sum += chance
+          chances.push(chance)
+
         }
       }
       if (sum != 100) {
         throw Error("Audience feature unexpected error.");
       }
-    };
+
+      const maxValue = Math.max(...chances)
+      // @ts-ignore
+      this.statDict[this.quizList[this.level].correct_answer] = maxValue;
+      chances.splice(chances.indexOf(maxValue), 1);
+
+      let answersClone = structuredClone(this.quizList[this.level].answers)
+      answersClone.splice(answersClone.indexOf(this.quizList[this.level].correct_answer), 1);
+
+      for (let i = 0; i < (chances.length + 1); i++) {
+        // @ts-ignore
+        this.statDict[answersClone[i]] = chances[i];
+      }
+    }
 
 
     if (this.help_modules.audience) {
@@ -355,9 +379,18 @@ export class QuizComponent implements OnInit, OnDestroy {
     }
   }
 
+
   getStat(item: string): number {
+    //console.log(item)
+
+    //console.log(this.statDict)
+
+    //this.stat += 1;
+    // @ts-ignore
+
     // @ts-ignore
     return this.statDict[item]
+
   }
 
   halving() {

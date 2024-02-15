@@ -231,15 +231,20 @@
           </ion-card-subtitle>
           <ion-card-content class="help-content">
             <ion-row>
-              <ion-col class=" ion-justify-content-center align-items-center " size-md="4"
+              <ion-col class="ion-padding-horizontal ion-justify-content-center align-items-center " size-md="4"
                        style="
               display: flex;
               align-items: center;
               justify-content: center;
               border-radius: 4px;
-              margin: 5px;
+
+              margin-top: 9px;
+              margin-bottom: 9px;
               text-decoration-color: #0A174E;
-              background-color: #F5D042;">
+              background-color: #F5D042;
+
+
+  transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1), background-color 15ms linear, color 15ms linear;">
                 <div class="display: flex;
     align-items: center;
     justify-content: center;
@@ -255,7 +260,8 @@
                             disabled="{{!active || !help_modules['halving'] || pendingAnswer}}"
                             matTooltip="{{ getTooltip('halving') }}"
                             matTooltipPosition="above"
-                            style="height: auto;"
+                            style="height: auto;
+                              --padding-bottom: 0; --padding-top: 0;"
                 >50:50
                 </ion-button>
                 <ion-button (click)="phone()"
@@ -265,7 +271,7 @@
                             disabled="{{!active || !help_modules['phone'] || pendingAnswer}}"
                             matTooltip="{{ getTooltip('phone') }}"
                             matTooltipPosition="above"
-                            style="height: auto"
+                            style="height: auto; --padding-bottom: 0; --padding-top: 0;"
                 >
                   <ion-icon name="call" size="small"></ion-icon>
                 </ion-button>
@@ -277,7 +283,7 @@
                             matTooltip="{{ getTooltip('audience') }}"
                             matTooltipPosition="above"
 
-                            style="height: auto"
+                            style="height: auto; --padding-bottom: 0; --padding-top: 0;"
                 >
                   <span><mat-icon class="groups"
                   >groups</mat-icon></span>

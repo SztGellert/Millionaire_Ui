@@ -213,7 +213,7 @@
           </ion-row>
         </ion-card>
       </ion-col>
-      <ion-col *ngIf="quizList[level] && startBtnClicked" offset-md="2" size-md="8">
+      <ion-col *ngIf="quizList[level] && startBtnClicked" offset-lg="2" size-lg="8">
         <ion-card [ngClass]="isDesktop() ? '': 'mobileCard'">
           <ion-card-title style="{{'background: border-radius: 5px;'}}">
             <ion-card
@@ -231,31 +231,31 @@
           </ion-card-subtitle>
           <ion-card-content class="help-content">
             <ion-row>
-              <ion-col></ion-col>
-              <ion-col class="button-xs ion-justify-content-center align-items-center " style="
+              <ion-col class=" ion-justify-content-center align-items-center " size-md="4"
+                       style="
               display: flex;
               align-items: center;
               justify-content: center;
               border-radius: 4px;
               margin: 5px;
               text-decoration-color: #0A174E;
-              background-color: #F5D042;
-
-    ">
+              background-color: #F5D042;">
                 <div class="display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;"
+    "
                 >{{prizesList[this.level]}}</div>
               </ion-col>
-              <ion-col>
+              <ion-col style=" display: flex; flex-direction: row;   justify-content: end;"
+              >
                 <ion-button (click)="halving()"
                             *ngIf=" quizList[level].value !== 'Fail' && !isWinning && !outOfGame && active"
                             class="help-button ion-float-right"
                             color="none"
                             disabled="{{!active || !help_modules['halving'] || pendingAnswer}}"
                             matTooltip="{{ getTooltip('halving') }}"
-                            matTooltipPosition="above" size="small"
+                            matTooltipPosition="above"
+                            style="height: auto;"
                 >50:50
                 </ion-button>
                 <ion-button (click)="phone()"
@@ -265,9 +265,9 @@
                             disabled="{{!active || !help_modules['phone'] || pendingAnswer}}"
                             matTooltip="{{ getTooltip('phone') }}"
                             matTooltipPosition="above"
-                            size="small"
+                            style="height: auto"
                 >
-                  <ion-icon name="call"></ion-icon>
+                  <ion-icon name="call" size="small"></ion-icon>
                 </ion-button>
                 <ion-button (click)="audience()"
                             *ngIf=" quizList[level].value !== 'Fail' && !isWinning && !outOfGame && active"
@@ -276,11 +276,11 @@
                             disabled="{{!active || !help_modules['audience'] || pendingAnswer}}"
                             matTooltip="{{ getTooltip('audience') }}"
                             matTooltipPosition="above"
-                            size="small"
+
+                            style="height: auto"
                 >
-                  <ion-icon name="person"></ion-icon>
-                  <ion-icon name="person"></ion-icon>
-                  <ion-icon name="person"></ion-icon>
+                  <span><mat-icon class="groups"
+                  >groups</mat-icon></span>
                 </ion-button>
               </ion-col>
             </ion-row>

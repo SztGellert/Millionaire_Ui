@@ -8,6 +8,7 @@ import {MatTooltipModule,} from '@angular/material/tooltip';
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {createTranslateLoader} from "../app.module";
 import {HttpClient} from "@angular/common/http";
+import {MatIconModule} from "@angular/material/icon";
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import {HttpClient} from "@angular/common/http";
         useFactory: createTranslateLoader,
         deps: [HttpClient]
       }
-    })
+    }),
+    MatIconModule
   ],
   declarations: [QuizComponent]
 })

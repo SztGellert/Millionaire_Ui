@@ -92,7 +92,8 @@ export class QuizComponent implements OnInit, OnDestroy {
   music = new Audio();
   showToolbar: boolean = false;
   submitClicked: boolean = false;
-  stat: number = 0;
+  showPrizes: boolean = false;
+  fixPrizes = [this.prizesList[4], this.prizesList[9], this.prizesList[14]]
   protected readonly Object = Object;
   protected readonly onsubmit = onsubmit;
   // @ts-ignore
@@ -510,6 +511,10 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   setOpen(isOpen: boolean) {
     this.feedbackModal = isOpen;
+  }
+
+  setOpenQuiz(isOpen: boolean) {
+    this.showPrizes = isOpen;
   }
 
   onSubmit(contactForm: NgForm) {

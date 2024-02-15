@@ -231,26 +231,53 @@
           </ion-card-subtitle>
           <ion-card-content class="help-content">
             <ion-row>
-              <ion-col class="ion-padding-horizontal ion-justify-content-center align-items-center " size-md="4"
+              <ion-col (click)="showPrizes = true"
+                       [sizeMd]="active ? '4' : ''"
+                       [sizeXs]="active ? '' : '12'"
+                       class="ion-padding-horizontal ion-justify-content-center align-items-center prize-column"
+                       offset-md="4"
                        style="
               display: flex;
               align-items: center;
               justify-content: center;
               border-radius: 4px;
-
+              box-shadow: 0 0 20px #eee;
               margin-top: 9px;
               margin-bottom: 9px;
               text-decoration-color: #0A174E;
               background-color: #F5D042;
-
-
-  transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1), background-color 15ms linear, color 15ms linear;">
+              cursor: pointer;
+ ">
                 <div class="display: flex;
     align-items: center;
     justify-content: center;
+
     "
-                >{{prizesList[this.level]}}</div>
+                >{{this.active ? prizesList[this.level] : getPrize()}}</div>
               </ion-col>
+              <ion-modal (didDismiss)="setOpenQuiz(false)" [isOpen]="showPrizes"
+              >
+                <ng-template>
+                  <ion-header>
+                    <ion-toolbar>
+                      <ion-title>Prizes</ion-title>
+                      <ion-buttons slot="end">
+                        <ion-button (click)="setOpenQuiz(false)">{{ 'menu.cancel' | translate }}</ion-button>
+                      </ion-buttons>
+                    </ion-toolbar>
+                  </ion-header>
+                  <ion-content>
+                    <ion-list>
+                      <ng-container *ngFor="let item of prizesList.slice().reverse()">
+                        <ion-item
+                          [ngStyle]="{'--background': fixPrizes.includes(item)  ? '#00ffb7' : ''}"
+                          style="{{item.trim() === prizesList[level] ? 'color: orange;' : ''}}">{{item}}
+                        </ion-item>
+                      </ng-container>
+                    </ion-list>
+                  </ion-content>
+                </ng-template>
+              </ion-modal>
               <ion-col style=" display: flex; flex-direction: row;   justify-content: end;"
               >
                 <ion-button (click)="halving()"

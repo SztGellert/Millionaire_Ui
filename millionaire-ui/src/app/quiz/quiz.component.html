@@ -246,13 +246,8 @@
               margin-bottom: 9px;
               text-decoration-color: #0A174E;
               background-color: #F5D042;
-              cursor: pointer;
- ">
-                <div class="display: flex;
-    align-items: center;
-    justify-content: center;
-
-    "
+              cursor: pointer;">
+                <div class="display: flex;align-items: center; justify-content: center;"
                 >{{this.active ? prizesList[this.level] : getPrize()}}</div>
               </ion-col>
               <ion-modal (didDismiss)="setOpenQuiz(false)" [isOpen]="showPrizes"
@@ -320,7 +315,6 @@
           </ion-card-content>
           <ion-card-content>
             <ion-row>
-
               <ion-col *ngFor="let answer of quizList[level].answers; index as i" size="6">
                 <ion-button
                   (click)="selectAnswer(answer)" *ngIf="answer"
@@ -330,12 +324,12 @@
                   disabled="{{!active}}" expand="block"
                   style="height: 100%;"
                 >
-
-
-                  <ion-buttons
+                  <span class="ion-text-wrap ion-text-center ion-align-items-center"
+                        style="display: flex"
+                  ><ion-buttons
                     *ngIf="usePhone && answer === quizList[level]?.correct_answer  || Object.keys(statDict).length"
-                    slot="start"
-                    style="font-size: 8px; margin-right: 2px;">
+                    class="ion-text-center" slot="start"
+                    style="font-size: 8px; margin-right: 2px;  display: inline-flex; ">
                     <ion-badge *ngIf="Object.keys(statDict).length"
                                [ngStyle]="{'margin-right': usePhone && answer === quizList[level]?.correct_answer ? '2px' : ''}"
 
@@ -345,32 +339,20 @@
                       <ion-icon name="call" style="display: flex"></ion-icon>
                     </ion-badge>
                   </ion-buttons>
-
-                  <span class="ion-text-wrap"
-                        style="{{ isDesktop() ? 'contain: none;' : 'font-size: 11px; contain: none;' }}"
-
-                  >{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(answer)] + answer}}</span>
+                    {{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(answer)] + answer}}</span>
                 </ion-button>
               </ion-col>
-
             </ion-row>
           </ion-card-content>
           <ion-card-content>
             <ion-row>
               <ion-col offset-md="6" size-md="3" size-xs="6">
-
-
                 <ion-button (click)="answerOutOfGame()"
                             *ngIf=" quizList[level].value !== 'Fail' && !isWinning && !outOfGame && active"
-
-
                             class="grad2"
                             color="none"
                             disabled="{{!active || pendingAnswer}}"
-
-
                             matTooltip="{{ getTooltip('stop') }}" matTooltipPosition="above"
-
                             size="small"
                             style="width: 100%; display: inline-block; opacity: 0.6; background-image: linear-gradient(to right, #ff0000 0%, #f6aeae  51%, #ff0000  100%);">
                   <ion-icon name="stop" slot="start"></ion-icon>
@@ -391,8 +373,7 @@
             </ion-row>
           </ion-card-content>
           <ion-card-content
-            *ngIf=" !active && quizList[level] || isWinning || networkError !=='';"
-          >
+            *ngIf=" !active && quizList[level] || isWinning || networkError !=='';">
             <ion-button (click)="reloadPage()" class="grad2" color="none"
                         style="width: 100%; display:inline-block;">
               <ion-icon name="reload" style="margin-right: 5px"></ion-icon>

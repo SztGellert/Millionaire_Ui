@@ -334,11 +334,11 @@ export class QuizComponent implements OnInit, OnDestroy {
 
       const maxValue = Math.max(...chances)
       // @ts-ignore
-      this.statDict[this.quizList[this.level].correct_answer] = maxValue;
+      this.statDict[this.quizData[this.level]["en"].answers[this.quizData[this.level]["en"].correct_answer_index]] = maxValue;
       chances.splice(chances.indexOf(maxValue), 1);
 
-      let answersClone = structuredClone(this.quizList[this.level].answers)
-      answersClone.splice(answersClone.indexOf(this.quizList[this.level].correct_answer), 1);
+      let answersClone = structuredClone(this.quizData[this.level]["en"].answers)
+      answersClone.splice(answersClone.indexOf(this.quizData[this.level]["en"].answers[this.quizData[this.level]["en"].correct_answer_index]), 1);
 
       for (let i = 0; i < (chances.length + 1); i++) {
         // @ts-ignore
@@ -380,17 +380,11 @@ export class QuizComponent implements OnInit, OnDestroy {
     }
   }
 
+  getStat(index: string): number {
 
-  getStat(item: string): number {
-    //console.log(item)
-
-    //console.log(this.statDict)
-
-    //this.stat += 1;
-    // @ts-ignore
 
     // @ts-ignore
-    return this.statDict[item]
+    return this.statDict[index]
 
   }
 

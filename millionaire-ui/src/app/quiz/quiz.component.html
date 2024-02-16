@@ -320,82 +320,39 @@
           </ion-card-content>
           <ion-card-content>
             <ion-row>
-              <ion-col size="6">
+
+              <ion-col *ngFor="let answer of quizList[level].answers; index as i" size="6">
                 <ion-button
-                  (click)="selectAnswer(quizList[level].answers[0])" *ngIf="quizList[level].answers[0]"
-                  [ngClass]="getAnswerClass(quizList[level].answers[0])"
+                  (click)="selectAnswer(answer)" *ngIf="answer"
+                  [ngClass]="getAnswerClass(answer)"
                   class="ion-text-wrap ion-text-left"
                   color="none"
                   disabled="{{!active}}" expand="block"
                   style="height: 100%;"
                 >
-                  <ion-badge *ngIf="Object.keys(statDict).length"
-                             slot="start">{{  getStat(quizList[level].answers[0]).toString().length < 2 ? getStat(quizList[level].answers[0]) + " % " : getStat(quizList[level].answers[0]) + "%" }}</ion-badge>
-                  <ion-icon *ngIf="usePhone && quizList[level].answers[0] === quizList[level]?.correct_answer "
-                            name="call"></ion-icon>
+
+
+                  <ion-buttons
+                    *ngIf="usePhone && answer === quizList[level]?.correct_answer  || Object.keys(statDict).length"
+                    slot="start"
+                    style="font-size: 8px; margin-right: 2px;">
+                    <ion-badge *ngIf="Object.keys(statDict).length"
+                               [ngStyle]="{'margin-right': usePhone && answer === quizList[level]?.correct_answer ? '2px' : ''}"
+
+                               slot="start">{{  getStat(quizData[level]['en'].answers[i]).toString().length < 2 ? getStat(quizData[level]['en'].answers[i]) + " % " : getStat(quizData[level]['en'].answers[i]) + "%" }}</ion-badge>
+                    <ion-badge *ngIf="usePhone && answer === quizList[level]?.correct_answer " color="tertiary"
+                               slot="start">
+                      <ion-icon name="call" style="display: flex"></ion-icon>
+                    </ion-badge>
+                  </ion-buttons>
+
                   <span class="ion-text-wrap"
                         style="{{ isDesktop() ? 'contain: none;' : 'font-size: 11px; contain: none;' }}"
 
-                  >{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(quizList[level].answers[0])] + quizList[level].answers[0]}}</span>
+                  >{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(answer)] + answer}}</span>
                 </ion-button>
               </ion-col>
-              <ion-col size="6">
-                <ion-button (click)="selectAnswer(quizList[level].answers[1])" *ngIf="quizList[level].answers[1]"
-                            [ngClass]="getAnswerClass(quizList[level].answers[1])"
-                            class="ion-text-wrap ion-text-left"
-                            color="none" disabled="{{!active}}"
-                            expand="block"
-                            style="height: 100%;"
 
-                >
-                  <ion-badge *ngIf="Object.keys(statDict).length"
-                             slot="start">{{  getStat(quizList[level].answers[1]).toString().length < 2 ? getStat(quizList[level].answers[1]) + " % " : getStat(quizList[level].answers[1]) + "%" }}</ion-badge>
-                  <ion-icon *ngIf="usePhone && quizList[level].answers[1] === quizList[level]?.correct_answer "
-                            name="call"></ion-icon>
-                  <span class="ion-text-wrap"
-                        style="{{ isDesktop() ? 'contain: none;' : 'font-size: 11px; contain: none;' }}"
-
-                  >{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(quizList[level].answers[1])] + quizList[level].answers[1]}}</span>
-                </ion-button>
-              </ion-col>
-            </ion-row>
-
-            <ion-row>
-              <ion-col size="6">
-                <ion-button (click)="selectAnswer(quizList[level].answers[2])" *ngIf="quizList[level].answers[2]"
-                            [ngClass]="getAnswerClass(quizList[level].answers[2])"
-                            class="ion-text-left ion-text-wrap"
-                            color="none" disabled="{{!active}}"
-                            expand="block"
-                            style="height: 100%;"
-
-                >
-                  <ion-badge *ngIf="Object.keys(statDict).length"
-                             slot="start">{{  getStat(quizList[level].answers[2]).toString().length < 2 ? getStat(quizList[level].answers[2]) + " % " : getStat(quizList[level].answers[2]) + "%" }}</ion-badge>
-                  <ion-icon *ngIf="usePhone && quizList[level].answers[2] === quizList[level]?.correct_answer "
-                            name="call"></ion-icon>
-                  <span class="ion-text-wrap"
-                        style="{{ isDesktop() ? 'contain: none;' : 'font-size: 11px; contain: none;' }}"
-                  >{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(quizList[level].answers[2])] + quizList[level].answers[2]}}</span>
-                </ion-button>
-              </ion-col>
-              <ion-col size="6">
-                <ion-button (click)="selectAnswer(quizList[level].answers[3])" *ngIf="quizList[level].answers[3]"
-                            [ngClass]="getAnswerClass(quizList[level].answers[3])"
-                            class="ion-text-left ion-text-wrap"
-                            color="none" disabled="{{!active}}"
-                            expand="block"
-
-                            style="height: 100%;">
-                  <ion-badge *ngIf="Object.keys(statDict).length"
-                             slot="start">{{  getStat(quizList[level].answers[3]).toString().length < 2 ? getStat(quizList[level].answers[3]) + " % " : getStat(quizList[level].answers[3]) + "%" }}</ion-badge>
-                  <ion-icon *ngIf="usePhone && quizList[level].answers[3] === quizList[level]?.correct_answer "
-                            name="call"></ion-icon>
-                  <span class="ion-text-wrap"
-                        style="{{ isDesktop() ? 'contain: none;' : 'font-size: 11px; contain: none;' }}"
-                  >{{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(quizList[level].answers[3])] + quizList[level].answers[3]}}</span>
-                </ion-button>
-              </ion-col>
             </ion-row>
           </ion-card-content>
           <ion-card-content>

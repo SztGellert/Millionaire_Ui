@@ -92,7 +92,9 @@ export class QuizComponent implements OnInit, OnDestroy {
   music = new Audio();
   showToolbar: boolean = false;
   submitClicked: boolean = false;
-  stat: number = 0;
+  showPrizes: boolean = false;
+  fixPrizes = [this.prizesList[4], this.prizesList[9], this.prizesList[14]]
+  answerLength: number = 0;
   protected readonly Object = Object;
   protected readonly onsubmit = onsubmit;
   // @ts-ignore
@@ -143,6 +145,7 @@ export class QuizComponent implements OnInit, OnDestroy {
             }
           }
         }
+        this.answerLength = Math.max(...this.quizList[this.level].answers.map(el => el.length));
         this.startBtnClicked = true;
         this.active = true;
       } else {
@@ -152,7 +155,6 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.loadTooltips();
     this.loadTopicActions()
     this.loadDifficultyActions();
-
   }
 
   loadTooltips() {
@@ -241,6 +243,7 @@ export class QuizComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           if (!this.outOfGame) {
             this.level += 1
+            this.answerLength = Math.max(...this.quizList[this.level].answers.map(el => el.length));
             this.checkedAnswer = false;
             this.selectedAnswer = "";
             this.pendingAnswer = false;
@@ -330,21 +333,18 @@ export class QuizComponent implements OnInit, OnDestroy {
       if (sum != 100) {
         throw Error("Audience feature unexpected error.");
       }
-
       const maxValue = Math.max(...chances)
       // @ts-ignore
-      this.statDict[this.quizList[this.level].correct_answer] = maxValue;
+      this.statDict[this.quizData[this.level]["en"].correct_answer] = maxValue;
       chances.splice(chances.indexOf(maxValue), 1);
-
-      let answersClone = structuredClone(this.quizList[this.level].answers)
-      answersClone.splice(answersClone.indexOf(this.quizList[this.level].correct_answer), 1);
-
-      for (let i = 0; i < (chances.length + 1); i++) {
+      let answersClone = structuredClone(this.quizData[this.level]["en"].answers)
+      // @ts-ignore
+      answersClone.splice(answersClone.indexOf(this.quizData[this.level]["en"].correct_answer), 1);
+      for (let i = 0; i < (chances.length); i++) {
         // @ts-ignore
         this.statDict[answersClone[i]] = chances[i];
       }
     }
-
 
     if (this.help_modules.audience) {
       this.help_modules.audience = false;
@@ -379,18 +379,9 @@ export class QuizComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  getStat(item: string): number {
-    //console.log(item)
-
-    //console.log(this.statDict)
-
-    //this.stat += 1;
+  getStat(index: string): number {
     // @ts-ignore
-
-    // @ts-ignore
-    return this.statDict[item]
-
+    return this.statDict[index]
   }
 
   halving() {
@@ -510,6 +501,10 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   setOpen(isOpen: boolean) {
     this.feedbackModal = isOpen;
+  }
+
+  setOpenQuiz(isOpen: boolean) {
+    this.showPrizes = isOpen;
   }
 
   onSubmit(contactForm: NgForm) {

@@ -333,21 +333,18 @@ export class QuizComponent implements OnInit, OnDestroy {
       if (sum != 100) {
         throw Error("Audience feature unexpected error.");
       }
-
       const maxValue = Math.max(...chances)
       // @ts-ignore
-      this.statDict[this.quizData[this.level]["en"].answers[this.quizData[this.level]["en"].correct_answer_index]] = maxValue;
+      this.statDict[this.quizData[this.level]["en"].correct_answer] = maxValue;
       chances.splice(chances.indexOf(maxValue), 1);
-
       let answersClone = structuredClone(this.quizData[this.level]["en"].answers)
-      answersClone.splice(answersClone.indexOf(this.quizData[this.level]["en"].answers[this.quizData[this.level]["en"].correct_answer_index]), 1);
-
-      for (let i = 0; i < (chances.length + 1); i++) {
+      // @ts-ignore
+      answersClone.splice(answersClone.indexOf(this.quizData[this.level]["en"].correct_answer), 1);
+      for (let i = 0; i < (chances.length); i++) {
         // @ts-ignore
         this.statDict[answersClone[i]] = chances[i];
       }
     }
-
 
     if (this.help_modules.audience) {
       this.help_modules.audience = false;
@@ -383,11 +380,8 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   getStat(index: string): number {
-
-
     // @ts-ignore
     return this.statDict[index]
-
   }
 
   halving() {

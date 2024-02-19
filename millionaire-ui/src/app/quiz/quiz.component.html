@@ -91,13 +91,14 @@
           </ion-toolbar>
         </ion-header>
       </ng-container>
-      <ion-col *ngIf="level===0 && !startBtnClicked" offset-md="2" size-md="8" style="fill: #56ab2f">
+      <ion-col *ngIf="level===0 && !startBtnClicked" offset-lg="2" size-lg="8" style="fill: #56ab2f">
         <ion-card [ngClass]="isDesktop() ? '': 'mobileCard'">
           <ion-row *ngIf="level===0 && !startBtnClicked">
-            <ion-col offset-md="4" size-md="4">
+            <ion-col offset-md="4" offset-sm="3" size-md="4" size-sm="6">
               <ion-img
+                class="ion-align-items-center ion-justify-content-center"
                 src="././assets/millionaire.png"
-                style="width: auto;">
+                style="max-width: 50%; margin-left: 25%">
               </ion-img>
               <ion-button (click)="startQuiz()" *ngIf="level===0 && !startBtnClicked && networkError ==='' "
                           class="btn-grad"

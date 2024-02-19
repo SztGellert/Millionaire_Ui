@@ -94,6 +94,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   submitClicked: boolean = false;
   showPrizes: boolean = false;
   fixPrizes = [this.prizesList[4], this.prizesList[9], this.prizesList[14]]
+  answerLength: number = 0;
   protected readonly Object = Object;
   protected readonly onsubmit = onsubmit;
   // @ts-ignore
@@ -144,6 +145,7 @@ export class QuizComponent implements OnInit, OnDestroy {
             }
           }
         }
+        this.answerLength = Math.max(...this.quizList[this.level].answers.map(el => el.length));
         this.startBtnClicked = true;
         this.active = true;
       } else {
@@ -153,7 +155,6 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.loadTooltips();
     this.loadTopicActions()
     this.loadDifficultyActions();
-
   }
 
   loadTooltips() {
@@ -242,6 +243,7 @@ export class QuizComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           if (!this.outOfGame) {
             this.level += 1
+            this.answerLength = Math.max(...this.quizList[this.level].answers.map(el => el.length));
             this.checkedAnswer = false;
             this.selectedAnswer = "";
             this.pendingAnswer = false;

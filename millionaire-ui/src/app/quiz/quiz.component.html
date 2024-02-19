@@ -315,32 +315,37 @@
           </ion-card-content>
           <ion-card-content>
             <ion-row>
-              <ion-col *ngFor="let answer of quizList[level].answers; index as i" size="6">
+              <ion-col *ngFor="let answer of quizList[level].answers; index as i"
+                       class="ion-justify-content-left" size="6" style="position: relative; overflow: visible">
                 <ion-button
                   (click)="selectAnswer(answer)" *ngIf="answer"
                   [ngClass]="getAnswerClass(answer)"
-                  class="ion-text-wrap ion-text-left"
+                  class=""
                   color="none"
-                  disabled="{{!active}}" expand="block"
-                  style="height: 100%;"
-                >
-                  <span class="ion-text-wrap ion-text-center ion-align-items-center"
-                        style="display: flex"
-                  ><ion-buttons
-                    *ngIf="usePhone && answer === quizList[level]?.correct_answer  || Object.keys(statDict).length"
-                    class="ion-text-center" slot="start"
-                    style="font-size: 8px; margin-right: 2px;  display: inline-flex; ">
-                    <ion-badge *ngIf="Object.keys(statDict).length"
-                               [ngStyle]="{'margin-right': usePhone && answer === quizList[level]?.correct_answer ? '2px' : ''}"
+                  disabled="{{!active}}"
+                  style="height: 100%; width: 100%; text-align: left;">
+                  <ion-row class="ion-text-left"
+                           style="{{answerLength > 7 && isMobileScreen() ? 'flex-grow: 1; font-size: 9px;' : 'flex-grow: 1;'}}">
+                    <ion-col class="ion-text-wrap ion-text-left" size="12">
+                      {{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(answer)] + answer}}</ion-col>
+                    <ion-label position="stacked"
+                               style=" opacity: 1; display: flex; margin-left: 4px; margin-bottom: 4px;">
+                      <ion-buttons
+                        *ngIf="usePhone && answer === quizList[level]?.correct_answer  || Object.keys(statDict).length"
+                        style="font-size: 8px; margin-right: 2px;">
+                        <ion-badge *ngIf="Object.keys(statDict).length"
+                                   [ngStyle]="{'margin-right': usePhone && answer === quizList[level]?.correct_answer ? '2px' : ''}"
+                                   class="labelClass"
 
-                               slot="start">{{  getStat(quizData[level]['en'].answers[i]).toString().length < 2 ? getStat(quizData[level]['en'].answers[i]) + " % " : getStat(quizData[level]['en'].answers[i]) + "%" }}</ion-badge>
-                    <ion-badge *ngIf="usePhone && answer === quizList[level]?.correct_answer " color="tertiary"
-                               slot="start">
-                      <ion-icon name="call" style="display: flex"></ion-icon>
-                    </ion-badge>
-                  </ion-buttons>
-                    {{['A: ', 'B: ', 'C: ', 'D: '][quizList[level].answers.indexOf(answer)] + answer}}</span>
+                        >{{  getStat(quizData[level]['en'].answers[i]).toString().length < 2 ? getStat(quizData[level]['en'].answers[i]) + " % " : getStat(quizData[level]['en'].answers[i]) + "%" }}</ion-badge>
+                        <ion-badge *ngIf="usePhone && answer === quizList[level]?.correct_answer " color="tertiary">
+                          <ion-icon name="call" style="display: flex"></ion-icon>
+                        </ion-badge>
+                      </ion-buttons>
+                    </ion-label>
+                  </ion-row>
                 </ion-button>
+
               </ion-col>
             </ion-row>
           </ion-card-content>

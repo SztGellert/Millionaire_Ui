@@ -59,6 +59,8 @@
     "phone": "Ruf einen Freund an",
     "audience": "Frag das Publikum",
     "stop": "Antwort außer Spiel",
-    "stop_button": "Stop"
+    "stop_button": "Stop",
+    "fix_prize": "Garantierter Gewinn",
+    "current_prize": "Aktueller Gewinn"
   }
 }

@@ -266,6 +266,10 @@
                       <ng-container *ngFor="let item of prizesList.slice().reverse()">
                         <ion-item
                           [ngStyle]="{'--background': fixPrizes.includes(item)  ? '#00ffb7' : ''}"
+                          matTooltip="{{fixPrizes.includes(item)  ? ('quiz.fix_prize' | translate)  : (item === prizesList[level] ? ('quiz.current_prize' | translate)
+                          : '')  }}"
+
+                          matTooltipPosition="above"
                           style="{{item.trim() === prizesList[level] ? 'color: orange;' : ''}}">{{item}}
                         </ion-item>
                       </ng-container>
@@ -320,7 +324,6 @@
                 <ion-button
                   (click)="selectAnswer(answer)" *ngIf="answer"
                   [ngClass]="getAnswerClass(answer)"
-                  class=""
                   color="none"
                   disabled="{{!active}}"
                   style="height: 100%; width: 100%; text-align: left;">

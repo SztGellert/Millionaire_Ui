@@ -59,6 +59,8 @@
     "phone": "Phone a friend",
     "audience": "Ask the audience",
     "stop": "Out of game answer",
-    "stop_button": "Stop"
+    "stop_button": "Stop",
+    "fix_prize": "Guaranteed prize",
+    "current_prize": "Actual prize"
   }
 }

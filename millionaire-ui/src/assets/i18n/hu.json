@@ -59,6 +59,8 @@
     "phone": "Hívjon fel egy barátot",
     "audience": "Kérdezze meg a közönséget",
     "stop": "Játékon kívüli válasz",
-    "stop_button": "Stop"
+    "stop_button": "Stop",
+    "fix_prize": "Garantált nyeremény",
+    "current_prize": "Aktuális nyeremény"
   }
 }

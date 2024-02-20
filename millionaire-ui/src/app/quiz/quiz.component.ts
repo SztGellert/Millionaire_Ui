@@ -10,7 +10,7 @@ interface QuestionInGame {
   answers: string[];
   correct_answer: string;
   topic: string;
-  difficulty: boolean;
+  difficulty: string;
 }
 
 @Component({
@@ -28,6 +28,9 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   quizData: Question[] = [];
   quizList: QuestionInGame[] = [];
+  easyQuestions = [];
+  mediumQuestions = [];
+  hardQuestions = [];
   quizListSubs: Subscription = new Subscription();
   difficultyList: string[] = ["all", "easy", "medium", "hard"];
   topicList: string[] = [
@@ -111,7 +114,18 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.quizListSubs = this.quizSvc.quizzesChanged.subscribe(quizzes => {
+      // @ts-ignore
+      this.easyQuestions = localStorage.getItem('easyQuestions') === null ? [] : JSON.parse(localStorage.getItem('easyQuestions'));
+      let easyCount = quizzes.filter(x => x.difficulty === "easy").length
+      // @ts-ignore
+      this.mediumQuestions = localStorage.getItem('mediumQuestions') === null ? [] : JSON.parse(localStorage.getItem('mediumQuestions'));
+      let mediumCount = quizzes.filter(x => x.difficulty === "medium").length
+      // @ts-ignore
+      this.hardQuestions = localStorage.getItem('hardQuestions') === null ? [] : JSON.parse(localStorage.getItem('hardQuestions'));
+      let hardCount = quizzes.filter(x => x.difficulty === "hard").length
+
       this.quizData = structuredClone(quizzes);
+
       for (let quiz of quizzes) {
         let question = {} as QuestionInGame;
         // @ts-ignore
@@ -121,6 +135,26 @@ export class QuizComponent implements OnInit, OnDestroy {
         // @ts-ignore
         question.correct_answer = quiz[this.quiz_language].answers[quiz[this.quiz_language].correct_answer_index];
         this.quizList.push(question)
+
+        if (quiz.difficulty === "easy") {
+          // @ts-ignore
+          this.easyQuestions.push(quiz.id)
+          if (!--easyCount) {
+            localStorage.setItem('easyQuestions', JSON.stringify(this.easyQuestions));
+          }
+        } else if (quiz.difficulty === "medium") {
+          // @ts-ignore
+          this.mediumQuestions.push(quiz.id)
+          if (!--mediumCount) {
+            localStorage.setItem('mediumQuestions', JSON.stringify(this.mediumQuestions));
+          }
+        } else {
+          // @ts-ignore
+          this.hardQuestions.push(quiz.id)
+          if (!--hardCount) {
+            localStorage.setItem('hardQuestions', JSON.stringify(this.hardQuestions));
+          }
+        }
       }
       if (this.quizList?.length == 15) {
         let sortOrder = ""
@@ -148,6 +182,7 @@ export class QuizComponent implements OnInit, OnDestroy {
         this.answerLength = Math.max(...this.quizList[this.level].answers.map(el => el.length));
         this.startBtnClicked = true;
         this.active = true;
+
       } else {
         this.networkError = "Service unavailable."
       }
@@ -474,7 +509,14 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   startQuiz() {
     this.playAudioMusic();
-    this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty);
+    let exceptions = {
+      easyQuestions: this.easyQuestions,
+      mediumQuestions: this.mediumQuestions,
+      hardQuestions: this.hardQuestions
+    }
+
+    // @ts-ignore
+    this.quizSvc.fetchQuiz(this.questionTopic, this.questionDifficulty, exceptions);
   }
 
   getTooltip(help_type: string): string {

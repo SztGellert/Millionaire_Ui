@@ -127,7 +127,17 @@ export class QuizComponent implements OnInit, OnDestroy {
       // @ts-ignore
       this.hardQuestions = localStorage.getItem('hardQuestions') !== null ? JSON.parse(localStorage.getItem('hardQuestions')) : [];
 
-      this.quizData = structuredClone(quizzes);
+      if (quizzes.exception.resetEasyFilter) {
+        this.easyQuestions = [];
+      }
+      if (quizzes.exception.resetMediumFilter) {
+        this.mediumQuestions = [];
+      }
+      if (quizzes.exception.resetHardFilter) {
+        this.hardQuestions = [];
+      }
+
+      this.quizData = structuredClone(quizzes.questions);
 
       if (this.quizData[0].difficulty === "easy") {
         // @ts-ignore
@@ -140,7 +150,7 @@ export class QuizComponent implements OnInit, OnDestroy {
         this.hardQuestions.push(this.quizData[0].id)
       }
 
-      for (let quiz of quizzes) {
+      for (let quiz of quizzes.questions) {
         let question = {} as QuestionInGame;
         // @ts-ignore
         question.value = quiz[this.quiz_language].text;

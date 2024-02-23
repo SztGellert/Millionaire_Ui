@@ -98,6 +98,10 @@ export class QuizComponent implements OnInit, OnDestroy {
   showPrizes: boolean = false;
   fixPrizes = [this.prizesList[4], this.prizesList[9], this.prizesList[14]]
   answerLength: number = 0;
+  tooltipTranslateSubs: Subscription = new Subscription();
+  topicTranslateSubs: Subscription = new Subscription();
+  difficultyTranslateSubs: Subscription = new Subscription();
+
   protected readonly Object = Object;
   protected readonly onsubmit = onsubmit;
   // @ts-ignore
@@ -116,15 +120,23 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.quizListSubs = this.quizSvc.quizzesChanged.subscribe(quizzes => {
       // @ts-ignore
       this.easyQuestions = localStorage.getItem('easyQuestions') === null ? [] : JSON.parse(localStorage.getItem('easyQuestions'));
-      let easyCount = quizzes.filter(x => x.difficulty === "easy").length
       // @ts-ignore
       this.mediumQuestions = localStorage.getItem('mediumQuestions') === null ? [] : JSON.parse(localStorage.getItem('mediumQuestions'));
-      let mediumCount = quizzes.filter(x => x.difficulty === "medium").length
       // @ts-ignore
       this.hardQuestions = localStorage.getItem('hardQuestions') === null ? [] : JSON.parse(localStorage.getItem('hardQuestions'));
-      let hardCount = quizzes.filter(x => x.difficulty === "hard").length
 
       this.quizData = structuredClone(quizzes);
+
+      if (this.quizData[0].difficulty === "easy") {
+        // @ts-ignore
+        this.easyQuestions.push(this.quizData[0].id)
+      } else if (this.quizData[0].difficulty === "medium") {
+        // @ts-ignore
+        this.mediumQuestions.push(this.quizData[0].id)
+      } else {
+        // @ts-ignore
+        this.hardQuestions.push(this.quizData[0].id)
+      }
 
       for (let quiz of quizzes) {
         let question = {} as QuestionInGame;
@@ -135,26 +147,6 @@ export class QuizComponent implements OnInit, OnDestroy {
         // @ts-ignore
         question.correct_answer = quiz[this.quiz_language].answers[quiz[this.quiz_language].correct_answer_index];
         this.quizList.push(question)
-
-        if (quiz.difficulty === "easy") {
-          // @ts-ignore
-          this.easyQuestions.push(quiz.id)
-          if (!--easyCount) {
-            localStorage.setItem('easyQuestions', JSON.stringify(this.easyQuestions));
-          }
-        } else if (quiz.difficulty === "medium") {
-          // @ts-ignore
-          this.mediumQuestions.push(quiz.id)
-          if (!--mediumCount) {
-            localStorage.setItem('mediumQuestions', JSON.stringify(this.mediumQuestions));
-          }
-        } else {
-          // @ts-ignore
-          this.hardQuestions.push(quiz.id)
-          if (!--hardCount) {
-            localStorage.setItem('hardQuestions', JSON.stringify(this.hardQuestions));
-          }
-        }
       }
       if (this.quizList?.length == 15) {
         let sortOrder = ""
@@ -194,7 +186,7 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   loadTooltips() {
     this.translateService.getTranslation(this.quiz_language);
-    this.translateService.get('quiz').subscribe((data: any) => {
+    this.tooltipTranslateSubs = this.translateService.get('quiz').subscribe((data: any) => {
       this.tooltips.halving = data.halving;
       this.tooltips.audience = data.audience;
       this.tooltips.phone = data.phone;
@@ -205,7 +197,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   loadDifficultyActions() {
     this.difficultyActionSheetButtons = [];
     this.translateService.getTranslation(this.quiz_language)
-    this.translateService.get('menu').subscribe((data: any) => {
+    this.difficultyTranslateSubs = this.translateService.get('menu').subscribe((data: any) => {
       for (let item of this.difficultyList) {
         this.difficultyActionSheetButtons = this.difficultyActionSheetButtons.concat({
           text: data.difficulties[item],
@@ -231,7 +223,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   loadTopicActions() {
     this.topicActionSheetButtons = [];
     this.translateService.getTranslation(this.quiz_language)
-    this.translateService.get('menu').subscribe((data: any) => {
+    this.topicTranslateSubs = this.translateService.get('menu').subscribe((data: any) => {
       for (let item of this.topicList) {
         this.topicActionSheetButtons = this.topicActionSheetButtons.concat({
           text: data.topics[item],
@@ -257,6 +249,22 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.quizListSubs.unsubscribe();
+    this.tooltipTranslateSubs.unsubscribe();
+    this.topicTranslateSubs.unsubscribe();
+    this.difficultyTranslateSubs.unsubscribe();
+    this.updateConfig();
+  }
+
+  updateConfig() {
+    if (this.easyQuestions.length) {
+      localStorage.setItem('easyQuestions', JSON.stringify(this.easyQuestions));
+    } else if (this.mediumQuestions.length) {
+      // @ts-ignore
+      localStorage.setItem('mediumQuestions', JSON.stringify(this.mediumQuestions));
+    } else {
+      // @ts-ignore
+      localStorage.setItem('hardQuestions', JSON.stringify(this.hardQuestions));
+    }
   }
 
   checkAnswer(answer: string) {
@@ -278,6 +286,16 @@ export class QuizComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           if (!this.outOfGame) {
             this.level += 1
+            if (this.quizData[this.level].difficulty === "easy") {
+              // @ts-ignore
+              this.easyQuestions.push(this.quizData[this.level].id)
+            } else if (this.quizData[this.level].difficulty === "medium") {
+              // @ts-ignore
+              this.mediumQuestions.push(this.quizData[this.level].id)
+            } else {
+              // @ts-ignore
+              this.hardQuestions.push(this.quizData[this.level].id)
+            }
             this.answerLength = Math.max(...this.quizList[this.level].answers.map(el => el.length));
             this.checkedAnswer = false;
             this.selectedAnswer = "";
@@ -491,6 +509,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.music.pause();
     // @ts-ignore
     clearTimeout(this.helpTimeOut);
+    this.updateConfig();
   }
 
   // @ts-ignore

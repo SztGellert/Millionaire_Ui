@@ -170,7 +170,7 @@ export class QuizComponent implements OnInit, OnDestroy {
           const langs = ["en", "de", "hu"]
           for (let l = 0; l < langs.length; l++) {
             // @ts-ignore
-            this.quizData[i][langs[l]].correct_answer = this.quizData[i][langs[l]].answers[this.quizData[i][langs[l]].correct_answer_index]
+            this.quizData[i][langs[l]].correct_answer = structuredClone(this.quizData[i][langs[l]].answers[this.quizData[i][langs[l]].correct_answer_index])
             // @ts-ignore
             const clone = structuredClone(this.quizData[i][langs[l]].answers);
             for (let k = 0; k < 4; k++) {
@@ -380,7 +380,6 @@ export class QuizComponent implements OnInit, OnDestroy {
         this.statDict[answersClone[i]] = chances[i];
       }
     }
-
     if (this.help_modules.audience) {
       this.help_modules.audience = false;
 

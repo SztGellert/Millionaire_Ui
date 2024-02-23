@@ -71,8 +71,10 @@ export class QuizComponent implements OnInit, OnDestroy {
   quiz_language = "en"
   tooltips = {halving: "", audience: "", phone: "", stop: ""}
   isAlertOpen = false;
-  questionDifficulty: string = "all";
-  questionTopic: string = "all";
+  // @ts-ignore
+  questionTopic = localStorage.getItem('questionTopic') === null ? "all" : JSON.parse(localStorage.getItem('questionTopic'));
+  // @ts-ignore
+  questionDifficulty = localStorage.getItem('questionDifficulty') === null ? "all" : JSON.parse(localStorage.getItem('questionDifficulty'));
   startBtnClicked: boolean = false;
   active: boolean = false;
   isWinning: boolean = false;
@@ -119,11 +121,11 @@ export class QuizComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.quizListSubs = this.quizSvc.quizzesChanged.subscribe(quizzes => {
       // @ts-ignore
-      this.easyQuestions = localStorage.getItem('easyQuestions') === null ? [] : JSON.parse(localStorage.getItem('easyQuestions'));
+      this.easyQuestions = localStorage.getItem('easyQuestions') !== null ? JSON.parse(localStorage.getItem('easyQuestions')) : [];
       // @ts-ignore
-      this.mediumQuestions = localStorage.getItem('mediumQuestions') === null ? [] : JSON.parse(localStorage.getItem('mediumQuestions'));
+      this.mediumQuestions = localStorage.getItem('mediumQuestions') !== null ? JSON.parse(localStorage.getItem('mediumQuestions')) : [];
       // @ts-ignore
-      this.hardQuestions = localStorage.getItem('hardQuestions') === null ? [] : JSON.parse(localStorage.getItem('hardQuestions'));
+      this.hardQuestions = localStorage.getItem('hardQuestions') !== null ? JSON.parse(localStorage.getItem('hardQuestions')) : [];
 
       this.quizData = structuredClone(quizzes);
 
@@ -258,12 +260,18 @@ export class QuizComponent implements OnInit, OnDestroy {
   updateConfig() {
     if (this.easyQuestions.length) {
       localStorage.setItem('easyQuestions', JSON.stringify(this.easyQuestions));
-    } else if (this.mediumQuestions.length) {
-      // @ts-ignore
+    }
+    if (this.mediumQuestions.length) {
       localStorage.setItem('mediumQuestions', JSON.stringify(this.mediumQuestions));
-    } else {
-      // @ts-ignore
+    }
+    if (this.hardQuestions.length) {
       localStorage.setItem('hardQuestions', JSON.stringify(this.hardQuestions));
+    }
+    if (this.questionTopic !== localStorage.getItem('questionTopic')) {
+      localStorage.setItem('questionTopic', JSON.stringify(this.questionTopic));
+    }
+    if (this.questionDifficulty !== localStorage.getItem('questionDifficulty')) {
+      localStorage.setItem('questionDifficulty', JSON.stringify(this.questionDifficulty));
     }
   }
 
@@ -296,6 +304,7 @@ export class QuizComponent implements OnInit, OnDestroy {
               // @ts-ignore
               this.hardQuestions.push(this.quizData[this.level].id)
             }
+            this.updateConfig();
             this.answerLength = Math.max(...this.quizList[this.level].answers.map(el => el.length));
             this.checkedAnswer = false;
             this.selectedAnswer = "";
@@ -554,6 +563,7 @@ export class QuizComponent implements OnInit, OnDestroy {
         this.loadDifficultyActions();
       }
     }
+    this.updateConfig();
     this.showTopicActionSheet = false;
     this.showDifficultyActionSheet = false;
 

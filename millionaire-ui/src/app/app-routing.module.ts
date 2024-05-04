@@ -8,8 +8,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'quiz',
-    pathMatch: 'full'
+    loadChildren: () => import('./quiz/quiz.module').then(m => m.QuizModule)
   },
 ];
 

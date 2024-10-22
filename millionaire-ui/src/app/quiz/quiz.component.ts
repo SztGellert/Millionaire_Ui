@@ -604,27 +604,27 @@ export class QuizComponent implements OnInit, OnDestroy {
     if (this.allowMusic) {
       let src = "";
       if (this.level < 5) {
-        src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/gbsxnbblhj/11%20%24100-%241%2C000%20Questions.mp3"
+        src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/gbsxnbblhj/11%20%24100-%241%2C000%20Questions.mp3"
       } else if (this.level === 5) {
-        src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/aokfkhoocj/14%20%242%2C000%20Question.mp3"
+        src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/aokfkhoocj/14%20%242%2C000%20Question.mp3"
       } else if (this.level === 6) {
-        src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/mksvhlwtxc/19%20%244%2C000%20Question.mp3"
+        src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/mksvhlwtxc/19%20%244%2C000%20Question.mp3"
       } else if (this.level === 7) {
-        src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/jpwsuamjxy/24%20%248%2C000%20Question.mp3"
+        src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/jpwsuamjxy/24%20%248%2C000%20Question.mp3"
       } else if (this.level === 8) {
-        src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/qeevmijfco/29%20%2416%2C000%20Question.mp3"
+        src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/qeevmijfco/29%20%2416%2C000%20Question.mp3"
       } else if (this.level === 9) {
-        src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/zitvaxtwyx/34%20%2432%2C000%20Question.mp3"
+        src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/zitvaxtwyx/34%20%2432%2C000%20Question.mp3"
       } else if (this.level === 10) {
-        src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/rpjteuukem/39%20%2464%2C000%20Question.mp3"
+        src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/rpjteuukem/39%20%2464%2C000%20Question.mp3"
       } else if (this.level === 11) {
-        src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/foourcouxn/44%20%24125%2C000%20Question.mp3"
+        src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/foourcouxn/44%20%24125%2C000%20Question.mp3"
       } else if (this.level === 12) {
-        src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/ffaekfyhys/49%20%24250%2C000%20Question.mp3"
+        src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/ffaekfyhys/49%20%24250%2C000%20Question.mp3"
       } else if (this.level === 13) {
-        src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/wvlsjrnuzp/54%20%24500%2C000%20Question.mp3"
+        src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/wvlsjrnuzp/54%20%24500%2C000%20Question.mp3"
       } else {
-        src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/hidywqfcea/59%20%241%2C000%2C000%20Question.mp3"
+        src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/hidywqfcea/59%20%241%2C000%2C000%20Question.mp3"
       }
       this.music.src = src;
       this.music.loop = true;
@@ -652,88 +652,88 @@ export class QuizComponent implements OnInit, OnDestroy {
       switch (name) {
         case 'correct_answer':
           if (this.level === 4) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/blntezgaun/12%20Win%20%241%2C000.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/blntezgaun/12%20Win%20%241%2C000.mp3";
             timeout = 8;
           } else if (this.level === 5) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/njmvthwqgw/17%20%242%2C000%20Win.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/njmvthwqgw/17%20%242%2C000%20Win.mp3";
           } else if (this.level === 6) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/pjijryqyei/22%20%244%2C000%20Win.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/pjijryqyei/22%20%244%2C000%20Win.mp3";
           } else if (this.level === 7) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/isggfzkliv/27%20%248%2C000%20Win.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/isggfzkliv/27%20%248%2C000%20Win.mp3";
           } else if (this.level === 8) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/yuzvzpvpmx/32%20%2416%2C000%20Win.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/yuzvzpvpmx/32%20%2416%2C000%20Win.mp3";
           } else if (this.level === 9) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/yhsegolhfo/37%20%2432%2C000%20Win.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/yhsegolhfo/37%20%2432%2C000%20Win.mp3";
             timeout = 8;
           } else if (this.level === 10) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/ereqgtncsi/42%20%2464%2C000%20Win.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/ereqgtncsi/42%20%2464%2C000%20Win.mp3";
           } else if (this.level === 11) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/evyfifizmc/47%20%24125%2C000%20Win.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/evyfifizmc/47%20%24125%2C000%20Win.mp3";
           } else if (this.level === 12) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/evrltjdslu/52%20%24250%2C000%20Win.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/evrltjdslu/52%20%24250%2C000%20Win.mp3";
           } else if (this.level === 13) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/isnasksttn/57%20%24500%2C000%20Win.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/isnasksttn/57%20%24500%2C000%20Win.mp3";
           } else if (this.level === 14) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/jhorhztmvh/77%20%241%2C000%2C000%20Win%20%28Double%20String%20Version%29.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/uujixeault/62%20%241%2C000%2C000%20Win.mp3";
           } else {
             src = "https://www.myinstants.com/media/sounds/correct_VsVqwRb.mp3";
           }
           break;
         case 'wrong_answer':
           if (this.level === 5) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/rjhzqvzlas/16%20%242%2C000%20Lose.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/rjhzqvzlas/16%20%242%2C000%20Lose.mp3";
           } else if (this.level === 6) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/yfeukwjqpi/21%20%244%2C000%20Lose.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/yfeukwjqpi/21%20%244%2C000%20Lose.mp3";
           } else if (this.level === 7) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/wuabusrlky/26%20%248%2C000%20Lose.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/wuabusrlky/26%20%248%2C000%20Lose.mp3";
           } else if (this.level === 8) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lcjeyuuohe/31%20%2416%2C000%20Lose.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lcjeyuuohe/31%20%2416%2C000%20Lose.mp3";
           } else if (this.level === 9) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/nsgdfbhohc/36%20%2432%2C000%20Lose.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/nsgdfbhohc/36%20%2432%2C000%20Lose.mp3";
           } else if (this.level === 10) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lxmljojuyt/41%20%2464%2C000%20Lose.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lxmljojuyt/41%20%2464%2C000%20Lose.mp3";
           } else if (this.level === 11) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/hljjczjopk/46%20%24125%2C000%20Lose.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/hljjczjopk/46%20%24125%2C000%20Lose.mp3";
           } else if (this.level === 12) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/mobwortxts/51%20%24250%2C000%20Lose.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/mobwortxts/51%20%24250%2C000%20Lose.mp3";
           } else if (this.level === 13) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/brhweclkpt/56%20%24500%2C000%20Lose.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/brhweclkpt/56%20%24500%2C000%20Lose.mp3";
           } else if (this.level === 14) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/szpzgiupts/61%20%241%2C000%2C000%20Lose.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/szpzgiupts/61%20%241%2C000%2C000%20Lose.mp3";
           } else {
             src = 'https://www.myinstants.com/media/sounds/wrong_JbK803k.mp3'
           }
           break;
         case 'halving':
-          src = 'https://delta.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/oqmqjluggn/67%2050-50.mp3';
+          src = 'https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/oqmqjluggn/67%2050-50.mp3';
           break;
         case 'phone':
-          src = 'https://delta.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/tntjwcmahr/66%20Phone-A-Friend.mp3';
+          src = 'https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/tntjwcmahr/66%20Phone-A-Friend.mp3';
           break;
         case 'audience':
-          src = 'https://delta.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lwhnnzheda/68%20Ask%20The%20Audience.mp3';
+          src = 'https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lwhnnzheda/68%20Ask%20The%20Audience.mp3';
           break;
         case 'final' :
           if (this.level === 5) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/awanowgypj/15%20%242%2C000%20Final%20Answer-.mp3"
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/awanowgypj/15%20%242%2C000%20Final%20Answer-.mp3"
           } else if (this.level === 6) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/kdklojqnph/20%20%244%2C000%20Final%20Answer-.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/kdklojqnph/20%20%244%2C000%20Final%20Answer-.mp3";
           } else if (this.level === 7) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lhyuugzgqk/25%20%248%2C000%20Final%20Answer-.mp3"
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lhyuugzgqk/25%20%248%2C000%20Final%20Answer-.mp3"
           } else if (this.level === 8) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lsxtvfepru/30%20%2416%2C000%20Final%20Answer-.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/lsxtvfepru/30%20%2416%2C000%20Final%20Answer-.mp3";
           } else if (this.level === 9) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/qmedsiwtys/35%20%2432%2C000%20Final%20Answer-.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/qmedsiwtys/35%20%2432%2C000%20Final%20Answer-.mp3";
           } else if (this.level === 10) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/jecbhnngvg/40%20%2464%2C000%20Final%20Answer-.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/jecbhnngvg/40%20%2464%2C000%20Final%20Answer-.mp3";
           } else if (this.level === 11) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/zossgcnjxl/45%20%24125%2C000%20Final%20Answer-.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/zossgcnjxl/45%20%24125%2C000%20Final%20Answer-.mp3";
           } else if (this.level === 12) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/dbmdofpign/50%20%24250%2C000%20Final%20Answer-.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/dbmdofpign/50%20%24250%2C000%20Final%20Answer-.mp3";
           } else if (this.level === 13) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/kxzosrrgrk/55%20%24500%2C000%20Final%20Answer-.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/kxzosrrgrk/55%20%24500%2C000%20Final%20Answer-.mp3";
           } else if (this.level === 14) {
-            src = "https://epsilon.vgmsite.com/soundtracks/who-wants-to-be-a-millionaire-the-album/pzaiedrqha/60%20%241%2C000%2C000%20Final%20Answer-.mp3";
+            src = "https://eta.vgmtreasurechest.com/soundtracks/who-wants-to-be-a-millionaire-the-album/pzaiedrqha/60%20%241%2C000%2C000%20Final%20Answer-.mp3";
           } else {
             src = ''
           }
